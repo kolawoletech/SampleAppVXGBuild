@@ -27,10 +27,7 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    backgroundColor: '#0f516c',
-    padding: 5,
-    margin: 5,
-    marginBottom: 5
+
   },
   text: {
     color: '#000',

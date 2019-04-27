@@ -5335,6 +5335,11 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-device-info@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.5.1.tgz#46810a42724089c7d4a0900974a1562bce057e73"
+  integrity sha512-AePzRi/2C4LokVYfjV9SjIHv0zHgI0/rMYxVWe5KcXvuSuspUUrx4oq3+jGZMwbsJP1/aqvslMq4TEJG7F8yNA==
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -5414,6 +5419,11 @@ react-native-ksyvideo@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-ksyvideo/-/react-native-ksyvideo-2.0.0.tgz#985d73b03ddf588724f786635c6cb1988ed82937"
   integrity sha512-23/kK8/aJ97j88Y42vSXYJm3I6mnIfdH4lVGbMhJX8wBOCNAzOMu0WEBYYowYcUQiu626L11eNjUBXB3VLuFDg==
+
+react-native-linear-gradient@^2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.4.tgz#dce133526f5a5510a639af94544f1ed0c984bd1e"
+  integrity sha512-FF1NhlerA4uBiS0gFIHa4FBp8/aftv4vPj14Y47lGNkYjSI94tnI6oYO3EfUxXjEyCUPiOVNKZOB9kScyjc5Ew==
 
 react-native-material-cards@^1.0.9:
   version "1.0.9"

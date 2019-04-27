@@ -17,7 +17,7 @@ import PlayerContainer from '../player';
 
 
 import CatalogueContainer from '../catalogue';
-//import ProgramContainer from '../program';
+import ProgramContainer from '../program';
 //import PlaylistContainer from '../playlist';
 //import MediaContainer from '../media';
 import TabsContainer from '../tabs';
@@ -52,6 +52,7 @@ export default class Routes extends React.Component {
               <Scene key="channel" component={ChannelContainer} title="Channel" />
               <Scene key="player" component={PlayerContainer} title="Player" />
               <Scene key="catalogue" component={CatalogueContainer} title="Catalogue" />
+              <Scene key="program" component={ProgramContainer} title="Program" />
 
               <Scene key="landing" component={LandingContainer} title="Landing" />
             </Stack>

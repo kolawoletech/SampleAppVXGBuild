@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor:'#76B6C4'
+    backgroundColor: '#76B6C4'
   },
   image: {
     width: 100,
@@ -29,10 +29,10 @@ export const styles = StyleSheet.create({
     backgroundColor: '#0f516c',
     padding: 15,
     margin: 10,
-  
+
   },
   text: {
-    color: '#ffffff',
+    color: '#000',
     fontSize: 16,
     textAlign: 'center'
   },
@@ -46,6 +46,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
   },
+  lineStyle: {
+    borderWidth: 0.5,
+    borderColor: 'black',
+    margin: 1,
+    flexDirection: "row"
+  },
   toastText: {
     color: 'white',
     padding: 5,
@@ -54,8 +60,6 @@ export const styles = StyleSheet.create({
   pills: {
     alignItems: 'center',
     textAlign: 'center',
-   backgroundColor: 'black',
-   width: '100%'
-    
+    width: '100%'
   },
 });

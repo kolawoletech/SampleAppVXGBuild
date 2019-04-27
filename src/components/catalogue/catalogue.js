@@ -37,10 +37,10 @@ class Catalogue extends Component {
     return (
     /*   <LinearGradient colors={['#fff', '#fff', '#fff']}
         style={{ height: '100%' }}> */
-       
+        <View style={{ height: '100%' }}>
           <CatalogueItems list={data} onPressItem={this.onRemoveChannel} />
       
-    
+        </View>
 
 /*       </LinearGradient>
  */

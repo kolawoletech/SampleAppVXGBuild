@@ -7,6 +7,7 @@ import Catalogue from '../catalogue/catalogue'
 //import Media from '../media/media'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const NILEMEDIA_LOGO = require('../../../assets/icons/nilemedia.png');
+import LinearGradient from 'react-native-linear-gradient';
 
 
 export default class Tabs extends React.Component {
@@ -53,7 +54,7 @@ export default class Tabs extends React.Component {
             <Icon name="albums" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Player" onPress={() => { Actions.player(); }}></Button>
+            <Button color='black' title="Player" onPress={() => { Actions.catalogue(); }}></Button>
           </TouchableOpacity>
 
 

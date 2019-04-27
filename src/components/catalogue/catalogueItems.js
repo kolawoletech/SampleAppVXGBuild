@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button, Image } fro
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
+import LinearGradient from 'react-native-linear-gradient';
 
 //import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialIcons'

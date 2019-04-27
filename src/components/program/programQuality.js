@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button, Alert } fro
 import { styles } from './styles';
 import { connect } from 'react-redux';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 //import { Permissions, Camera, FileSystem } from 'expo';
 import { fetchProgramURILink, getUID } from '../../actions/api/actions';
@@ -13,37 +14,7 @@ import { fetchProgramURILink, getUID } from '../../actions/api/actions';
 export class ProgramQuality extends React.Component {
 
 
-    checkForFolder() {
-        const snapViewAsync = async (view, format = 'png') => {
-            const ensureDirAsync = async (dir, intermediates = true) => {
-                //const props = await FileSystem.getInfoAsync(dir)
-                if (props.exist && props.isDirectory)
-                    return props;
 
-               //await FileSystem.makeDirectoryAsync(dir, { intermediates: true })
-
-                return await ensureDirAsync(dir, intermediates)
-            }
-            const timestamp = (presision = 1) => {
-                return Math.round((new Date()).getTime() / presision);
-            }
-
-            //const dir = await ensureDirAsync(FileSystem.documentDirectory + 'images/');
-            const snapshot = `${dir.uri}${timestamp()}.${format}`;
-            /* const temp = await Expo.takeSnapshotAsync(view, {
-                format,
-                quality: 1,
-                result: 'file'
-            }); */
-
-            //await FileSystem.moveAsync({ from: temp, to: snapshot });
-
-            //const info = await FileSystem.getInfoAsync(snapshot, { md5: true })
-            const type = `image/${format}`;
-
-            return { ...info, type };
-        }
-    }
 
     handleButtonPress = () => {
     };
@@ -53,6 +24,7 @@ export class ProgramQuality extends React.Component {
     renderItem = (qualityList) => {
         const { pid } = this.props;
         const { onPressItem } = this.props;
+        const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 100000)
 
         if (qualityList.profile_id == 7) {
             let quality = 7;
@@ -63,15 +35,155 @@ export class ProgramQuality extends React.Component {
         //console.log(pid, qualityList.profile_id)
 
         return (
-            <TouchableOpacity style={styles.item} onPress={() => onPressItem(pid, qualityList.profile_id)} key={qualityList.profile_id} >
+
+            <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id)} key={qualityList.profile_id} >
+
                 {
-                    <Text>
+                    // <Text>
 
-                        {qualityList.profile_id === 7 && <Text style={styles.text}> LOW</Text>}
-                        {qualityList.profile_id === 8 && <Text style={styles.text} >MED </Text>}
-                        {qualityList.profile_id === 9 && <Text style={styles.text} > HIGH </Text>}
+                    //     {qualityList.profile_id === 7 && <Text style={styles.text}> LOW</Text>}
+                    //     {qualityList.profile_id === 8 && <Text style={styles.text} >MED </Text>}
+                    //     {qualityList.profile_id === 9 && <Text style={styles.text} > HIGH </Text>}
 
-                    </Text>
+                    // </Text>
+
+                    <View>
+
+                        {qualityList.profile_id === 7 &&
+                            <View>
+                                <View style={styles.item}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon name="file-download" size={22} color="#fff" style={{
+                                            top: 10
+                                        }} />
+                                        <Button color="white" title="LOW"></Button>
+
+                                    </View>
+                                </View>
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 10
+
+                                        }}>{qualityList.video.width}x{qualityList.video.height}</Text>
+
+                                </View>
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 11
+
+                                        }}>{sizeInMB} MB</Text>
+                                </View>
+                            </View>}
+
+
+                        {qualityList.profile_id === 8 && <View><View style={styles.item}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Icon name="file-download" size={22} color="#fff" style={{
+                                    top: 10
+                                }} /><Button color="white" title="MED"></Button>
+                            </View>
+                        </View>
+                            <View>
+                                <Text
+                                    style={{
+                                        color: '#fff',
+                                        flexWrap: 'wrap',
+                                        alignContent: 'center',
+                                        justifyContent: 'center',
+                                        textAlign: 'center',
+                                        fontSize: 10
+
+
+                                    }}>{qualityList.video.width}x{qualityList.video.height}</Text>
+                            </View>
+                            <View>
+                                <Text
+                                    style={{
+                                        color: '#fff',
+                                        flexWrap: 'wrap',
+                                        alignContent: 'center',
+                                        justifyContent: 'center',
+                                        textAlign: 'center',
+                                        fontSize: 11
+
+
+                                    }}>{sizeInMB} MB</Text>
+                            </View>
+
+                        </View>}
+
+
+                        {qualityList.profile_id === 9 &&
+                            <View>
+                                <View style={styles.item}>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <Icon name="file-download" size={22} color="#fff" style={{
+                                            top: 10
+                                        }} /><Button color="white" title="HIGH"></Button>
+                                    </View>
+
+                                </View>
+
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 10
+
+
+                                        }}>{qualityList.video.width}x{qualityList.video.height}</Text>
+                                </View>
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 11
+                                            ,
+
+                                        }}>{sizeInMB} MB</Text>
+                                </View>
+
+                            </View>
+                        }
+                        {/* 
+                        {qualityList.profile_id === 8 && <View style={{ flexDirection: 'row' }}>
+                            <Button icon={
+                                <Icon
+                                    name="arrow-right"
+                                    size={15}
+                                    color="white"
+                                />} color="white" title="MED"></Button></View>}
+
+                        {qualityList.profile_id === 9 && <View style={{ flexDirection: 'row' }}>
+                            <Button icon={
+                                <Icon
+                                    name="arrow-right"
+                                    size={15}
+                                    color="white"
+                                />} color="white" title="HIGH"></Button></View>}
+ */}
+                    </View>
+
                 }
             </TouchableOpacity>
         );
