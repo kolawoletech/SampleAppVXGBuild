@@ -1,0 +1,12 @@
+export const SESSION_RESTORING = 'SESSION_RESTORING';
+export const SESSION_LOADING = 'SESSION_LOADING';
+export const SESSION_SUCCESS = 'SESSION_SUCCESS';
+export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
+export const SESSION_ERROR = 'SESSION_ERROR';
+export const SESSION_LOGOUT = 'SESSION_LOGOUT';
+
+
+export const ADD_ITEM = 'ADD_ITEM';
+export const REMOVE_ITEM = 'REMOVE_ITEM';
+export const FETCH_PLAYLIST = 'FETCH_PLAYLIST';
+export const GET_USER = 'GET_USER';
