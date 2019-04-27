@@ -1,0 +1,5 @@
+rootProject.name = 'sampleApp'
+include ':react-native-vxg-mobile-sdk'
+project(':react-native-vxg-mobile-sdk').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vxg-mobile-sdk/android')
+
+include ':app'
