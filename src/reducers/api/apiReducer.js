@@ -2,16 +2,18 @@ import * as types from '../../actions/api/actionTypes';
 
 
 const initialState = {
-    connecting: false,
-    loading: false,
-    token_data: [],
-    error: null,
-    logged: null,
-    registered: null,
-    channels: [],
-    channel: {},
-    catalogue: {},
-    link: null
+  connecting: false,
+  loading: false,
+  token_data: [],
+  error: null,
+  logged: null,
+  registered: null,
+  channels: [],
+  channel: {},
+  catalogue: {},
+  link: null,
+  guide: null,
+  chats: {}
 };
 
 const apiReducer = (state = initialState, action) => {
@@ -26,7 +28,7 @@ const apiReducer = (state = initialState, action) => {
         return { 
           ...state, 
           connecting: false, 
-          loading: true, 
+          loading: true,
           error: null ,
         };
       case types.REGISTERED_USER:
@@ -124,6 +126,40 @@ const apiReducer = (state = initialState, action) => {
           error: null,
           loaded: true,
           img: action.img
+        };
+
+        case types.CHANNEL_GUIDE_LOADED:
+        return {
+          ...state,
+          connecting: false,
+          loading: false,
+          token: action.token,
+          error: null,
+          loaded: true,
+          guide: action.guide
+        };
+
+        case types.CHANNEL_RSTP_LINK_LOADED:
+        return {
+          ...state,
+          connecting: false,
+          loading: false,
+          token: action.token,
+          error: null,
+          loaded: true,
+          //TODO Might changed link to rstp or something else if there is  a  race condition
+          link: action.link
+        };
+
+        case types.MESSAGES_LOADED:
+        return {
+          ...state,
+          connecting: false,
+          loading: false,
+          token: action.token,
+          error: null,
+          loaded: true,
+          chats: action.chatMessages
         };
      /*  case types.SIGNUP_SUCCESS:
         return {
