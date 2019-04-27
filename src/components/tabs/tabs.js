@@ -42,7 +42,7 @@ export default class Tabs extends React.Component {
 
         <View style={styles.tabContainer}>
           <TouchableOpacity>
-            <Icon name="md-tv" size={22} color="black"
+            <Icon name="live-tv" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Channels" onPress={() => { Actions.channels(); }}></Button>
@@ -51,10 +51,10 @@ export default class Tabs extends React.Component {
 
 
           <TouchableOpacity >
-            <Icon name="albums" size={22} color="black"
+            <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Player" onPress={() => { Actions.catalogue(); }}></Button>
+            <Button color='black' title="Catalogue" onPress={() => { Actions.catalogue(); }}></Button>
           </TouchableOpacity>
 
 

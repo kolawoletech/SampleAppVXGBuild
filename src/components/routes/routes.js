@@ -24,6 +24,10 @@ import TabsContainer from '../tabs';
 import LandingContainer from '../landing'
 import configureStore from '../../store';
 //import MenuContainer from '../menu';
+
+import GuideContainer from '../guide';
+import MessagesContainer from '../messages';
+import SettingsContainer from '../settings';
 const store = configureStore();
 const RouterRedux = connect()(Router);
 const TabIcon = ({ selected, title }) => {
@@ -53,7 +57,9 @@ export default class Routes extends React.Component {
               <Scene key="player" component={PlayerContainer} title="Player" />
               <Scene key="catalogue" component={CatalogueContainer} title="Catalogue" />
               <Scene key="program" component={ProgramContainer} title="Program" />
-
+              <Scene key="guide" component={GuideContainer} title="Guide" />
+              <Scene key="settings" component={SettingsContainer} title="Settings" />
+              <Scene key="messages" component={MessagesContainer} title="Messages" />
               <Scene key="landing" component={LandingContainer} title="Landing" />
             </Stack>
             </Drawer>
