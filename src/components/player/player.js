@@ -18,11 +18,12 @@ export class Player extends React.Component {
     _url = null;
     constructor() {
       super();
-      this._url = 'rtsp://c90bf2be-459b-46bd-9ac5-0693f07d54ac:@nile.rtst.co.za:554/NileFlow_PE_Medium_384x224_25_AAC.mm1';
+      this._url = 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov';
       this._onBack = this._onBack.bind(this);
-      this.state = {
-        newMessage: ''
-      };
+
+      this.state= { newMessage: ''}
+          
+      
     }
     
     _onBack = () => {
@@ -69,9 +70,9 @@ export class Player extends React.Component {
     renderVideo() {
         return (
             <View  style={styles.player}>
-                <VXGMobileSDK 
+                    <VXGMobileSDK 
                     style={styles.player}
-                    config={{"connectionUrl": this.props.link, "autoplay": true}}></VXGMobileSDK>
+                    config={{"connectionUrl": this._url, "autoplay": true}}></VXGMobileSDK>
             </View>
    
         )
@@ -79,6 +80,7 @@ export class Player extends React.Component {
 
     render() {
         const rstp_link = this.props.link;
+
         const channel_details = this.chan;
         const channel = this.props.channel;
 
@@ -89,7 +91,7 @@ export class Player extends React.Component {
             return (
                 <View>
                     {this.renderVideo()}
-
+<Text>{rstp_link}</Text>
                     
                 </View>
             );

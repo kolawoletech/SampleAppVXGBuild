@@ -277,7 +277,7 @@ export class Program extends React.Component {
                                         textAlign: 'center',
                                         justifyContent: 'center',
                                         fontWeight: 'bold'
-                                    }}>Available Space On Device: //TODO {freeDiskStorage} MB</Text>
+                                    }}>Available Space On Device: {freeDiskStorage} MB</Text>
                             </View>
 
 

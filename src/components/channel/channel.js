@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { connect } from 'react-redux';
-import { fetchChannelObject, fetchChannelImage } from '../../actions/api/actions';
+import { fetchChannelObject, fetchChannelImage, fetchChannelRSTPLinks } from '../../actions/api/actions';
 import { ChannelQuality } from './channelQuality';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 
@@ -181,7 +181,9 @@ const mapStateToProps = ({ routes, apiReducer: { channel, img } }) => ({
 
 const mapDispatchToProps = {
     channelObject: fetchChannelObject,
-    imageURI: fetchChannelImage
+    imageURI: fetchChannelImage,
+    fetchRstpLink: fetchChannelRSTPLinks
+
 };
 
 export default connect(

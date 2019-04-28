@@ -7,7 +7,6 @@ import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { fetchCatalogue } from '../../actions/api/actions';
 import { CatalogueItems } from './catalogueItems';
-//import { LinearGradient } from 'expo';
 
 
 class Catalogue extends Component {

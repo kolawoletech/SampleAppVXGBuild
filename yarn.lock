@@ -5422,11 +5422,6 @@ react-native-keyboard-aware-scroll-view@^0.8.0:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-ksyvideo@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-ksyvideo/-/react-native-ksyvideo-2.0.0.tgz#985d73b03ddf588724f786635c6cb1988ed82937"
-  integrity sha512-23/kK8/aJ97j88Y42vSXYJm3I6mnIfdH4lVGbMhJX8wBOCNAzOMu0WEBYYowYcUQiu626L11eNjUBXB3VLuFDg==
-
 react-native-linear-gradient@^2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.4.tgz#dce133526f5a5510a639af94544f1ed0c984bd1e"

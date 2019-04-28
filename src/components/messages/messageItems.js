@@ -81,6 +81,7 @@ export class MessageItems extends React.Component {
     renderItem = (data) => {
         const end = moment(data.item.end_date_time).format("h:mm a");
         const start= moment(data.item.start_date_time).format("h:mm"); 
+        const time = moment(data.item.time, "YYYY-MM-DDTHH:mm:ss.SSS[Z]").fromNow();
         return (
             <View>
                 {/* <TouchableOpacity style={styles.item} key={data.item.programme_id} onPress={() => Actions.program({ programData: data.item })}> */}
@@ -95,7 +96,7 @@ export class MessageItems extends React.Component {
                         locations={[0.0, 1.0]}
                     > */}
 
-                        <View style={{
+<View style={{
                             flexDirection: 'row',
                             padding: 7,
                             borderRadius: 3,

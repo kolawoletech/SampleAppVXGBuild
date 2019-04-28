@@ -36,6 +36,28 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center'
   },
+  progressBar: {
+    width: '100%',
+    transform: [{ scaleX: 2.0 }, { scaleY: 8.0 }],
+    color: '#000'
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderColor: '#000',
+    paddingBottom: 10,
+  },
+  inputStyle: {
+    flex: 1,
+  },
+  newInput: {
+    borderWidth: 1,
+    borderColor: 'transparent',
+    fontSize: 16,
+
+    height:50,
+  
+  },
   player: {
     paddingTop: 20,
     borderWidth: 1,

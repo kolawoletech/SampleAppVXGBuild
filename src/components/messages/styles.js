@@ -34,8 +34,7 @@ export const styles = StyleSheet.create({
   },
   item: {
  
-    borderRadius: 9 ,
-    margin: 5,
+    margin: 1,
 
   },
   text: {
@@ -78,6 +77,7 @@ export const styles = StyleSheet.create({
   programDescription: {
     color: '#fff',
     fontSize: 14,
-    textAlign: 'left'
+    textAlign: 'left',
+    padding : 6
   }
 });

@@ -17,6 +17,8 @@ export class ChannelQuality extends React.Component {
         const { cid } = this.props;
         const { onPressItem } = this.props;
 
+
+
         const { qual } = this.props;
             let result = qual.map(({ profile_id }) => profile_id)
             const min = Math.min(...result)
@@ -34,8 +36,6 @@ export class ChannelQuality extends React.Component {
                 {qualityList.profile_id === min+2 && <View style={{ flexDirection: 'row' }}>
                     <Icon name="play-arrow" size={22} color="white"
                     /><Text style={styles.buttonText} >HIGH</Text></View>}
-                {/* {qualityList.profile_id === 5 && <Button onPress={Actions.channels} color="white" title="MED" />}
-                {qualityList.profile_id === 6 && <Button onPress={Actions.channels} color="white" title="HIGH" />} */}
             </TouchableOpacity>
         );
 
