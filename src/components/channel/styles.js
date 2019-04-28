@@ -7,6 +7,15 @@ export const styles = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: '#0f516c'
   },
+  guide: {
+    alignItems: 'center',
+    textAlign: 'center',
+   width: '100%',
+   height: 55,
+   backgroundColor: '#0F516C',
+   padding: 0,
+   flexDirection: 'row'
+  },
   image: {
 
     height: 100,
@@ -26,9 +35,19 @@ export const styles = StyleSheet.create({
   
   },
   text: {
+    color: '#000',
+    fontSize: 19,
+    textAlign: 'center',
+    fontWeight:'600'
+  },
+  buttonText: {
     color: '#fff',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    alignItems:'center',
+    paddingLeft: 4,
+    fontWeight:'400',
+    
   },
   buttons: {
     flexDirection: 'row',
@@ -37,7 +56,6 @@ export const styles = StyleSheet.create({
   pills: {
     alignItems: 'center',
     textAlign: 'center',
-   backgroundColor: 'black',
    width: '100%'
    
   },

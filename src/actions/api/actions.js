@@ -1,6 +1,7 @@
 
 import * as types from './actionTypes';
 import axios from 'axios';
+import { Actions } from 'react-native-router-flux';
 
 export const registerUser = () => dispatch => {
     dispatch(apiUserRegistering());
@@ -258,7 +259,7 @@ export const fetchChannelGuide = (id) => dispatch => {
         .catch(err => console.log("An error occured", err))
 }
 
-export const fetchChannelChats = () => dispatch => {
+export const fetchChannelChats = (id) => dispatch => {
     dispatch(apiUserRegistering());
 
     const options = {
@@ -286,15 +287,16 @@ export const fetchChannelChats = () => dispatch => {
             };
 
 
-            const channel_url = 'https://nile.rtst.co.za/api/artist/6/channels/28/messages/';
+            const channel_url = 'https://nile.rtst.co.za/api/artist/6/channels/' + id + '/messages/';
 
             fetch(channel_url, channels_options)
                 //.then(chatlist => chatlist.json())
                 .then(chatlist => {
                     //console.log(chat)
-                    //let chat= chatlist["data"]
-                    console.log("WE AT HERE: " + JSON.stringify(chatlist))
-                    //dispatch(messagesLoaded(chat));   
+                    let chats= chatlist["data"]
+                    //console.log("WE AT HERE: " + JSON.stringify(chatlist))
+                    dispatch(messagesLoaded(chats))
+ 
                 })
         })
 
@@ -349,7 +351,7 @@ export const fetchProgramURILinks = (id, profile_id) => dispatch => {
 }
 
 export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
-
+    
     dispatch(apiUserRegistering());
 
     const options = {
@@ -385,8 +387,12 @@ export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
                 .then(uri => {
                     let link = uri["data"]
                     console.log("..............Getting HERE .............")
-                    console.log(link);
+                 
+                    //Actions.player;
+              
                     dispatch(channelRstpLinkLoaded(link));
+                    Actions.player({link});
+                    console.log(link);
 
                 })
         })
@@ -456,8 +462,7 @@ export const fetchChatStream = () => dispatch => {
 
                 headers: new Headers({
                     'Authorization': 'Bearer ' + token_data["data"],
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'Cache-Control': 'no-cache'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 }),
                 
             };
@@ -467,7 +472,6 @@ export const fetchChatStream = () => dispatch => {
                 .then(chats => chats.json())
                 .then(chats => {
                     let chatStream = chats["data"]
-                    console.log(" ***************** Getting To This Point ----------------------- " + JSON.stringify(chatStream))
                     dispatch(messagesLoaded(chatStream))
                 })
         })

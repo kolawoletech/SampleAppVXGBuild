@@ -10,7 +10,7 @@ import { ProgramQuality } from './programQuality';
 import { Dimensions } from 'react-native'
 var { width, height } = Dimensions.get('window')
 
-//import DeviceInfo from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
 
 
 export class Program extends React.Component {
@@ -126,7 +126,7 @@ export class Program extends React.Component {
     }
 
     render() {
-       //const freeDiskStorage =  Math.floor(DeviceInfo.getFreeDiskStorage()/1000000);
+       const freeDiskStorage =  Math.floor(DeviceInfo.getFreeDiskStorage()/1000000);
 
         const {
             quality: qualityList,
@@ -277,7 +277,7 @@ export class Program extends React.Component {
                                         textAlign: 'center',
                                         justifyContent: 'center',
                                         fontWeight: 'bold'
-                                    }}>Available Space On Device: //TODO MB</Text>
+                                    }}>Available Space On Device: //TODO {freeDiskStorage} MB</Text>
                             </View>
 
 

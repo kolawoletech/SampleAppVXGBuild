@@ -44,7 +44,7 @@ export class CatalogueItems extends React.Component {
 
 
     async _getImage(id) {
-        //console.log(ID)
+       
         const options = {
             method: 'POST',
             body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
@@ -88,36 +88,24 @@ export class CatalogueItems extends React.Component {
         return (
             <View style={{ width: '50%', height: '50%' }}>
                 <TouchableOpacity style={styles.item} key={data.item.programme_id} onPress={() => Actions.program({ programData: data.item })}>
-                <Icon name="file-download" size={22} color="white" />
 
-                    <Card
-                    style={{
-                        width: '100%', height: '100%', minHeight: 150,maxHeight: 150,
-                    }}
-
-                     >
+                    <Card>
                         <CardImage
                             source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png' }}
                             resizeMode="stretch"
                             style={{
-                                width: '100%', height: '100%', backgroundColor:'#fff'
+                                width: '100%', height: '150%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
                             }}
-                            
                         />
-                        
+                        <Icon size={22} color="white"
+                            style={{ position: 'absolute', top: 10, left: 10 }} name="cloud-download" size={22} color="white" />
+
                         <Text
-                        numberOfLines={2}
-                        style={{ fontSize: 23, width: '100%', fontWeight: 'normal', backgroundColor: '#76b6c4', textAlign: 'center', color:'white' }}>{data.item.name}
-                            
-                        
-                            
-                            </Text>
-
-                       
-
+                            numberOfLines={2}
+                            style={{ fontSize: 14, height: '20%', width: '100%', fontWeight: 'normal', backgroundColor: '#76b6c4', textAlign: 'center', color: 'white', maxHeight: 22, minHeight: 22 }}>
+                            {data.item.name}
+                        </Text>
                     </Card>
-
-
                 </TouchableOpacity>
             </View>
         );

@@ -8,6 +8,7 @@ import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { fetchChannelChats , fetchChatStream} from '../../actions/api/actions';
 import { MessageItems } from './messageItems';
 //import { LinearGradient } from 'expo';
+import { AsyncStorage } from 'react-native';
 
  
 class Messages extends Component {
@@ -67,7 +68,8 @@ const mapStateToProps = ({  apiReducer: { chats} }) => ({
 });
 
 const mapDispatchToProps = {
-  loadChats: fetchChatStream
+  loadChats: fetchChatStream,
+  loadChannelChats: fetchChannelChats 
 };
 
 export default connect(

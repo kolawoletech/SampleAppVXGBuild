@@ -85,72 +85,49 @@ export class MessageItems extends React.Component {
             <View>
                 {/* <TouchableOpacity style={styles.item} key={data.item.programme_id} onPress={() => Actions.program({ programData: data.item })}> */}
                 <TouchableOpacity style={styles.item} key={data.item._id} >
-               {/*      <LinearGradient
-                        colors={['#0F516C', '#76B6C4']}
+
+   {/*              <LinearGradient colors={['#00c4cc', '#00c4cc']}
                         style={{
                             borderRadius: 3,
                         }}
                         start={[0.0, 0.5]}
                         end={[1.0, 0.5]}
-                        locations={[0.0, 1.0]}> */}
+                        locations={[0.0, 1.0]}
+                    > */}
 
-                        <View
-                            style={{
+                        <View style={{
+                            flexDirection: 'row',
+                            padding: 7,
+                            borderRadius: 3,
+                        }
+                        }>
+                            <View style={{
                                 flexDirection: 'row',
-                                padding: 7,
-                                borderRadius: 3,
-
-                            }}>
-                            <View
-                            style={{
-                                width: '30%',
-                               
-
-                            }}>
-                             
-                               <Text
-                               style={{
-                                fontWeight: 'bold',
-                                fontStyle: 'italic',
-                                fontSize: 12,
-                                color: 'white',
-                                justifyContent: 'space-around',
-                                alignItems: 'center',
-                                top:'50%'
-
-                            }}
-                               > {start}-{end}</Text>
-
+                                        width: '100%',
+                                        color:'white'
+                            }
+                            }>
+                                <Text   >{data.item.from}. </Text><Text style={{
+                                flexDirection: 'row',
+                                        width: '100%',
+                                        color:'white'
+                            }
+                            } >{time}</Text>
                             </View>
-                            <View
-                                style={{
-                                    padding: 7,
-                                    width: '70%',
-
-                                }}>
-                                <Text
-                                    numberOfLines={2}
-                                    style={styles.programTitle}
-                                    color='white'
-                                >{data.item.name}</Text>
-                                <Text
-                                    numberOfLines={3}
-                                    style={styles.programDescription}
-                                    color='white'
-                                ></Text>
-
-                                <Text
-                                    numberOfLines={3}
-                                    style={styles.programDescription}
-                                    color='white'
-                                >{data.item.body}</Text>
-
-                            </View>
-
+                            
                         </View>
+                        <View style={{
+                                flexDirection: 'row',
+                                        width: '100%'
+                            }
+                            }>
+                            <Text
+                               
+                                style={styles.programDescription}
+                                color='white'>{data.item.body}</Text>
+                                </View>
 
-
-            {/*         </LinearGradient> */}
+                    {/* </LinearGradient> */}
 
                 </TouchableOpacity>
             </View>
