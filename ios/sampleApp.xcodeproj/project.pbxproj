@@ -40,7 +40,6 @@
 		B1DDA7B8736C4DDDB7C8CC2C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32B732DC02E64B4E9CE5C8FC /* Feather.ttf */; };
 		D3210D04F6E4477CB66E123A /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFA27BAF725D4F048509BC87 /* Octicons.ttf */; };
 		D8A6712222762E05001E12F3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A6711F22762DBD001E12F3 /* libBVLinearGradient.a */; };
-		D8A6726A22766144001E12F3 /* libRCTKSYVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A6724222766108001E12F3 /* libRCTKSYVideo.a */; };
 		D8A672AD2276D43E001E12F3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A66FBD2274D36D001E12F3 /* libRNDeviceInfo.a */; };
 		D8A672DE2276DD47001E12F3 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A66F062274C505001E12F3 /* libRNGestureHandler.a */; };
 		E6C782BAD3434398B3DC1FD7 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48B79E09915C4ACDA3CF0F73 /* MaterialCommunityIcons.ttf */; };
@@ -491,7 +490,6 @@
 			files = (
 				D8A672DE2276DD47001E12F3 /* libRNGestureHandler.a in Frameworks */,
 				D8A672AD2276D43E001E12F3 /* libRNDeviceInfo.a in Frameworks */,
-				D8A6726A22766144001E12F3 /* libRCTKSYVideo.a in Frameworks */,
 				D8A6712222762E05001E12F3 /* libBVLinearGradient.a in Frameworks */,
 				B1685DF02228005E008F227E /* libRCTVXGMobileSDK.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
@@ -881,6 +879,7 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = RGQ9RHNF89;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -1498,13 +1497,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = RGQ9RHNF89;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/",
-					"../node_modules/react-native-ksyvideo/ios",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vxg-mobile-sdk/ios/RCTVXGMobileSDK",
@@ -1523,7 +1522,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = za.co.khholdings.nilemedia.ios;
-				PRODUCT_NAME = sampleApp;
+				PRODUCT_NAME = "Nile Media";
+				PROVISIONING_PROFILE_SPECIFIER = "Nile Media";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1532,12 +1533,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RGQ9RHNF89;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/",
-					"../node_modules/react-native-ksyvideo/ios",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vxg-mobile-sdk/ios/RCTVXGMobileSDK",
@@ -1556,7 +1556,9 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = za.co.khholdings.nilemedia.ios;
-				PRODUCT_NAME = sampleApp;
+				PRODUCT_NAME = "Nile Media";
+				PROVISIONING_PROFILE_SPECIFIER = "Nile Media";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1588,7 +1590,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1641,7 +1643,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1655,6 +1657,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

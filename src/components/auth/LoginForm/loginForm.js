@@ -6,19 +6,20 @@ import { LoadingIndicator } from '../../../components/loadingIndicator/loadingIn
 import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
-import { loginUser, restoreSession } from '../../../actions/session/actions';
-//import {  LinearGradient } from 'expo';
+import { loginUser, restoreSession, loginAnonymously } from '../../../actions/session/actions';
 
+import LinearGradient from 'react-native-linear-gradient';
 
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
 class LoginFormComponent extends Component {
   componentDidMount() {
     this.props.restore();
+    console.log(JSON.stringify(this.props))
   }
 
   componentDidUpdate(prevProps) {
-    const { error, logged } = this.props;
+    const { error, logged , loginAnonymously} = this.props;
 
     if (!prevProps.error && error) Alert.alert('error', error);
 
@@ -26,11 +27,11 @@ class LoginFormComponent extends Component {
   }
 
   render() {
-    const { login, loading } = this.props;
+    const { login, loading, loginAnon } = this.props;
     const { scrollView, imageBox, image, loginBox, actionButton} = styles;
     return (
-/*       <LinearGradient  colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-      style={{ borderRadius: 5 , height: '100%'}}> */
+      <LinearGradient  colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+      style={{ borderRadius: 5 , height: '100%'}}>
       <KeyboardAwareScrollView style={scrollView}>
         <View style={imageBox}>
           <Image style={image} source={NILEMEDIA_LOGO} />
@@ -39,13 +40,25 @@ class LoginFormComponent extends Component {
           {loading ? (
             <LoadingIndicator color="#ffffff" size="large" />
           ) : (
-            <BasicFormComponent buttonTitle={'login'}  onButtonPress={login} />
+            <TouchableOpacity>
+                
+                <Button
+                 style={{
+                  top: 10,
+                  fontWeight: 'bold',
+                  fontSize: 21
+                }}
+                  onPress={loginAnon} 
+                  title="Get Started" 
+                  color="#fff"
+                />
+            </TouchableOpacity>
+            
           )}
         </View>
-        <View style={actionButton}>{loading ? null : <Button  onPress={Actions.signup} color="#fff" title="Don't Have an Account? Register Here" />}</View>
       </KeyboardAwareScrollView>
-/*       </LinearGradient>
- */    );
+      </LinearGradient>
+    );
   }
 }
 
@@ -60,6 +73,7 @@ const mapStateToProps = ({ routes, sessionReducer: { restoring, loading, user, e
 
 const mapDispatchToProps = {
   login: loginUser,
+  loginAnon: loginAnonymously,
   restore: restoreSession
 };
 

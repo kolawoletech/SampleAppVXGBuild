@@ -73,7 +73,7 @@ export class Player extends React.Component {
             <Text>{rstp_link}</Text>
                     <VXGMobileSDK 
                         style={styles.player}
-                        config={{"connectionUrl": rstp_link, "autoplay": true}}>
+                        config={{"connectionUrl": 'rtsp://c90bf2be-459b-46bd-9ac5-0693f07d54ac:@nile.rtst.co.za:554/NileFlow_PE_Medium_384x224_25_AAC.mm1', "autoplay": true}}>
                     </VXGMobileSDK>
             </View>
    

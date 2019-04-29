@@ -28,6 +28,21 @@ export const loginUser = (email, password) => dispatch => {
     });
 };
 
+export const loginAnonymously = () => dispatch => {
+  dispatch(sessionLoading());
+  console.log("Buttoin Clicked")
+  firebaseService
+    .auth()
+    .signInAnonymously()
+    .then(user => {
+      console.log(user)
+      dispatch(sessionSuccess(user));
+    })
+    .catch(error => {
+      dispatch(sessionError(error.message));
+    });
+};
+
 export const signupUser = (email, password) => dispatch => {
   dispatch(sessionLoading());
 

@@ -5,6 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import moment from "moment";
 import 'moment-timezone';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -84,16 +85,14 @@ export class GuideItems extends React.Component {
         const start= moment(data.item.start_date_time).format("h:mm");
         return (
             <View>
-                {/* <TouchableOpacity style={styles.item} key={data.item.programme_id} onPress={() => Actions.program({ programData: data.item })}> */}
-                <TouchableOpacity style={styles.item} key={data.item.programme_id} >
-         {/*            <LinearGradient
+                <TouchableOpacity style={styles.item} key={data.item.start_date_time} >
+                    <LinearGradient
                         colors={['#0F516C', '#76B6C4']}
                         style={{
                             borderRadius: 3,
                         }}
-                        start={[0.0, 0.5]}
-                        end={[1.0, 0.5]}
-                        locations={[0.0, 1.0]}> */}
+                        start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+                        >
 
                         <View
                             style={{
@@ -115,8 +114,7 @@ export class GuideItems extends React.Component {
                                 fontStyle: 'italic',
                                 fontSize: 12,
                                 color: 'white',
-                                justifyContent: 'space-around',
-                                alignItems: 'center',
+                            
                                 top:'50%'
 
                             }}
@@ -130,18 +128,18 @@ export class GuideItems extends React.Component {
 
                                 }}>
                                 <Text
-                                    numberOfLines={2}
+                                
                                     style={styles.programTitle}
                                     color='white'
                                 >{data.item.name}</Text>
                                 <Text
-                                    numberOfLines={3}
+                                    
                                     style={styles.programDescription}
                                     color='white'
                                 ></Text>
 
                                 <Text
-                                    numberOfLines={3}
+                                  
                                     style={styles.programDescription}
                                     color='white'
                                 >{data.item.description}</Text>
@@ -151,7 +149,7 @@ export class GuideItems extends React.Component {
                         </View>
 
 
-                   {/*  </LinearGradient> */}
+                    </LinearGradient>
 
                 </TouchableOpacity>
             </View>
@@ -175,28 +173,34 @@ export class GuideItems extends React.Component {
                     <LoadingIndicator />
                 </TouchableOpacity>
             );
-        } else {
+        } else if(this.props.list != null){
             const { list } = this.props;
+            console.log(list + "  Empty "+ this.props.list )
             return (
-
                 <View>
-                    {this.state.images.length === 0 && <FlatList
+                {this.state.images.length === 0 && <FlatList
+                    data={list}
+                    renderItem={item => this.renderItem(item)}
+                    keyExtractor={item => item.start_date_time.toString()}
+
+                />}
+                {this.state.images.length > 0 &&
+                    <FlatList
                         data={list}
                         renderItem={item => this.renderItem(item)}
-                        keyExtractor={item => item.programme_id.toString()}
-                        numColumns={2}
-
+                        keyExtractor={item => item.start_date_time.toString()}
+                        
                     />}
-                    {this.state.images.length > 0 &&
-                        <FlatList
-                            data={list}
-                            renderItem={item => this.renderItem(item)}
-                            keyExtractor={item => item.programme_id.toString()}
-                            numColumns={2}
-
-                        />}
-                </View>
+            </View>
             );
+           
+             
+        } else {
+            return(
+                <View>
+                    <Text>Nothing is scheduled Yet</Text>
+                </View>
+               )
         }
     }
 }

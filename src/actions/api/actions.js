@@ -368,7 +368,6 @@ export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
         .then(token_data => {
 
             dispatch(apiUserRegistered(token_data["data"]));
-            //console.log("This is TOKEN from STORE "+ token_data["data"]);
             const programs_options = {
                 method: 'GET',
 
@@ -378,17 +377,14 @@ export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
                 })
             };
 
-            //dispatch(channelLoading(id))
-            //console.log("ID USED IN STORE IS "  + id)
+          
             const program_url = 'https://nile.rtst.co.za/api/artist/6/channels/' + id + '/uri/' + profile_id + '/';
 
             fetch(program_url, programs_options)
                 .then(uri => uri.json())
                 .then(uri => {
                     let link = uri["data"]
-                    console.log("..............Getting HERE .............")
                  
-                    //Actions.player;
               
                     dispatch(channelRstpLinkLoaded(link));
                     Actions.player({link});
@@ -397,7 +393,6 @@ export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
                 })
         })
 
-    // .catch(err => console.log("An error occured", err))
 }
 
 
@@ -436,7 +431,6 @@ export const fetchCatalogue = () => dispatch => {
 
                 })
         })
-    //. .catch(err => console.log("An error occured", err))
 }
 
 export const fetchChatStream = () => dispatch => {

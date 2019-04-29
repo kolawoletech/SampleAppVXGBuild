@@ -39,24 +39,14 @@ export class ProgramQuality extends React.Component {
             <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id)} key={qualityList.profile_id} >
 
                 {
-                    // <Text>
-
-                    //     {qualityList.profile_id === 7 && <Text style={styles.text}> LOW</Text>}
-                    //     {qualityList.profile_id === 8 && <Text style={styles.text} >MED </Text>}
-                    //     {qualityList.profile_id === 9 && <Text style={styles.text} > HIGH </Text>}
-
-                    // </Text>
-
                     <View>
 
                         {qualityList.profile_id === 7 &&
                             <View>
                                 <View style={styles.item}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Icon name="file-download" size={22} color="#fff" style={{
-                                            top: 10
-                                        }} />
-                                        <Button color="white" title="LOW"></Button>
+                                        <Icon name="file-download" size={22} color="#fff" />
+                                        <Text style={styles.buttonText} >LOW</Text>
 
                                     </View>
                                 </View>
@@ -90,9 +80,8 @@ export class ProgramQuality extends React.Component {
 
                         {qualityList.profile_id === 8 && <View><View style={styles.item}>
                             <View style={{ flexDirection: 'row' }}>
-                                <Icon name="file-download" size={22} color="#fff" style={{
-                                    top: 10
-                                }} /><Button color="white" title="MED"></Button>
+                                <Icon name="file-download" size={22} color="#fff" />
+                                <Text style={styles.buttonText} >MEDIUM</Text>
                             </View>
                         </View>
                             <View>
@@ -129,9 +118,8 @@ export class ProgramQuality extends React.Component {
                             <View>
                                 <View style={styles.item}>
                                     <View style={{ flexDirection: 'row' }}>
-                                        <Icon name="file-download" size={22} color="#fff" style={{
-                                            top: 10
-                                        }} /><Button color="white" title="HIGH"></Button>
+                                        <Icon name="file-download" size={22} color="#fff" />
+                                        <Text style={styles.buttonText} >HIGH</Text>
                                     </View>
 
                                 </View>
@@ -165,23 +153,7 @@ export class ProgramQuality extends React.Component {
 
                             </View>
                         }
-                        {/* 
-                        {qualityList.profile_id === 8 && <View style={{ flexDirection: 'row' }}>
-                            <Button icon={
-                                <Icon
-                                    name="arrow-right"
-                                    size={15}
-                                    color="white"
-                                />} color="white" title="MED"></Button></View>}
 
-                        {qualityList.profile_id === 9 && <View style={{ flexDirection: 'row' }}>
-                            <Button icon={
-                                <Icon
-                                    name="arrow-right"
-                                    size={15}
-                                    color="white"
-                                />} color="white" title="HIGH"></Button></View>}
- */}
                     </View>
 
                 }

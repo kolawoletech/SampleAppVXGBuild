@@ -25,54 +25,54 @@ export class Program extends React.Component {
 
 
 
-    /*    download = (link, name) => {
-   
-           var regex = /[^\/]+$/;
-           let strippedName = regex.exec(name)
-           Alert.alert("Downloading", strippedName)
-   
-           let fileUri = FileSystem.documentDirectory + 'NileMediaVideos/' + strippedName;
-           FileSystem.downloadAsync(
-               link,
-               fileUri
-           ).then(({ uri }) => {
-               
-   
-               const localnotification = {
-                   title: 'Download has finished',
-                   body: strippedName + " has been downloaded. Check Playlist.",
-                   android: {
-                       sound: true,
-                   },
-                   ios: {
-                       sound: true,
-                   },
-   
-                   data: {
-                       fileUri: uri
-                   },
-               };
-               localnotification.data.title = localnotification.title;
-               localnotification.data.body = localnotification.body;
-               let sendAfterFiveSeconds = Date.now();
-               sendAfterFiveSeconds += 3000;
-   
-               const schedulingOptions = { time: sendAfterFiveSeconds };
-               Notifications.scheduleLocalNotificationAsync(
-                   localnotification,
-                   schedulingOptions
-               );
-   
-               this.props.link = null
-           })
-               .catch(error => {
-                   console.error(error);
-                   Alert.alert(error);
-               });
-           this.props.link = null
-   
-       };
-    */
+    download = (link, name) => {
+
+        //var regex = /[^\/]+$/;
+        // let strippedName = regex.exec(name)
+        Alert.alert("Selection Currently Unavailable");
+
+        /*            let fileUri = FileSystem.documentDirectory + 'NileMediaVideos/' + strippedName;
+                   FileSystem.downloadAsync(
+                       link,
+                       fileUri
+                   ).then(({ uri }) => {
+                       
+           
+                       const localnotification = {
+                           title: 'Download has finished',
+                           body: strippedName + " has been downloaded. Check Playlist.",
+                           android: {
+                               sound: true,
+                           },
+                           ios: {
+                               sound: true,
+                           },
+           
+                           data: {
+                               fileUri: uri
+                           },
+                       };
+                       localnotification.data.title = localnotification.title;
+                       localnotification.data.body = localnotification.body;
+                       let sendAfterFiveSeconds = Date.now();
+                       sendAfterFiveSeconds += 3000;
+           
+                       const schedulingOptions = { time: sendAfterFiveSeconds };
+                       Notifications.scheduleLocalNotificationAsync(
+                           localnotification,
+                           schedulingOptions
+                       );
+           
+                       this.props.link = null
+                   })
+                       .catch(error => {
+                           console.error(error);
+                           Alert.alert(error);
+                       }); */
+        this.props.link = null
+
+    };
+
 
     /* 
         listenForNotifications = () => {
@@ -127,7 +127,7 @@ export class Program extends React.Component {
     }
 
     render() {
-       const freeDiskStorage =  Math.floor(DeviceInfo.getFreeDiskStorage()/1000000);
+        const freeDiskStorage = Math.floor(DeviceInfo.getFreeDiskStorage() / 1000000);
 
         const {
             quality: qualityList,
@@ -157,75 +157,75 @@ export class Program extends React.Component {
 
                 <View>
                     <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-                            style={{ height: '100%' }}>
-                    <Toast
-                        ref={(ref) => this.toast = ref}
-                        style={{ backgroundColor: 'green', top: 10, position: 'absolute' }}
-                        textStyle={{ color: 'white' }}
-                        opacity={0.8}
-                    />
-                    <View>
+                        style={{ height: '100%' }}>
+                        <Toast
+                            ref={(ref) => this.toast = ref}
+                            style={{ backgroundColor: 'green', top: 10, position: 'absolute' }}
+                            textStyle={{ color: 'white' }}
+                            opacity={0.8}
+                        />
+                        <View>
 
 
-                        <ScrollView>
+                            <ScrollView>
 
-                            <View style={{
-                                width: '100%', height: 225, justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor: "rgba(255,255,255,0.5)",
-
-                            }}>
-                                <Image
-                                    source={{ uri: img }}
-                                    resizeMode="stretch"
-                                    style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center', fontWeight: 600 }}
-
-
-
-                                />
-
-                                <View style={{ flex: 1, padding: 7 }}>
-                                    <Text style={{
-                                        color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
-                                        width: '100%',
-                                        padding: 0,
-                                        justifyContent: 'center'
-                                    }}>{list.name}</Text>
-                                </View>
-
-                            </View>
-
-
-                            <View style={{ flexDirection: "row", paddingTop: 10, paddingBottom: 10 }}>
-                                <View
-                                    style={{
-                                        color: '#fff',
-                                        paddingTop: 6,
-
-                                    }}
-                                ><Text
-                                    style={{
-                                        color: '#fff', padding: 7
-                                    }}>Select Download Quality</Text></View>
                                 <View style={{
-                                    borderBottomColor: '#fff',
-                                    borderBottomWidth: 2,
-                                    flex: 1.7,
-                                    paddingTop: 4
+                                    width: '100%', height: 225, justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: "rgba(255,255,255,0.5)",
 
                                 }}>
-                                </View>
-                            </View>
+                                    <Image
+                                        source={{ uri: img }}
+                                        resizeMode="stretch"
+                                        style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center'}}
 
-                            <View style={styles.pills}>
-                                <View >
-                                    <ProgramQuality qual={qualityList} pid={programmeID} onPressItem={this.onFetchLink} />
-                                    <TouchableOpacity onPress={() => this.download(link, this.props.link)} >
-                                        {this.props.link !== null ? <Text style={styles.text}> DOWNLOAD NOW </Text> : null}
-                                    </TouchableOpacity>
+
+
+                                    />
+
+                                    <View style={{ flex: 1, padding: 7 }}>
+                                        <Text style={{
+                                            color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
+                                            width: '100%',
+                                            padding: 0,
+                                            justifyContent: 'center'
+                                        }}>{list.name}</Text>
+                                    </View>
+
                                 </View>
-                            </View>
-                            {/*                             <CardAction
+
+
+                                <View style={{ flexDirection: "row", paddingTop: 10, paddingBottom: 10 }}>
+                                    <View
+                                        style={{
+                                            color: '#fff',
+                                            paddingTop: 6,
+
+                                        }}
+                                    ><Text
+                                        style={{
+                                            color: '#fff', padding: 7
+                                        }}>Select Download Quality</Text></View>
+                                    <View style={{
+                                        borderBottomColor: '#fff',
+                                        borderBottomWidth: 2,
+                                        flex: 1.7,
+                                        paddingTop: 4
+
+                                    }}>
+                                    </View>
+                                </View>
+
+                                <View style={styles.pills}>
+                                    <View >
+                                        <ProgramQuality qual={qualityList} pid={programmeID} onPressItem={this.onFetchLink} />
+                                        <TouchableOpacity onPress={() => this.download(link, this.props.link)} >
+                                            {this.props.link !== null ? <Text style={styles.downloadText}> DOWNLOAD NOW </Text> : null}
+                                        </TouchableOpacity> 
+                                    </View>
+                                </View>
+                                {/*                             <CardAction
                                 separator={true}
                                 inColumn={false}
                                 style={{
@@ -237,55 +237,55 @@ export class Program extends React.Component {
                                     color="blue"
                                 />
                             </CardAction> */}
-                            <View style={{ flexDirection: "row", paddingTop: 10 }}>
+                                <View style={{ flexDirection: "row", paddingTop: 10 }}>
+                                    <View
+                                        style={{
+
+                                            paddingTop: 6
+                                        }}
+                                    ><Text
+                                        style={{
+                                            color: '#fff',
+                                            padding: 7
+                                        }}>Description</Text></View>
+                                    <View style={{
+                                        borderBottomColor: '#fff',
+                                        borderBottomWidth: 2,
+                                        flex: 1.7,
+                                        paddingTop: 4
+
+                                    }}>
+                                    </View>
+                                </View>
                                 <View
                                     style={{
-
-                                        paddingTop: 6
-                                    }}
-                                ><Text
-                                    style={{
+                                        display: 'flex'
+                                    }}>
+                                    <Text style={{
+                                        textAlign: 'center',
                                         color: '#fff',
                                         padding: 7
-                                    }}>Description</Text></View>
-                                <View style={{
-                                    borderBottomColor: '#fff',
-                                    borderBottomWidth: 2,
-                                    flex: 1.7,
-                                    paddingTop: 4
+                                    }}>
+                                        {list.description}
+                                    </Text>
 
-                                }}>
                                 </View>
-                            </View>
-                            <View
-                                style={{
-                                    display: 'flex'
-                                }}>
-                                <Text style={{
-                                    textAlign: 'center',
-                                    color: '#fff',
-                                    padding: 7
-                                }}>
-                                    {list.description}
-                                </Text>
-
-                            </View>
-                            <View>
-                                <Text
-                                    style={{
-                                        color: '#fff',
-                                        alignContent: 'center',
-                                        textAlign: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: 'bold'
-                                    }}>Available Space On Device: {freeDiskStorage} MB</Text>
-                            </View>
+                                <View>
+                                    <Text
+                                        style={{
+                                            color: '#fff',
+                                            alignContent: 'center',
+                                            textAlign: 'center',
+                                            justifyContent: 'center',
+                                            fontWeight: 'bold'
+                                        }}>Available Space On Device: {freeDiskStorage} MB</Text>
+                                </View>
 
 
-                        </ScrollView>
+                            </ScrollView>
 
-                    </View>
-                </LinearGradient> 
+                        </View>
+                    </LinearGradient>
                 </View>
             );
         }

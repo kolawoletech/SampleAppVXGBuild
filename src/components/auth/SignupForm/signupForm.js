@@ -7,7 +7,7 @@ import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
 import { signupUser } from '../../../actions/session/actions';
-//import {  LinearGradient } from 'expo';
+import LinearGradient from 'react-native-linear-gradient';
 
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
@@ -20,7 +20,7 @@ class SignupFormComponent extends Component {
     const { signup, loading } = this.props;
     const { scrollView, imageBox, image, loginBox } = styles;
     return (
-/*        <LinearGradient  colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+    <LinearGradient  colors={['#76B6C4', '#4E8FA2', '#0F516C']}
       style={{ borderRadius: 5 , height: '100%'}}> */
       <KeyboardAwareScrollView style={scrollView}>
      
@@ -36,8 +36,8 @@ class SignupFormComponent extends Component {
         </View>
         
       </KeyboardAwareScrollView>
-/*       </LinearGradient>
- */    );
+       </LinearGradient>
+    );
   }
 }
 

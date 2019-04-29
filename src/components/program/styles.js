@@ -36,6 +36,12 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center'
   },
+  downloadText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 19,
+    textAlign: 'center'
+  },
   buttonsContainer: {
     flexDirection: 'row',
   },
@@ -61,5 +67,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     width: '100%'
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    alignItems:'center',
+    paddingLeft: 4,
+    fontWeight:'400',
+    
   },
 });
