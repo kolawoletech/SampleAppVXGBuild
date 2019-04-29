@@ -81,38 +81,12 @@ export class ChannelItems extends React.Component {
     return (
 
       <TouchableOpacity key={data.item.id} onPress={() => Actions.channel({ channelData: data.item })}>
-        {/*         <Card>
-          <LinearGradient
-            colors={['#0F516C','#76B6C4']}
-            style={{ padding: 7, alignItems: 'center', borderRadius: 3 }}
-            start={[0.0, 0.5]}
-            end={[1.0, 0.5]}
-            locations={[0.0, 1.0]}>
-            <View >
 
-              {this.state.images.length > 0 && <CardImage
-                resizeMode="contain"
-                style={{ paddingTop: 32, position: 'absolute', float: 'left', width: 155, height: 155, backgroundColor: '#fff' }}
-                source={{ uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://via.placeholder.com/150' }}
-              />}
-              <CardTitle
-                title={data.item.name}
-
-                style={{ alignText: 'center', width: '60%', fontSize: 15, minHeight: 155, maxHeight: 155, marginLeft: '40%', overflow: 'hidden' }}
-              
-              />
-              
-            </View>
-          </LinearGradient>
-
-
-        </Card> */}
         <LinearGradient
           colors={['#0F516C', '#76B6C4']}
           style={{ padding: 7, alignItems: 'center', borderRadius: 3, margin: 3 }}
-          start={[0.0, 0.5]}
-          end={[1.0, 0.5]}
-          locations={[0.0, 1.0]}>
+          start={{x: 0, y: 0}} end={{x: 1, y: 0}}
+          >
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>
             <Image

@@ -472,9 +472,11 @@ export const fetchChatStream = () => dispatch => {
                 .then(chats => chats.json())
                 .then(chats => {
                     let chatStream = chats["data"]
-                    dispatch(messagesLoaded(chatStream))
+                    dispatch(messagesLoaded(chatStream)) 
+                }).catch( err => {
+                    console.log( err + " : You have hit your limit for today")
                 })
-        })
+        }) 
         .catch(err => console.log("An error occured", err))
 }
 

@@ -7,8 +7,6 @@ import { connect } from 'react-redux';
 import { VXGMobileSDK } from 'react-native-vxg-mobile-sdk';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-//import { Video } from 'expo';
-//import VideoPlayer from '@expo/videoplayer';
 import Messages from './../messages';
 
 import { fetchChannelChats } from '../../actions/api/actions';
@@ -68,17 +66,22 @@ export class Player extends React.Component {
     }
 
     renderVideo() {
+        const rstp_link = this.props.link;
+
         return (
             <View  style={styles.player}>
+            <Text>{rstp_link}</Text>
                     <VXGMobileSDK 
-                    style={styles.player}
-                    config={{"connectionUrl": this._url, "autoplay": true}}></VXGMobileSDK>
+                        style={styles.player}
+                        config={{"connectionUrl": rstp_link, "autoplay": true}}>
+                    </VXGMobileSDK>
             </View>
    
         )
     }
 
     render() {
+        console.log("Player Objects Props : " + this.props)
         const rstp_link = this.props.link;
 
         const channel_details = this.chan;
@@ -91,7 +94,6 @@ export class Player extends React.Component {
             return (
                 <View>
                     {this.renderVideo()}
-<Text>{rstp_link}</Text>
                     
                 </View>
             );
@@ -103,6 +105,7 @@ export class Player extends React.Component {
                 <View style={styles.container}>
                     <View style={styles.videoContainer}>
                         {this.renderVideo()}
+                        <Text>{rstp_link}</Text>
                     </View>
                     <ScrollView>
                         <View>

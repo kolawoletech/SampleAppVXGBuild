@@ -34,6 +34,23 @@ export const styles = StyleSheet.create({
   text: {
     color: '#ffffff',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    
+  },
+  title: {
+    fontSize: 21,
+    color: '#fff',
+    minHeight: 26,
+    maxHeight: 26,
+    paddingLeft:9,
+    fontWeight:'bold'
+  },
+  entry: {
+    minHeight: 26,
+    color: '#fff',
+    minHeight: 19,
+    maxHeight: 26,
+    paddingLeft:9,
+    opacity: 0.8
   }
 });

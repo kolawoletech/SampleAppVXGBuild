@@ -19,13 +19,13 @@ export default class Tabs extends React.Component {
     return (
       <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
         <View >
-          {/*           <LinearGradient
+          <LinearGradient
             colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-          > */}
+          > 
           <Text
             style={{
               paddingTop: 10,
-              top: 15,
+              top: 25,
               fontWeight: 'bold',
               fontSize: 21,
               color: '#fff',
@@ -37,7 +37,7 @@ export default class Tabs extends React.Component {
           <View style={styles.imageBox}>
             <Image style={styles.image} source={NILEMEDIA_LOGO} />
           </View>
-          {/*           </LinearGradient> */}
+        </LinearGradient>
         </View>
 
         <View style={styles.tabContainer}>
@@ -59,14 +59,14 @@ export default class Tabs extends React.Component {
 
 
           <TouchableOpacity >
-            <Icon name="albums" size={22} color="black"
+            <Icon name="message" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Messages" onPress={() => { Actions.messages(); }}></Button>
           </TouchableOpacity>
 
           <TouchableOpacity >
-            <Icon name="albums" size={22} color="black"
+            <Icon name="settings" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
