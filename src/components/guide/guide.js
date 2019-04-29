@@ -7,6 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { fetchCatalogue, fetchChannelGuide } from '../../actions/api/actions';
 import { GuideItems } from './guideItems';
+import LinearGradient from 'react-native-linear-gradient';
 
  
 class Guide extends Component {
@@ -37,11 +38,11 @@ class Guide extends Component {
 
 
     return (
- /*      <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-        style={{ height: '100%' }}> */
+    <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+        style={{ height: '100%' }}> 
         <GuideItems list={guideData} />
 
-      // </LinearGradient>
+     </LinearGradient>
 
 
 

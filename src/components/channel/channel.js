@@ -43,8 +43,8 @@ export class Channel extends React.Component {
             let { img } = this.props;
 
             return (     
-            /*  <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-                style={{ height: '100%', padding: 7 }}> */
+             <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+                style={{ height: '100%', padding: 7 }}>
                 <ScrollView>
                     <View style={{
                         width: '100%', height: 225, justifyContent: 'center',
@@ -165,8 +165,8 @@ export class Channel extends React.Component {
                     </View>
 
                 </ScrollView>
-/*            </LinearGradient> 
- */            );
+            </LinearGradient> 
+            );
         }
 
     }
@@ -177,7 +177,7 @@ const mapStateToProps = ({ routes, apiReducer: { channel, img } }) => ({
     //token: token,
     channel: channel,
     img: img
-});
+}); 
 
 const mapDispatchToProps = {
     channelObject: fetchChannelObject,

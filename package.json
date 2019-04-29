@@ -23,6 +23,7 @@
     "react-native-gesture-handler": "^1.1.0",
     "react-native-grid-component": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
+    "react-native-ksyvideo": "^2.0.0",
     "react-native-linear-gradient": "^2.5.4",
     "react-native-material-cards": "^1.0.9",
     "react-native-material-menu": "^0.4.2",

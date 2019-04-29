@@ -7,6 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { fetchCatalogue } from '../../actions/api/actions';
 import { CatalogueItems } from './catalogueItems';
+import LinearGradient from 'react-native-linear-gradient';
 
 
 class Catalogue extends Component {
@@ -34,15 +35,15 @@ class Catalogue extends Component {
 
 
     return (
-    /*   <LinearGradient colors={['#fff', '#fff', '#fff']}
-        style={{ height: '100%' }}> */
+      <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+        style={{ height: '100%' }}> 
         <View style={{ height: '100%' }}>
           <CatalogueItems list={data} onPressItem={this.onRemoveChannel} />
       
         </View>
 
-/*       </LinearGradient>
- */
+     </LinearGradient>
+ 
 
 
     );

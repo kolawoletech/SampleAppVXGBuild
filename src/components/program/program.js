@@ -6,6 +6,7 @@ import Toast, { DURATION } from 'react-native-easy-toast';
 import { connect } from 'react-redux';
 import { fetchChannelObject, fetchProgramURILinks, fetchProgramImage } from '../../actions/api/actions';
 import { ProgramQuality } from './programQuality';
+import LinearGradient from 'react-native-linear-gradient';
 
 import { Dimensions } from 'react-native'
 var { width, height } = Dimensions.get('window')
@@ -155,8 +156,8 @@ export class Program extends React.Component {
 
 
                 <View>
-                    {/*  <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-                            style={{ height: '100%' }}> */}
+                    <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+                            style={{ height: '100%' }}>
                     <Toast
                         ref={(ref) => this.toast = ref}
                         style={{ backgroundColor: 'green', top: 10, position: 'absolute' }}
@@ -284,7 +285,7 @@ export class Program extends React.Component {
                         </ScrollView>
 
                     </View>
-                    {/*    </LinearGradient> */}
+                </LinearGradient> 
                 </View>
             );
         }

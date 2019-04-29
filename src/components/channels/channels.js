@@ -8,8 +8,9 @@ import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { registerUser, fetchChannelImage } from '../../actions/api/actions';
 import { ChannelItems } from './channelItems';
 import { ChannelLogos } from './channelLogos';
+import LinearGradient from 'react-native-linear-gradient';
 
-//import { LinearGradient } from 'expo';
+import { AsyncStorage } from 'react-native';
 
 import _ from "lodash";
 
@@ -21,20 +22,29 @@ class Channels extends Component {
 
 
 
-  
+
   async componentDidMount() {
     const {
       images: img
     } = this.props;
+
+    const userId = 'anonymous';
+
+
+    AsyncStorage.setItem('username', userId).then((token) => {
+      console.log(token)
+    });
+
   }
 
-/*   componentWillRecieveProps(nextProps){
-    this.loadData(nextProps)
-  } */
-  
-  loadData(nextProps){
-      // Create a request based on nextProps
-    
+
+  /*   componentWillRecieveProps(nextProps){
+      this.loadData(nextProps)
+    } */
+
+  loadData(nextProps) {
+    // Create a request based on nextProps
+
   }
   async componentWillMount() {
     await this.getChannelsWithoutImage()
@@ -82,7 +92,7 @@ class Channels extends Component {
 
     //console.log(this.props)
 
-    
+
 
     let id = _.map(data, function (item) {
       id = item['id']
@@ -95,21 +105,21 @@ class Channels extends Component {
     //console.log("Is this an Array: " + JSON.stringify(ids))
 
 
-    
+
 
     const {
       img: images
-    } = this.props; 
+    } = this.props;
 
 
 
     return (
-  /*     <LinearGradient colors={['#ffffff', '#ffffff', '#ffffff']}
-        style={{ height: '100%' }}>  */    
-          <ChannelItems  logo={images} list={data} onPressItem={this.onRemoveChannel} />
+      <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+        style={{ height: '100%' }}>
+        <ChannelItems logo={images} list={data} onPressItem={this.onRemoveChannel} />
 
-/*       </LinearGradient >
- */    );
+      </LinearGradient >
+    );
   }
 }
 

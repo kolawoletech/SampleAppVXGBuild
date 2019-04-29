@@ -5,6 +5,7 @@ import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 
+import LinearGradient from 'react-native-linear-gradient';
 
 import _ from "lodash";
 
@@ -106,7 +107,12 @@ export class ChannelItems extends React.Component {
 
 
         </Card> */}
-
+        <LinearGradient
+          colors={['#0F516C', '#76B6C4']}
+          style={{ padding: 7, alignItems: 'center', borderRadius: 3, margin: 3 }}
+          start={[0.0, 0.5]}
+          end={[1.0, 0.5]}
+          locations={[0.0, 1.0]}>
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>
             <Image
@@ -121,6 +127,7 @@ export class ChannelItems extends React.Component {
             <Text numberOfLines={1} ellipsizeMode="tail" style={{ color: 'white', margin: 6, fontSize: 15, left: 10 }}>{data.item.description}</Text>
           </View>
         </View>
+        </LinearGradient>
       </TouchableOpacity>
 
     );
