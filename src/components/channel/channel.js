@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, FlatList, Image, ScrollView, Button } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, FlatList, Image, ScrollView, Button, TouchableHighlight } from 'react-native';
 import { styles } from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { connect } from 'react-redux';
-import { fetchChannelObject, fetchChannelImage, fetchChannelRSTPLinks } from '../../actions/api/actions';
+import { fetchChannelObject, fetchChannelImage, fetchChannelRSTPLinks, playHighRSTPStream } from '../../actions/api/actions';
 import { ChannelQuality } from './channelQuality';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 
@@ -18,11 +18,31 @@ export class Channel extends React.Component {
     componentDidMount() {
         const channel = this.props.channelData;
         this.props.channelObject(channel.id);
-        this.props.imageURI(channel.id)
+        this.props.imageURI(channel.id) 
+        this.autoQualityClick = this.autoQualityClick.bind(this); 
     }
 
     onFetchRSTPLink = (channelID, profileID) => this.props.fetchRstpLink(channelID, profileID);
 
+    autoQualityClick (){
+        console.log("Button Auto Quality Played")
+        const {
+            quality: qualityList
+        } = this.props.channelData;
+        const channel = this.props.channelData;
+
+
+        let result = qualityList.map(({ profile_id }) => profile_id)
+        const max = Math.max(...result)
+
+
+                
+
+        this.props.autoQuality(channel.id, max)
+        
+    }
+    
+    //autoQualityClick = ( channelID, preferredProfile ) => this.props.autoQuality(channelID, preferredProfile)
     render() {
 
         const {
@@ -38,7 +58,6 @@ export class Channel extends React.Component {
                 </View>
             );
         } else {
-            // console.log(this.props)
             let { img } = this.props;
 
             return (
@@ -61,11 +80,14 @@ export class Channel extends React.Component {
                             <View style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'center' }}>
                                 <Text style={{ color: '#0F516C', paddingTop: 32, fontSize: 20, margin: 6, fontSize: 21, fontWeight: 'bold', left: 10 }}>{list.name}</Text>
                             </View>
-                            <Icon
-                                name="play-circle-outline"
-                                color="white"
-                                size={102}
-                            />
+                            <TouchableHighlight onPress={ this.autoQualityClick }>
+                                <Icon
+                                    name="play-circle-outline"
+                                    color="white"
+                                    size={102}
+                                />
+                            </TouchableHighlight>
+                            
                             <View style={{
                                 paddingBottom: 20
                             }}>
@@ -75,11 +97,19 @@ export class Channel extends React.Component {
 
                         <View style={styles.guide}>
                             <View>
-                                <Icon name="playlist-play" size={22} color="#76B6C4"
+                                <TouchableHighlight
+                                onPress = {() => Actions.guide({ channelID: list.id })} >
+                                    <Icon 
+                                    name="playlist-play" 
+                                    size={22} color="#76B6C4"
+                                    //onPress={Actions.guide({ channelID: list.id })}
+
                                     style={{
                                         left: 10,
                                     }}
-                                />
+                                    />
+                                </TouchableHighlight>
+                          
                             </View>
                             <View
                                 style={{
@@ -89,7 +119,7 @@ export class Channel extends React.Component {
                                     position: 'absolute'
                                 }}>
                                 <Button
-                                    color="white"
+                                    color="#e5e5e5"
                                     onPress={() => Actions.guide({ channelID: list.id })}
                                     title="CHANNEL GUIDE">
 
@@ -186,8 +216,8 @@ const mapStateToProps = ({ routes, apiReducer: { channel, img } }) => ({
 const mapDispatchToProps = {
     channelObject: fetchChannelObject,
     imageURI: fetchChannelImage,
-    fetchRstpLink: fetchChannelRSTPLinks
-
+    fetchRstpLink: fetchChannelRSTPLinks,
+    autoQuality:  playHighRSTPStream
 };
 
 export default connect(

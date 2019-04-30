@@ -24,7 +24,10 @@ export class Program extends React.Component {
     onFetchLink = (programmeID, profileID) => this.props.fetchLink(programmeID, profileID);
 
 
+    notAvailable(){
+        Alert.alert(" Selection not available, Please check back in the future");
 
+    }
     download = (link, name) => {
 
         //var regex = /[^\/]+$/;
@@ -219,9 +222,15 @@ export class Program extends React.Component {
 
                                 <View style={styles.pills}>
                                     <View >
-                                        <ProgramQuality qual={qualityList} pid={programmeID} onPressItem={this.onFetchLink} />
-                                        <TouchableOpacity onPress={() => this.download(link, this.props.link)} >
-                                            {this.props.link !== null ? <Text style={styles.downloadText}> DOWNLOAD NOW </Text> : null}
+                                        <ProgramQuality qual={qualityList} pid={programmeID} 
+                                            //onPressItem={this.onFetchLink} 
+                                            onPressItem={this.notAvailable}
+                                        />
+                                        <TouchableOpacity 
+                                            //onPress={() => this.download(link, this.props.link)}
+                                           // onPress = { this.notAvailable()} 
+                                        >
+                                            {this.props.link !== null ? <Text style={styles.downloadText}> Downloads Not Available, Please Check Back In The Future. </Text> : null}
                                         </TouchableOpacity> 
                                     </View>
                                 </View>

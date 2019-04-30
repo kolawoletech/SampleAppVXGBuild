@@ -58,19 +58,7 @@ export default class Tabs extends React.Component {
           </TouchableOpacity>
 
 
-          <TouchableOpacity >
-            <Icon name="message" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Messages" onPress={() => { Actions.messages(); }}></Button>
-          </TouchableOpacity>
-
-          <TouchableOpacity >
-            <Icon name="settings" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
-          </TouchableOpacity>
+     
         </View>
 
       </ScrollView>

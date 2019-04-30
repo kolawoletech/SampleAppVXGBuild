@@ -5440,11 +5440,6 @@ react-native-keyboard-aware-scroll-view@^0.8.0:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-ksyvideo@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-ksyvideo/-/react-native-ksyvideo-2.0.0.tgz#985d73b03ddf588724f786635c6cb1988ed82937"
-  integrity sha512-23/kK8/aJ97j88Y42vSXYJm3I6mnIfdH4lVGbMhJX8wBOCNAzOMu0WEBYYowYcUQiu626L11eNjUBXB3VLuFDg==
-
 react-native-linear-gradient@^2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.4.tgz#dce133526f5a5510a639af94544f1ed0c984bd1e"
@@ -5564,10 +5559,10 @@ react-native-video@^4.3.1:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
-react-native-vxg-mobile-sdk@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-vxg-mobile-sdk/-/react-native-vxg-mobile-sdk-0.0.3.tgz#c7a9779de6e722030ba8cca43efe9b05a43bb01d"
-  integrity sha512-nZAVIzqp5BZ9UJHK1CTOv1DHlSaD+1Zm2jQKtpdedh+ArNfnpYTPKo6ozGS9grwGSZO+JUSIjjR0tk8l2SRlGw==
+react-native-vxg-mobile-sdk@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-vxg-mobile-sdk/-/react-native-vxg-mobile-sdk-0.0.5.tgz#02f52733ce8bb06422fdec68a87e9fdde1107fe5"
+  integrity sha512-w3zYAOnuB5QagbdUis102y/3Mm3xqed7shqwZANMdHqY3hsMBca0fEcd2Q28YZKiApMCeDAAtMkyBMqAVy5w/A==
   dependencies:
     prop-types "^15.6.2"
     react "^16.6.3"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, FlatList, ScrollView, TextInput } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, FlatList, ScrollView, TextInput , Button} from 'react-native';
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { database } from 'firebase';
@@ -14,21 +14,19 @@ import { fetchChannelChats } from '../../actions/api/actions';
 
 export class Player extends React.Component {
     _url = null;
-    constructor() {
-      super();
-      this._url = 'rtsp://184.72.239.149/vod/mp4:BigBuckBunny_115k.mov';
-      this._onBack = this._onBack.bind(this);
+    _player = null;
 
+    constructor() {
+
+      super();
+      this._onBack = this._onBack.bind(this);
       this.state= { newMessage: ''}
-          
-      
     }
     
-    _onBack = () => {
-        Actions.pop();
-    }
+ 
+
     componentDidMount() {
-        console.log(this.props);
+        console.log(JSON.stringify(this.props));
 
 
         const channel = this.props.channel;
@@ -37,6 +35,13 @@ export class Player extends React.Component {
         this.props.loadChannelChats(channel.id)
     }
 
+    _onBack = () => {
+        Actions.pop();
+
+        this._player.close();
+
+        
+    }
 
     sendMessage(newMessage) {
         //this.setState({ newMessage: newMessage });
@@ -70,14 +75,46 @@ export class Player extends React.Component {
 
         return (
             <View  style={styles.player}>
-            <Text>{rstp_link}</Text>
                     <VXGMobileSDK 
                         style={styles.player}
-                        config={{"connectionUrl": 'rtsp://c90bf2be-459b-46bd-9ac5-0693f07d54ac:@nile.rtst.co.za:554/NileFlow_PE_Medium_384x224_25_AAC.mm1', "autoplay": true}}>
+                        ref={this._assignPlayer}
+                        config={{
+                     
+                        "connectionUrl": rstp_link,
+                         "autoplay": true}}>
                     </VXGMobileSDK>
+
+                    <Button
+                        onPress={this._onBack} 
+                        title="Back"
+                        color="#841584"
+                    />
             </View>
    
         )
+    }
+
+    _assignPlayer = (plr) => {
+        this._player = plr;
+    }
+
+    async _play1() {
+        // TODO reopen player
+        // console.log(this._player);
+        await this._player.close();
+        await this._player.applyConfig({
+            "connectionUrl": rstp_link,
+             "autoplay": true,
+            "decodingType": 0, // Hardware – 1, Sofware – 0
+            "connectionNetworkProtocol": -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
+            "numberOfCPUCores": 0, // 0<= - autodetect, > 0 - will set manually
+            "synchroEnable": 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
+            "connectionBufferingTime": 1000,
+            "connectionDetectionTime":  1000,
+            "startPreroll": 300,
+            "aspectRatioMode": 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
+        });
+        await this._player.open();
     }
 
     render() {
@@ -105,17 +142,15 @@ export class Player extends React.Component {
                 <View style={styles.container}>
                     <View style={styles.videoContainer}>
                         {this.renderVideo()}
-                        <Text>{rstp_link}</Text>
                     </View>
-                    <ScrollView>
-                        <View>
-                            <View style={styles.messagesContainer}>
-                                <Messages />
 
-
-                            </View>
-
-                        </View>
+                    <Button
+                        onPress={this._onBack} 
+                        title="Back"
+                        color="#841584"
+                    />
+                    <ScrollView>                     
+                       
                     </ScrollView>
                     <View style={styles.passwordContainer}>
 
