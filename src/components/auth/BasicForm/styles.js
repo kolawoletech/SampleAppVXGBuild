@@ -44,7 +44,9 @@ export const styles = StyleSheet.create({
   imageBox: {
     alignItems: 'center',
     marginTop: 25,
-    marginBottom: 35
+    marginBottom: 35,
+    paddingTop:10,
+    width:'100%'
   },
   image: {
     width: 120,

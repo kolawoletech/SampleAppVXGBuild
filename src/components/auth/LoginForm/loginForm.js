@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { View, Alert, Image, Button } from 'react-native';
+import { View, Alert, Image, Button,  TouchableHighlight } from 'react-native';
+import { WebView } from 'react-native-webview';
+
 import { connect } from 'react-redux';
 import { BasicFormComponent } from '../BasicForm/basicForm';
 import { LoadingIndicator } from '../../../components/loadingIndicator/loadingIndicator';
@@ -7,8 +9,10 @@ import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
 import { loginUser, restoreSession, loginAnonymously } from '../../../actions/session/actions';
+const PRIVACY_POLICY = require('../../../../assets/html/privacy-policy.html');
 
 import LinearGradient from 'react-native-linear-gradient';
+//import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
@@ -40,7 +44,8 @@ class LoginFormComponent extends Component {
           {loading ? (
             <LoadingIndicator color="#ffffff" size="large" />
           ) : (
-            <TouchableOpacity>
+            <View>
+            <TouchableHighlight>
                 
                 <Button
                  style={{
@@ -52,7 +57,33 @@ class LoginFormComponent extends Component {
                   title="Get Started" 
                   color="#fff"
                 />
-            </TouchableOpacity>
+            </TouchableHighlight>
+            <View 
+            style={{
+              width:'100%',
+              height:'100%'
+            }}>
+              <WebView 
+               source={PRIVACY_POLICY}
+              />
+              
+            </View>
+            <View>
+            <TouchableHighlight>
+                
+                <Button
+                 style={{
+                  top: 10,
+                  fontWeight: 'bold',
+                  fontSize: 21
+                }}
+                  onPress={loginAnon} 
+                  title="Continue" 
+                  color="#fff"
+                />
+            </TouchableHighlight>
+            </View>
+            </View>
             
           )}
         </View>

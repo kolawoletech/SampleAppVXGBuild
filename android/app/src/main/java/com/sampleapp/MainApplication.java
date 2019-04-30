@@ -3,6 +3,7 @@ package com.sampleapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.ksyun.media.reactnative.ReactKSYVideoPackage;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCWebViewPackage(),
             new LinearGradientPackage(),
             new ReactVideoPackage(),
             new ReactKSYVideoPackage(),

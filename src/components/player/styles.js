@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: 40,
     alignItems: 'stretch',
     backgroundColor:'#76B6C4'
   },
@@ -40,6 +41,19 @@ export const styles = StyleSheet.create({
     width: '100%',
     transform: [{ scaleX: 2.0 }, { scaleY: 8.0 }],
     color: '#000'
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
+    alignItems:'center', 
+    
+    justifyContent: 'center',
+   
+    flexDirection: 'row',
+    
+    
+    
   },
   passwordContainer: {
     flexDirection: 'row',

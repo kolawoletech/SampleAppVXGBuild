@@ -182,17 +182,17 @@ export class Program extends React.Component {
                                         source={{ uri: img }}
                                         resizeMode="stretch"
                                         style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center'}}
-
-
-
                                     />
 
                                     <View style={{ flex: 1, padding: 7 }}>
-                                        <Text style={{
+                                        <Text
+                                        numberOfLines={2}
+                                        style={{
                                             color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
                                             width: '100%',
                                             padding: 0,
                                             justifyContent: 'center'
+                                           
                                         }}>{list.name}</Text>
                                     </View>
 

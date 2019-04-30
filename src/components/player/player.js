@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, FlatList, ScrollView, TextInput , Button} from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, FlatList, ScrollView, TextInput , Button, TouchableHighlight} from 'react-native';
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { database } from 'firebase';
@@ -44,12 +44,8 @@ export class Player extends React.Component {
     }
 
     sendMessage(newMessage) {
-        //this.setState({ newMessage: newMessage });
         console.log("Sending: " + JSON.stringify(newMessage));
-
         console.log("Send To API");
-
-        //console.log("Sending: " + this.state.newMessage);
     }
 
     updateMessageState(text) {
@@ -74,7 +70,7 @@ export class Player extends React.Component {
         const rstp_link = this.props.link;
 
         return (
-            <View  style={styles.player}>
+            <View >
                     <VXGMobileSDK 
                         style={styles.player}
                         ref={this._assignPlayer}
@@ -84,11 +80,6 @@ export class Player extends React.Component {
                          "autoplay": true}}>
                     </VXGMobileSDK>
 
-                    <Button
-                        onPress={this._onBack} 
-                        title="Back"
-                        color="#841584"
-                    />
             </View>
    
         )
@@ -130,7 +121,6 @@ export class Player extends React.Component {
         if (this.props == "undefined") {
             return (
                 <View>
-                    {this.renderVideo()}
                     
                 </View>
             );
@@ -140,15 +130,26 @@ export class Player extends React.Component {
             return (
 
                 <View style={styles.container}>
-                    <View style={styles.videoContainer}>
+                    <View>
                         {this.renderVideo()}
                     </View>
 
-                    <Button
+                    
+                    <TouchableHighlight
                         onPress={this._onBack} 
-                        title="Back"
-                        color="#841584"
-                    />
+                    >
+                        <View style={styles.buttonText }>
+                            <Icon 
+                                name="close" size={42} color="white"
+                            />
+                            <Text
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 'bold'
+                            }}>Close</Text>
+                        </View>
+                    </TouchableHighlight>
+                    
                     <ScrollView>                     
                        
                     </ScrollView>
