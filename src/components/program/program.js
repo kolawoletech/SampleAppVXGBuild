@@ -13,21 +13,77 @@ var { width, height } = Dimensions.get('window')
 
 import DeviceInfo from 'react-native-device-info';
 
+import RNFS from 'react-native-fs'
 
 export class Program extends React.Component {
     constructor(props) {
         super(props);
         //this.listenForNotifications = this.listenForNotifications.bind(this);
+
+        // get a list of files and directories in the main bundle
+
+        // get a list of files and directories in the main bundle
+        RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+            .then((result) => {
+                console.log('GOT RESULT', result);
+
+                // stat the first file
+                return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+            })
+            .then((statResult) => {
+                if (statResult[0].isFile()) {
+                    return RNFS.readFile(statResult[1], 'utf8');
+                }
+
+                return 'no file';
+            })
+            .then((contents) => {
+                // log the file contentsß
+                console.log(contents);
+            })
+            .catch((err) => {
+                console.log(err.message, err.code);
+            }
+        );
+
     }
 
 
     onFetchLink = (programmeID, profileID) => this.props.fetchLink(programmeID, profileID);
 
 
-    notAvailable(){
+    notAvailable() {
         Alert.alert(" Selection not available, Please check back in the future");
 
     }
+
+    downloadVideo = (name, url) => {
+
+        //RNFS.mkdir('NileMedia');
+
+        this.createDirectory();
+
+        const destPath = RNFS.DocumentDirectoryPath + '/NileMediaVideos/' + name + '.mp4';
+        let option = {
+            fromUrl: url,
+            toFile: destPath
+        };
+        RNFS.downloadFile(option).promise.then(res => {
+            console.log('res -----------------------------> ', res);
+        });
+    };
+
+    createDirectory = () => {
+        console.log(" Creating Folder");
+
+        options = {
+            NSURLIsExcludedFromBackupKey: true
+        }
+
+        RNFS.mkdir(RNFS.DocumentDirectoryPath + '/NileMediaVideos', options);
+
+    };
+
     download = (link, name) => {
 
         //var regex = /[^\/]+$/;
@@ -108,8 +164,6 @@ export class Program extends React.Component {
 
         try {
 
-            // console.log("Logging Program on Program", this.props)
-            //const { link } = this.props.link;
 
             const program = this.props.programData;
 
@@ -138,7 +192,7 @@ export class Program extends React.Component {
         } = this.props.programData;
         const list = this.props.programData;
 
-        // console.log( "List Initial", this.props.link)
+        console.log("List Initial", this.props.link)
 
 
 
@@ -154,7 +208,7 @@ export class Program extends React.Component {
         } else {
             const { link } = this.props;
             let { img } = this.props;
-            console.log("THis is Program Name Payloiad" + JSON.stringify(this.props))
+            //console.log("THis is Program Name Payloiad" + JSON.stringify(this.props))
             return (
 
 
@@ -181,19 +235,19 @@ export class Program extends React.Component {
                                     <Image
                                         source={{ uri: img }}
                                         resizeMode="stretch"
-                                        style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center'}}
+                                        style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center' }}
                                     />
 
                                     <View style={{ flex: 1, padding: 7 }}>
                                         <Text
-                                        numberOfLines={2}
-                                        style={{
-                                            color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
-                                            width: '100%',
-                                            padding: 0,
-                                            justifyContent: 'center'
-                                           
-                                        }}>{list.name}</Text>
+                                            numberOfLines={2}
+                                            style={{
+                                                color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
+                                                width: '80%',
+                                                padding: 0,
+                                                justifyContent: 'center'
+
+                                            }}>{list.name}</Text>
                                     </View>
 
                                 </View>
@@ -222,16 +276,16 @@ export class Program extends React.Component {
 
                                 <View style={styles.pills}>
                                     <View >
-                                        <ProgramQuality qual={qualityList} pid={programmeID} 
-                                            //onPressItem={this.onFetchLink} 
-                                            onPressItem={this.notAvailable}
+                                        <ProgramQuality qual={qualityList} pid={programmeID}
+                                            onPressItem={this.onFetchLink}
+                                        //onPressItem={this.createDirectory}
                                         />
-                                        <TouchableOpacity 
-                                            //onPress={() => this.download(link, this.props.link)}
-                                           // onPress = { this.notAvailable()} 
+                                        <TouchableOpacity
+                                            onPress={() => this.downloadVideo("video2", this.props.link)}
+                                        // onPress = { this.notAvailable()} 
                                         >
-                                            {this.props.link !== null ? <Text style={styles.downloadText}> Downloads Not Available, Please Check Back In The Future. </Text> : null}
-                                        </TouchableOpacity> 
+                                            {this.props.link !== null ? <Text style={styles.downloadText}> Downloads Now </Text> : null}
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                                 {/*                             <CardAction

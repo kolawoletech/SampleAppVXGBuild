@@ -94,7 +94,7 @@ export class CatalogueItems extends React.Component {
                             source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png' }}
                             resizeMode="stretch"
                             style={{
-                                width: '100%', height: '150%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
+                                width: '100%', height: '80%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
                             }}
                         />
                         <Icon size={22} color="white"

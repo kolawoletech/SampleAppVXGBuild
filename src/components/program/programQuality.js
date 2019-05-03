@@ -24,7 +24,7 @@ export class ProgramQuality extends React.Component {
     renderItem = (qualityList) => {
         const { pid } = this.props;
         const { onPressItem } = this.props;
-        const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 100000)
+        const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 1000000)
 
         if (qualityList.profile_id == 7) {
             let quality = 7;

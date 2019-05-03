@@ -46,13 +46,12 @@ class LoginFormComponent extends Component {
           ) : (
             <View>
             <TouchableHighlight>
-                
                 <Button
-                 style={{
-                  top: 10,
-                  fontWeight: 'bold',
-                  fontSize: 21
-                }}
+                  style={{
+                    top: 10,
+                    fontWeight: 'bold',
+                    fontSize: 21
+                  }}
                   onPress={loginAnon} 
                   title="Get Started" 
                   color="#fff"
@@ -61,7 +60,7 @@ class LoginFormComponent extends Component {
             <View 
             style={{
               width:'100%',
-              height:'100%'
+              height:'90%'
             }}>
               <WebView 
                source={PRIVACY_POLICY}

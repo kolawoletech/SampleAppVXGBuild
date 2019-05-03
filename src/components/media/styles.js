@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: 40,
     alignItems: 'stretch',
     backgroundColor:'#76B6C4'
   },
@@ -46,6 +47,13 @@ export const styles = StyleSheet.create({
     width: '60%',
     fontSize: 12
   },
+  player: {
+    paddingTop: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+    width: '100%',
+    height:'100%',
+},
   delete: {
    width: '30%',
    color: 'red'
