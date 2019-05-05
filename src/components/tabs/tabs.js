@@ -69,7 +69,7 @@ export default class Tabs extends React.Component {
             <Icon name="playlist-play" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Messages" onPress={() => { Actions.messages(); }}></Button>
+            <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
           </TouchableOpacity>
         </View>
 

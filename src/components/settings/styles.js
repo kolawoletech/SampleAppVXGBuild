@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor:'#76B6C4'
+    backgroundColor:'#0f516c'
   },
   image: {
     width: 100,

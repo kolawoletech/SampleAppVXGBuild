@@ -52,13 +52,13 @@ export default class Routes extends React.Component {
               <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" />
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
-              <Scene key="channels"   component={ChannelsContainer} title="Channels"  initial={true} />
+              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
               <Scene key="channel" component={ChannelContainer} title="Channel" />
               <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
               <Scene key="catalogue" component={CatalogueContainer} title="Catalogue" />
               <Scene key="program" component={ProgramContainer} title="Program" />
               <Scene key="guide" component={GuideContainer} title="Guide" />
-              <Scene key="settings" component={SettingsContainer} title="Settings" />
+              <Scene key="settings" component={SettingsContainer} title="Settings"  initial={true} />
               <Scene key="messages" component={MessagesContainer} title="Messages" />
               <Scene key="landing" component={LandingContainer} title="Landing" />
               <Scene key="media" component={MediaContainer} title="Media"  />

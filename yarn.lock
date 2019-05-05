@@ -5382,6 +5382,11 @@ react-native-device-info@^1.5.1:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.5.1.tgz#46810a42724089c7d4a0900974a1562bce057e73"
   integrity sha512-AePzRi/2C4LokVYfjV9SjIHv0zHgI0/rMYxVWe5KcXvuSuspUUrx4oq3+jGZMwbsJP1/aqvslMq4TEJG7F8yNA==
 
+react-native-dialog-input@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-dialog-input/-/react-native-dialog-input-1.0.7.tgz#b2fefb4193d1784b3ae78c4a18d8fd6759466009"
+  integrity sha512-boi++dT2tzV8eCZud5Qe3LY/cdTGfgf93Vy4MFxq3O/4rBehllwCfBn5fhWMuf3JcVlzrk0fBsv/Ny766BiyVA==
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

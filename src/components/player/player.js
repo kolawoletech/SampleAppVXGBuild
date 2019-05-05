@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { AsyncStorage } from 'react-native';
+import DialogInput from 'react-native-dialog-input';
+
 import {
   View,
   Alert,
@@ -21,7 +24,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Messages from "./../messages";
 var data = require("./data.json");
 
-import { fetchChannelChats } from "../../actions/api/actions";
+import { fetchChannelChats, sendMessage } from "../../actions/api/actions";
 
 export class Player extends React.Component {
   _url = null;
@@ -31,12 +34,36 @@ export class Player extends React.Component {
     super();
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
-    this.state = { newMessage: "" };
+    this.state = { newMessage: "", isDialogVisible : false };
+    //this.state.isDialogVisible
+  }
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('username');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+
+        return value;
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  async loadUsername() {
+    try {
+        const username = await AsyncStorage.getItem('username');
+        this.setState({ username: username });
+    }
+    catch (error) {
+        // Manage error handling
+    }
   }
 
   componentDidMount() {
     console.log("PLAYER PAYLOAD:............" + JSON.stringify(this.props));
-
+     this.loadUsername();
     const channel = this.props.channel;
 
     console.log("Props From Player" + JSON.stringify(this.props));
@@ -53,11 +80,60 @@ export class Player extends React.Component {
     this._player.close();
   };
 
+ 
+  sendInput(inputText){
+    console.log("sendInput (DialogInput#1): "+inputText);
+
+    AsyncStorage.setItem('username', inputText).then((token) => {
+      console.log(token)
+    });
+    this.setState({
+      isDialogVisible : false
+    })
+    setTimeout(() => {
+      //this.props.loadChannelChats(channel.id);
+      const updatedUsername =  AsyncStorage.getItem('username');
+
+      this.setState({
+        username : updatedUsername
+      }) 
+      //console.log("Props From TimeOut" + JSON.stringify(this.props));
+    }, 3000);
+    
+
+  
+  }
+
+  showDialog = () =>{
+    this.setState({
+      isDialogVisible : false
+    })
+  }
+
+
   sendChat = ()  => {
     console.log("Sending: " + JSON.stringify(this.state.newMessage));
     console.log("Send To API");
-    Alert.alert('The user chose video #1!')
 
+    
+    var content = this.state.newMessage
+    var username = this.state.username
+
+    if (username === "" || username === "anonymous"){
+      this.setState({
+        isDialogVisible : true 
+      })
+    } else {
+      var opts = {
+        'from': username,
+        'body': content
+      }
+
+      console.log("Returned Username: " + username)
+      const channel = this.props.channel;
+  
+      this.props.postMessage(channel.id, opts )
+    }
   }
 
   updateMessageState(text) {
@@ -152,6 +228,15 @@ export class Player extends React.Component {
               <View style={styles.messagesContainer}>
                 <Messages />
               </View>
+              <View>
+              <DialogInput isDialogVisible={this.state.isDialogVisible}
+                title={"Set Username"}
+                //message={"Message for DialogInput #1"}
+              
+                submitInput={ (inputText) => {this.sendInput(inputText)} }
+                closeDialog={ () => {this.showDialog(false)}}>
+              </DialogInput>
+              </View>
             </View>
           </ScrollView>
           <View style={styles.passwordContainer}>
@@ -209,7 +294,8 @@ const mapStateToProps = ({ routes, apiReducer: { channel, chats } }) => ({
 
 const mapDispatchToProps = {
   //videoObject: fetchVideoObject
-  loadChannelChats: fetchChannelChats
+  loadChannelChats: fetchChannelChats,
+  postMessage:  sendMessage
 };
 
 export default connect(

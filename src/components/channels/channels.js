@@ -27,16 +27,34 @@ class Channels extends Component {
     const {
       images: img
     } = this.props;
-
-    const userId = 'anonymous';
-
-
-    AsyncStorage.setItem('username', userId).then((token) => {
-      console.log(token)
-    });
+    
+    this.checkUserSignedIn();
+   
 
   }
 
+  async checkUserSignedIn(){
+    let context = this;
+    try {
+       let value = await AsyncStorage.getItem('username');
+       if (value != null){
+          // do something 
+          console.log("Logged In Already")
+       }
+       else {
+          // do something else
+
+          const userId = 'anonymous';
+
+    
+          AsyncStorage.setItem('username', userId).then((token) => {
+            console.log(token)
+          });
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+}
 
   /*   componentWillRecieveProps(nextProps){
       this.loadData(nextProps)

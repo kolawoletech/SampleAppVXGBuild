@@ -55,7 +55,7 @@ class Messages extends Component {
         style={{ height: '100%' }}> */
         <View
         style={{ height: '100%' }}>
-         <MessageItems list={data} />
+         <MessageItems list={chatsData} />
          </View>
 
       /* </LinearGradient> */
