@@ -1,213 +1,218 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, FlatList, ScrollView, TextInput , Button, TouchableHighlight} from 'react-native';
-import { styles } from './styles';
-import { Actions } from 'react-native-router-flux';
-import { database } from 'firebase';
-import { connect } from 'react-redux';
-import { VXGMobileSDK } from 'react-native-vxg-mobile-sdk';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { Component } from "react";
+import {
+  View,
+  Alert,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  FlatList,
+  ScrollView,
+  TextInput,
+  Button,
+  TouchableHighlight
+} from "react-native";
+import { styles } from "./styles";
+import { Actions } from "react-native-router-flux";
+import { database } from "firebase";
+import { connect } from "react-redux";
+import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
-import Messages from './../messages';
+import Messages from "./../messages";
+var data = require("./data.json");
 
-import { fetchChannelChats } from '../../actions/api/actions';
-
+import { fetchChannelChats } from "../../actions/api/actions";
 
 export class Player extends React.Component {
-    _url = null;
-    _player = null;
+  _url = null;
+  _player = null;
 
-    constructor() {
+  constructor() {
+    super();
+    this._onBack = this._onBack.bind(this);
+    this.sendChat = this.sendChat.bind(this);
+    this.state = { newMessage: "" };
+  }
 
-      super();
-      this._onBack = this._onBack.bind(this);
-      this.state= { newMessage: ''}
-    }
-    
- 
+  componentDidMount() {
+    console.log("PLAYER PAYLOAD:............" + JSON.stringify(this.props));
 
-    componentDidMount() {
-        console.log(JSON.stringify(this.props));
+    const channel = this.props.channel;
 
+    console.log("Props From Player" + JSON.stringify(this.props));
 
-        const channel = this.props.channel;
+    setTimeout(() => {
+      this.props.loadChannelChats(channel.id);
+      //console.log("Props From TimeOut" + JSON.stringify(this.props));
+    }, 3000);
+  }
 
-        console.log("Props From Player" + JSON.stringify(this.props));
-        this.props.loadChannelChats(channel.id)
-    }
+  _onBack = () => {
+    Actions.pop();
 
-    _onBack = () => {
-        Actions.pop();
+    this._player.close();
+  };
 
-        this._player.close();
+  sendChat = ()  => {
+    console.log("Sending: " + JSON.stringify(this.state.newMessage));
+    console.log("Send To API");
+    Alert.alert('The user chose video #1!')
 
-        
-    }
+  }
 
-    sendMessage(newMessage) {
-        console.log("Sending: " + JSON.stringify(newMessage));
-        console.log("Send To API");
-    }
+  updateMessageState(text) {
+    this.setState({ newMessage: text });
+  }
 
-    updateMessageState(text) {
-        this.setState({ newMessage: text });
-    }
+  inputFocused(refName) {
+    this.setTimeout(() => {
+      var scrollResponder = this.refs.scrollView.getScrollResponder();
+      scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+        React.findNodeHandle(this.refs[refName]),
+        60, //additionalOffset
+        true
+      );
+    }, 50);
+  }
 
-    inputFocused(refName) {
-        this.setTimeout(
-            () => {
-                var scrollResponder = this.refs.scrollView.getScrollResponder();
-                scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-                    React.findNodeHandle(this.refs[refName]),
-                    60, //additionalOffset
-                    true
-                );
-            },
-            50
-        );
-    }
+  renderVideo() {
+    const rstp_link = this.props.link;
 
-    renderVideo() {
-        const rstp_link = this.props.link;
+    return (
+      <View>
+        <VXGMobileSDK
+          style={styles.player}
+          ref={this._assignPlayer}
+          config={{
+            connectionUrl: rstp_link,
+            autoplay: true
+          }}
+        />
+      </View>
+    );
+  }
 
-        return (
-            <View >
-                    <VXGMobileSDK 
-                        style={styles.player}
-                        ref={this._assignPlayer}
-                        config={{
-                     
-                        "connectionUrl": rstp_link,
-                         "autoplay": true}}>
-                    </VXGMobileSDK>
+  _assignPlayer = plr => {
+    this._player = plr;
+  };
 
+  async _play1() {
+    // TODO reopen player
+    // console.log(this._player);
+    await this._player.close();
+    await this._player.applyConfig({
+      connectionUrl: rstp_link,
+      autoplay: true,
+      decodingType: 0, // Hardware – 1, Sofware – 0
+      connectionNetworkProtocol: -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
+      numberOfCPUCores: 0, // 0<= - autodetect, > 0 - will set manually
+      synchroEnable: 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
+      connectionBufferingTime: 1000,
+      connectionDetectionTime: 1000,
+      startPreroll: 300,
+      aspectRatioMode: 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
+    });
+    await this._player.open();
+  }
+
+  render() {
+    console.log("Player Objects Props : " + this.props);
+    const rstp_link = this.props.link;
+
+    const channel_details = this.chan;
+    const channel = this.props.channel;
+
+    //console.log("This IS THE QUALITY NODE " + {quality})
+    //const channel_details = this.chan;
+    if (this.props == "undefined") {
+      return <View />;
+    } else {
+      //const { list } = this.props;
+
+      return (
+        <View style={styles.container}>
+          <View>{this.renderVideo()}</View>
+
+          <TouchableHighlight onPress={this._onBack}>
+            <View style={styles.buttonText}>
+              <Icon name="close" size={42} color="white" />
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: "bold"
+                }}
+              >
+                Close
+              </Text>
             </View>
-   
-        )
-    }
+          </TouchableHighlight>
 
-    _assignPlayer = (plr) => {
-        this._player = plr;
-    }
-
-    async _play1() {
-        // TODO reopen player
-        // console.log(this._player);
-        await this._player.close();
-        await this._player.applyConfig({
-            "connectionUrl": rstp_link,
-             "autoplay": true,
-            "decodingType": 0, // Hardware – 1, Sofware – 0
-            "connectionNetworkProtocol": -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
-            "numberOfCPUCores": 0, // 0<= - autodetect, > 0 - will set manually
-            "synchroEnable": 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
-            "connectionBufferingTime": 1000,
-            "connectionDetectionTime":  1000,
-            "startPreroll": 300,
-            "aspectRatioMode": 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
-        });
-        await this._player.open();
-    }
-
-    render() {
-        console.log("Player Objects Props : " + this.props)
-        const rstp_link = this.props.link;
-
-        const channel_details = this.chan;
-        const channel = this.props.channel;
-
-
-        //console.log("This IS THE QUALITY NODE " + {quality})
-        //const channel_details = this.chan;
-        if (this.props == "undefined") {
-            return (
+          <ScrollView>
+            <View>
+              <View style={styles.messagesContainer}>
+                <Messages />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={styles.passwordContainer}>
+            <View style={{ width: "100%", flexDirection: "row" }}>
+              <View
+                style={{
+                  width: "90%"
+                }}
+              >
+                <TextInput
+                  style={styles.newInput}
+                  value={this.state.newMessage}
+                  onSubmitEditing={this.sendChat}
+                  placeholder="Type your message here ..."
+                  value={this.state.newMessage}
+                  //onSubmitEditing={this.sendChat}
+                  ref="newMessage"
+                  //onFocus={this.inputFocused.bind(this, "newMessage")}
+                  onBlur={() => {
+                    //this.refs.scrollView.scrollTo(0, 0);
+                  }}
+                  onChangeText={newMessage => this.setState({ newMessage })}
+                />
+              </View>
+              <TouchableHighlight 
+                style={{ 
+                  width: "10%"
+                }}
+                onPress={ this.sendChat }>
                 <View>
-                    
+                  <Icon
+                    name="send"
+                    size={22}
+                    color="white"
+                    style={{
+                      top: 20
+                    }}
+                  />
                 </View>
-            );
-        } else {
-            //const { list } = this.props;
-
-            return (
-
-                <View style={styles.container}>
-                    <View>
-                        {this.renderVideo()}
-                    </View>
-
-                    
-                    <TouchableHighlight
-                        onPress={this._onBack} 
-                    >
-                        <View style={styles.buttonText }>
-                            <Icon 
-                                name="close" size={42} color="white"
-                            />
-                            <Text
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 'bold'
-                            }}>Close</Text>
-                        </View>
-                    </TouchableHighlight>
-                    
-                    <ScrollView>                     
-                       
-                    </ScrollView>
-                    <View style={styles.passwordContainer}>
-
-                        <View style={{ width: '100%', flexDirection: 'row' }}>
-                            <View  style={{
-                                width: '90%'
-                            }}>
-                                <TextInput
-
-                                style={styles.newInput}
-                                value={this.state.newMessage}
-                                onSubmitEditing={this.sendMessage}
-                                placeholder="Type your message here ..."
-                                value={this.state.newMessage}
-                                onSubmitEditing={this.sendMessage}
-
-                                ref="newMessage"
-                                //onFocus={this.inputFocused.bind(this, "newMessage")}
-                                onBlur={() => { this.refs.scrollView.scrollTo(0, 0) }}
-                                onChangeText={newMessage => this.setState({ newMessage })}
-                                />
-                            </View>
-                           
-                            <View style={{
-                                width: '10%'
-                            }}>
-                            <Icon name="send" size={22} color="white"
-                                style={{
-                                    top: 20
-                                }}
-                            />
-                            </View>
-                        </View>
-
-                    </View>
-                </View>
-
-            );
-        }
-
+              </TouchableHighlight>
+            </View>
+          </View>
+        </View>
+      );
     }
+  }
 }
 
 const mapStateToProps = ({ routes, apiReducer: { channel, chats } }) => ({
-    routes: routes,
-    //token: token,
-    channel: channel,
-    chats: chats
+  routes: routes,
+  //token: token,
+  channel: channel,
+  chats: chats
 });
 
 const mapDispatchToProps = {
-    //videoObject: fetchVideoObject
-    loadChannelChats: fetchChannelChats 
+  //videoObject: fetchVideoObject
+  loadChannelChats: fetchChannelChats
 };
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Player);

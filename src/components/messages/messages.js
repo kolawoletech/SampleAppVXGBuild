@@ -10,6 +10,9 @@ import { MessageItems } from './messageItems';
 //import { LinearGradient } from 'expo';
 import { AsyncStorage } from 'react-native';
 
+var data = require('./data.json');
+
+
  
 class Messages extends Component {
 
@@ -52,7 +55,7 @@ class Messages extends Component {
         style={{ height: '100%' }}> */
         <View
         style={{ height: '100%' }}>
-         <MessageItems list={chatsData} />
+         <MessageItems list={data} />
          </View>
 
       /* </LinearGradient> */

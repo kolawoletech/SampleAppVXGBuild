@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
+  TouchableHighlight
 } from "react-native";
 //import { FileSystem, Constants, Notifications, Permissions, DocumentPicker, Video } from 'expo';
 import { MediaItems } from "./mediaItems";
@@ -15,6 +16,7 @@ import { PlayVideo, Stop, FetchVideos } from "../../actions/media/actions";
 //import { LinearGradient } from 'expo';
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import LinearGradient from "react-native-linear-gradient";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "rn-fetch-blob";
@@ -51,7 +53,13 @@ export class Media extends Component {
     this.playerRef = plr;
   };
 
-  onPlayURI = (uri) => {
+  _onBack = () => {
+    Actions.pop();
+
+    this.playerRef.close();
+  };
+
+  onPlayURI = uri => {
     this.setState({
       hideVideo: false,
       uri: uri
@@ -247,7 +255,7 @@ export class Media extends Component {
 
   render() {
     const uri = this.props.uri;
-    console.log("Present URI: " + uri)
+    console.log("Present URI: " + uri);
     const {
       videos: data
       //uri: puri
@@ -262,19 +270,36 @@ export class Media extends Component {
               <VXGMobileSDK
                 style={{
                   height: 250,
-                  width:'100%'
+                  width: "100%"
                 }}
                 ref={this._assignPlayer}
                 config={{
                   connectionUrl: this.state.uri,
                   autoplay: true
                 }}
-              ></VXGMobileSDK>
+              />
+              <TouchableHighlight onPress={this._onBack}>
+                <View style={styles.buttonText}>
+                  <Icon name="close" size={42} color="white" />
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    Close
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
           )}
         </View>
         {this.state.showChild || this.state.data !== undefined ? (
-          <MediaItems list={videos}  _onPressDelete={this.onDeleteURI} onPressItem={this.onPlayURI}/>
+          <MediaItems
+            list={videos}
+            _onPressDelete={this.onDeleteURI}
+            onPressItem={this.onPlayURI}
+          />
         ) : (
           <Text style={styles.text}>Nothing Here</Text>
         )}

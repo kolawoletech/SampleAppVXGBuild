@@ -60,7 +60,7 @@ export class Program extends React.Component {
     downloadVideo = (name, url) => {
 
         //RNFS.mkdir('NileMedia');
-
+          console.log(url)
         this.createDirectory();
 
         const destPath = RNFS.DocumentDirectoryPath + '/NileMediaVideos/' + name + '.mp4';
@@ -192,7 +192,7 @@ export class Program extends React.Component {
         } = this.props.programData;
         const list = this.props.programData;
 
-        console.log("List Initial", this.props.link)
+        console.log("List Initial", this.props)
 
 
 
@@ -281,10 +281,10 @@ export class Program extends React.Component {
                                         //onPressItem={this.createDirectory}
                                         />
                                         <TouchableOpacity
-                                            onPress={() => this.downloadVideo("video2", this.props.link)}
+                                            onPress={() => this.downloadVideo(programmeID, this.props.link)}
                                         // onPress = { this.notAvailable()} 
                                         >
-                                            {this.props.link !== null ? <Text style={styles.downloadText}> Downloads Now </Text> : null}
+                                            {this.props.link !== null ? <Text style={styles.downloadText}> Download Now </Text> : null}
                                         </TouchableOpacity>
                                     </View>
                                 </View>
