@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { AsyncStorage } from 'react-native';
-import DialogInput from 'react-native-dialog-input';
+import { AsyncStorage } from "react-native";
+import DialogInput from "react-native-dialog-input";
 
 import {
   View,
@@ -12,7 +12,8 @@ import {
   ScrollView,
   TextInput,
   Button,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from "react-native";
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
@@ -20,6 +21,9 @@ import { database } from "firebase";
 import { connect } from "react-redux";
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import Symbol from "react-native-vector-icons/MaterialCommunityIcons";
+import * as Progress from "react-native-progress";
+const { width, height } = Dimensions.get("window");
 
 import Messages from "./../messages";
 var data = require("./data.json");
@@ -34,12 +38,32 @@ export class Player extends React.Component {
     super();
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
-    this.state = { newMessage: "", isDialogVisible : false };
-    //this.state.isDialogVisible
+    this.state = {
+      newMessage: "",
+      isDialogVisible: false,
+      progress: 0,
+      indeterminate: true
+    };
   }
+
+  animate() {
+    let progress = 0;
+    this.setState({ progress });
+    setTimeout(() => {
+      this.setState({ indeterminate: false });
+      setInterval(() => {
+        progress += Math.random() / 5;
+        if (progress > 1) {
+          progress = 1;
+        }
+        this.setState({ progress });
+      }, 500);
+    }, 1500);
+  }
+
   _retrieveData = async () => {
     try {
-      const value = await AsyncStorage.getItem('username');
+      const value = await AsyncStorage.getItem("username");
       if (value !== null) {
         // We have data!!
         console.log(value);
@@ -53,17 +77,17 @@ export class Player extends React.Component {
 
   async loadUsername() {
     try {
-        const username = await AsyncStorage.getItem('username');
-        this.setState({ username: username });
-    }
-    catch (error) {
-        // Manage error handling
+      const username = await AsyncStorage.getItem("username");
+      this.setState({ username: username });
+    } catch (error) {
+      // Manage error handling
     }
   }
 
   componentDidMount() {
     console.log("PLAYER PAYLOAD:............" + JSON.stringify(this.props));
-     this.loadUsername();
+    this.loadUsername();
+    this.animate();
     const channel = this.props.channel;
 
     console.log("Props From Player" + JSON.stringify(this.props));
@@ -79,69 +103,64 @@ export class Player extends React.Component {
 
     this._player.close();
   };
- 
-  checkIfAnon(){
-    if (username === "" || username === "anonymous"){
+
+  checkIfAnon() {
+    if (username === "" || username === "anonymous") {
       this.setState({
-        isDialogVisible : true 
-      })
+        isDialogVisible: true
+      });
     }
   }
 
-  sendInput(inputText){
-    console.log("sendInput (DialogInput#1):s "+inputText);
+  sendInput(inputText) {
+    console.log("sendInput (DialogInput#1):s " + inputText);
 
-    AsyncStorage.setItem('username', inputText).then((token) => {
-      console.log(token)
+    AsyncStorage.setItem("username", inputText).then(token => {
+      console.log(token);
     });
     this.setState({
-      isDialogVisible : false
-    })
+      isDialogVisible: false
+    });
     setTimeout(() => {
       //this.props.loadChannelChats(channel.id);
-      const updatedUsername =  AsyncStorage.getItem('username');
+      const updatedUsername = AsyncStorage.getItem("username");
 
       this.setState({
-        username : updatedUsername
-      }) 
+        username: updatedUsername
+      });
       //console.log("Props From TimeOut" + JSON.stringify(this.props));
     }, 3000);
-    
-
-  
   }
 
-  showDialog = () =>{
+  showDialog = () => {
     this.setState({
-      isDialogVisible : false
-    })
-  }
+      isDialogVisible: false
+    });
+  };
 
-
-  sendChat = ()  => {
+  sendChat = () => {
     console.log("Sending: " + JSON.stringify(this.state.newMessage));
     console.log("Send To API");
 
-    
-    var content = this.state.newMessage
-    var username = this.state.username
+    var content = this.state.newMessage;
+    var username = this.state.username;
 
-    if (username === "" || username === "anonymous"){
+    if (username === "" || username === "anonymous") {
       this.setState({
-        isDialogVisible : true 
-      })
+        isDialogVisible: true
+      });
     } else {
       var opts = {
-        'from': username,
-        'body': content
-      }
+        from: username,
+        body: content
+      };
 
-      console.log("Returned Username: " + username)
+      console.log("Returned Username: " + username);
       const channel = this.props.channel;
-  
-      this.props.postMessage(channel.id, opts )
+
+      this.props.postMessage(channel.id, opts);
     }
-  }
+  };
 
   updateMessageState(text) {
     this.setState({ newMessage: text });
@@ -160,6 +179,8 @@ export class Player extends React.Component {
 
   renderVideo() {
     const rstp_link = this.props.link;
+    const progressBarWidth = width * 0.9;
+    const iconWidth = width * 0.05;
 
     return (
       <View>
@@ -171,6 +192,18 @@ export class Player extends React.Component {
             autoplay: true
           }}
         />
+        <View style={styles.progressBarContainer}>
+          <Symbol name="chevron-double-left" size={iconWidth} color="white" />
+
+          <Progress.Bar
+            progress={this.state.progress}
+            indeterminate={this.state.indeterminate}
+            width={progressBarWidth}
+            height={iconWidth}
+          />
+
+          <Symbol name="chevron-double-right" size={iconWidth} color="white" />
+        </View>
       </View>
     );
   }
@@ -236,48 +269,52 @@ export class Player extends React.Component {
                 <Messages />
               </View>
               <View>
-              <DialogInput isDialogVisible={this.state.isDialogVisible}
-                title={"Set Username"}
-                //message={"Message for DialogInput #1"}
-              
-                submitInput={ (inputText) => {this.sendInput(inputText)} }
-                closeDialog={ () => {this.showDialog(false)}}>
-              </DialogInput>
+                <DialogInput
+                  isDialogVisible={this.state.isDialogVisible}
+                  title={"Set Username"}
+                  //message={"Message for DialogInput #1"}
+
+                  submitInput={inputText => {
+                    this.sendInput(inputText);
+                  }}
+                  closeDialog={() => {
+                    this.showDialog(false);
+                  }}
+                />
               </View>
             </View>
           </ScrollView>
           <View style={styles.passwordContainer}>
-          
             <View style={{ width: "100%", flexDirection: "row" }}>
-            <TouchableHighlight 
-            style={{
-              width: "90%"
-            }}
-            onPress={this.checkIfAnon}>
-              <View
-                
+              <TouchableHighlight
+                style={{
+                  width: "90%"
+                }}
+                onPress={this.checkIfAnon}
               >
-                <TextInput
-                  style={styles.newInput}
-                  value={this.state.newMessage}
-                  onSubmitEditing={this.sendChat}
-                  placeholder="Type your message here ..."
-                  value={this.state.newMessage}
-                  //onSubmitEditing={this.sendChat}
-                  ref="newMessage"
-                  //onFocus={this.inputFocused.bind(this, "newMessage")}
-                  onBlur={() => {
-                    //this.refs.scrollView.scrollTo(0, 0);
-                  }}
-                  onChangeText={newMessage => this.setState({ newMessage })}
-                />
-              </View>
-          </TouchableHighlight>
-              <TouchableHighlight 
-                style={{ 
+                <View>
+                  <TextInput
+                    style={styles.newInput}
+                    value={this.state.newMessage}
+                    onSubmitEditing={this.sendChat}
+                    placeholder="Type your message here ..."
+                    value={this.state.newMessage}
+                    //onSubmitEditing={this.sendChat}
+                    ref="newMessage"
+                    //onFocus={this.inputFocused.bind(this, "newMessage")}
+                    onBlur={() => {
+                      //this.refs.scrollView.scrollTo(0, 0);
+                    }}
+                    onChangeText={newMessage => this.setState({ newMessage })}
+                  />
+                </View>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={{
                   width: "10%"
                 }}
-                onPress={ this.sendChat }>
+                onPress={this.sendChat}
+              >
                 <View>
                   <Icon
                     name="send"
@@ -307,7 +344,7 @@ const mapStateToProps = ({ routes, apiReducer: { channel, chats } }) => ({
 const mapDispatchToProps = {
   //videoObject: fetchVideoObject
   loadChannelChats: fetchChannelChats,
-  postMessage:  sendMessage
+  postMessage: sendMessage
 };
 
 export default connect(
