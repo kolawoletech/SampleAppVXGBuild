@@ -12,7 +12,10 @@ export const styles = StyleSheet.create({
  
     borderRadius: 9 ,
     margin: 5,
-
+    backgroundColor: '#000',
+    paddingBottom: 7,
+    paddingTop: 7,
+    margin:4
   },
   container: {
     flex: 1,

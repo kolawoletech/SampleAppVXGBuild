@@ -36,12 +36,11 @@ export class ChannelItems extends React.Component {
       })
     }
   }
+  
   componentDidMount() {
-    // console.log(this.props)
   }
 
   async _getImage(id) {
-    //console.log(ID)
     const options = {
       method: 'POST',
       body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
@@ -119,7 +118,6 @@ export class ChannelItems extends React.Component {
     );
   }
   render() {
-    //console.log('jjj',this.state.images.length)
     if (this.props == "undefined") {
       return (
         <TouchableOpacity>
@@ -127,11 +125,9 @@ export class ChannelItems extends React.Component {
         </TouchableOpacity>
       );
     } else {
-      // console.log(this.props)
       const { list } = this.props;
       const { logo } = this.props;
 
-      // console.log(this.props)
 
 
 

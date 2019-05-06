@@ -469,6 +469,42 @@ export const playHighRSTPStream = (id, profile_id) => dispatch => {
     });
 };
 
+export const fetchMediaItemMetadata = ( id ) => dispatch => {
+  dispatch(apiUserRegistering());
+
+  const options = {
+    method: "POST",
+    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  };
+
+  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+  fetch(url, options)
+    .then(token_data => token_data.json())
+    .then(token_data => {
+      dispatch(apiUserRegistered(token_data["data"]));
+
+      const programs_options = {
+        method: "GET",
+        headers: new Headers({
+          Authorization: "Bearer " + token_data["data"],
+          "Content-Type": "application/x-www-form-urlencoded"
+        })
+      };
+      const programs_url = "https://nile.rtst.co.za/api/artist/6/programs/" + id  + "/";
+
+      fetch(programs_url, programs_options)
+        .then(programs => programs.json())
+        .then(programs => {
+          let progs = programs["data"];
+          dispatch(catalogueLoaded(progs));
+        });
+    });
+};
+
+
 export const fetchCatalogue = () => dispatch => {
   dispatch(apiUserRegistering());
 
@@ -488,7 +524,6 @@ export const fetchCatalogue = () => dispatch => {
 
       const programs_options = {
         method: "GET",
-
         headers: new Headers({
           Authorization: "Bearer " + token_data["data"],
           "Content-Type": "application/x-www-form-urlencoded"

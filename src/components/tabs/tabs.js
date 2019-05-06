@@ -47,16 +47,13 @@ export default class Tabs extends React.Component {
             />
             <Button color='black' title="Channels" onPress={() => { Actions.channels(); }}></Button>
           </TouchableOpacity>
-        
-
+          
           <TouchableOpacity >
             <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Catalogue" onPress={() => { Actions.catalogue(); }}></Button>
           </TouchableOpacity>
-     
-
 
           <TouchableOpacity >
             <Icon name="playlist-play" size={22} color="black"

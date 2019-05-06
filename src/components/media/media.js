@@ -11,7 +11,7 @@ import {
 //import { FileSystem, Constants, Notifications, Permissions, DocumentPicker, Video } from 'expo';
 import { MediaItems } from "./mediaItems";
 import { connect } from "react-redux";
-import { PlayVideo, Stop, FetchVideos } from "../../actions/media/actions";
+import { PlayVideo, Stop, FetchVideos , fetchMediaItemMetadata} from "../../actions/media/actions";
 //import VideoPlayer from '@expo/videoplayer';
 //import { LinearGradient } from 'expo';
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
@@ -69,8 +69,14 @@ export class Media extends Component {
     console.log(uri);
   };
 
+  componentDidMount(){
+    console.log("Current Statte" + JSON.stringify(this.state))
+
+  }
   async componentWillUnmount() {
     console.log("unmount");
+    console.log("Current Statte " + JSON.stringify(this.state))
+
     if (this.playerRef) {
       console.log("unmount has playerRef");
       try {
@@ -135,8 +141,11 @@ export class Media extends Component {
 
     var arr = [];
     var len = input.length;
+    
     for (var i = 0; i < len; i++) {
+      var key = input[i].replace(/(.*)\.[^.]+$/, '$1');      
       arr.push({
+        _id: key,
         name: input[i],
         isVideo: true,
         uri: loc + input[i]
@@ -165,6 +174,7 @@ export class Media extends Component {
   }
 
   async componentWillMount() {
+    console.log("Current Statte" + this.state)
     await this.loadWithRetry(this.playerRef, this.props.uri);
     console.log("load async success");
   }
@@ -315,7 +325,8 @@ const mapStateToProps = ({ mediaReducer: { videos, uri } }) => ({
 
 const mapDispatchToProps = {
   fetch: FetchVideos,
-  play: PlayVideo
+  play: PlayVideo,
+  fetchMetadata: fetchMediaItemMetadata
 };
 
 export default connect(

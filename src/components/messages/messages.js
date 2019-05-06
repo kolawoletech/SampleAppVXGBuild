@@ -54,7 +54,7 @@ class Messages extends Component {
 /*       <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
         style={{ height: '100%' }}> */
         <View
-        style={{ height: '100%' }}>
+        style={{ height: '100%' , backgroundColor: '#0F516C'}}>
          <MessageItems list={chatsData} />
          </View>
 

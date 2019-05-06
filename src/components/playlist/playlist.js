@@ -34,7 +34,6 @@ class Playlist extends Component {
         const playlists = _.map(items, (value, key) => {
             return (
                 <View>
-
                     <PlaylistItems handler = {this.handler} key={key} playlistId={key} playlist={value} />
                 </View>
             );

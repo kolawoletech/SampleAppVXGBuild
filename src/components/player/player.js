@@ -79,10 +79,17 @@ export class Player extends React.Component {
 
     this._player.close();
   };
-
  
+  checkIfAnon(){
+    if (username === "" || username === "anonymous"){
+      this.setState({
+        isDialogVisible : true 
+      })
+    }
+  }
+
   sendInput(inputText){
-    console.log("sendInput (DialogInput#1): "+inputText);
+    console.log("sendInput (DialogInput#1):s "+inputText);
 
     AsyncStorage.setItem('username', inputText).then((token) => {
       console.log(token)
@@ -240,11 +247,15 @@ export class Player extends React.Component {
             </View>
           </ScrollView>
           <View style={styles.passwordContainer}>
+          
             <View style={{ width: "100%", flexDirection: "row" }}>
+            <TouchableHighlight 
+            style={{
+              width: "90%"
+            }}
+            onPress={this.checkIfAnon}>
               <View
-                style={{
-                  width: "90%"
-                }}
+                
               >
                 <TextInput
                   style={styles.newInput}
@@ -261,6 +272,7 @@ export class Player extends React.Component {
                   onChangeText={newMessage => this.setState({ newMessage })}
                 />
               </View>
+          </TouchableHighlight>
               <TouchableHighlight 
                 style={{ 
                   width: "10%"

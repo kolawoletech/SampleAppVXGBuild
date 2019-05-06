@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -37,6 +38,7 @@
 		B1DDA7B8736C4DDDB7C8CC2C /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32B732DC02E64B4E9CE5C8FC /* Feather.ttf */; };
 		B6B359AEF5244F828E6C21AA /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D1FC0995636E41EC8B947AC8 /* libRNFS.a */; };
 		D3210D04F6E4477CB66E123A /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFA27BAF725D4F048509BC87 /* Octicons.ttf */; };
+		D814AB7F228025A100F8250C /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D814AB472280259300F8250C /* libART.a */; };
 		D88A123B227AE8DF008B7D57 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D88A123A227AE8D4008B7D57 /* ffmpeg.framework */; };
 		D88A123C227AE8DF008B7D57 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D88A123A227AE8D4008B7D57 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D89E5F8B22774967003C1F49 /* libRCTVXGMobileSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D89E5F2922773955003C1F49 /* libRCTVXGMobileSDK.a */; };
@@ -318,6 +320,20 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
+		D814AB462280259300F8250C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D814AB412280259300F8250C /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
+		};
+		D814AB482280259300F8250C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D814AB412280259300F8250C /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 323A12871E5F266B004975B8;
+			remoteInfo = "ART-tvOS";
+		};
 		D883BCA92278A97B009367A2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6DAD9CB99C604A64ADA8D6A2 /* RNCWebView.xcodeproj */;
@@ -503,6 +519,7 @@
 		CCE072A68E414E3DB248F7A9 /* libRNCWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNCWebView.a; sourceTree = "<group>"; };
 		D17AB5D70909481E9B7E0623 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		D1FC0995636E41EC8B947AC8 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
+		D814AB412280259300F8250C /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		D88A123A227AE8D4008B7D57 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = "../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/ffmpeg.framework"; sourceTree = "<group>"; };
 		D8A6711922762DBD001E12F3 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		DBAADB64D603431E88FDCC72 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -524,6 +541,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D814AB7F228025A100F8250C /* libART.a in Frameworks */,
 				D89E5F8B22774967003C1F49 /* libRCTVXGMobileSDK.a in Frameworks */,
 				D8A672DE2276DD47001E12F3 /* libRNGestureHandler.a in Frameworks */,
 				D8A672AD2276D43E001E12F3 /* libRNDeviceInfo.a in Frameworks */,
@@ -720,6 +738,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D814AB412280259300F8250C /* ART.xcodeproj */,
 				D8A6711922762DBD001E12F3 /* BVLinearGradient.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -798,6 +817,15 @@
 				C655E8C1B8A044B894B4F383 /* libRNFetchBlob.a */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		D814AB422280259300F8250C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D814AB472280259300F8250C /* libART.a */,
+				D814AB492280259300F8250C /* libART-tvOS.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		D883BCA62278A97B009367A2 /* Products */ = {
@@ -965,6 +993,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = D814AB422280259300F8250C /* Products */;
+					ProjectRef = D814AB412280259300F8250C /* ART.xcodeproj */;
+				},
 				{
 					ProductGroup = D8A6711A22762DBD001E12F3 /* Products */;
 					ProjectRef = D8A6711922762DBD001E12F3 /* BVLinearGradient.xcodeproj */;
@@ -1324,6 +1356,20 @@
 			fileType = archive.ar;
 			path = "libjsiexecutor-tvOS.a";
 			remoteRef = B171043022267B2400F8EE44 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D814AB472280259300F8250C /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = D814AB462280259300F8250C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D814AB492280259300F8250C /* libART-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libART-tvOS.a";
+			remoteRef = D814AB482280259300F8250C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		D883BCAA2278A97B009367A2 /* libRNCWebView.a */ = {
