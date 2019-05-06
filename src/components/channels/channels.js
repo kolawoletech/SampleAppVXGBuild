@@ -126,27 +126,25 @@ class Channels extends Component {
 
 
 
-    const {
-      img: images
-    } = this.props;
+
 
 
 
     return (
       <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
         style={{ height: '100%' }}>
-        <ChannelItems logo={images} list={data.sort(function(a, b){return b-a})} onPressItem={this.onRemoveChannel} />
+        <ChannelItems list={data.sort(function(a, b){return b-a})} onPressItem={this.onRemoveChannel} />
 
       </LinearGradient >
     );
   }
 }
 
-const mapStateToProps = ({ routes, apiReducer: { channels, img, channel } }) => ({
+const mapStateToProps = ({ routes, apiReducer: { channels, channel } }) => ({
   routes: routes,
   //token: apiReducer.token,
   channels: channels,
-  img: img,
+ 
   channel: channel
 });
 

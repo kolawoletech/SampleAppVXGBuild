@@ -179,8 +179,11 @@ export class Player extends React.Component {
 
   renderVideo() {
     const rstp_link = this.props.link;
-    const progressBarWidth = width * 0.9;
-    const iconWidth = width * 0.05;
+    const progressBarWidth = width * 0.84;
+    const iconWidth = width * 0.08;
+    const unfilledColorHex = "#000"
+    const filledColorHex = "#0F516C"
+    const iconPosition = width * ((2 * 0.08) + (width* 0.5));
 
     return (
       <View>
@@ -193,16 +196,56 @@ export class Player extends React.Component {
           }}
         />
         <View style={styles.progressBarContainer}>
-          <Symbol name="chevron-double-left" size={iconWidth} color="white" />
+          <View
+            style={{
+              width: iconWidth
+            }}>
+            <Symbol name="chevron-double-left" size={iconWidth} color="white" />
+          </View>
+          <View
+            style={{
+              width: progressBarWidth,
+              position:'relative',
+             
+            }}>
+             <Symbol 
+              style={{
+                position: 'absolute',
+               
+                zIndex: 1000,
+                alignContent:'center',
+                alignItems:'center',
+                justifyContent:'center',
+                left:iconPosition
+                
+              }}
+              name="gesture-tap" size={iconWidth} color="white" 
+             />
 
-          <Progress.Bar
-            progress={this.state.progress}
-            indeterminate={this.state.indeterminate}
-            width={progressBarWidth}
-            height={iconWidth}
-          />
+            <Progress.Bar
+              style={{
+                position: 'absolute',
+                zIndex: -1,
+                top: 0, 
+                left:0
+              }}
+              color={filledColorHex}
+              borderWidth={1}
+              unfilledColor={unfilledColorHex}
+              progress={this.state.progress}
+              indeterminate={this.state.indeterminate}
+              width={progressBarWidth}
+              height={iconWidth}
+            />
+          </View>
 
-          <Symbol name="chevron-double-right" size={iconWidth} color="white" />
+          <View
+            style={{
+              width: iconWidth
+            }}>
+            <Symbol name="chevron-double-right" size={iconWidth} color="white" />
+          </View>
+         
         </View>
       </View>
     );

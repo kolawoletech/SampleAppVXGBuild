@@ -31,6 +31,9 @@ export class MediaItems extends React.Component {
     }
   }
 
+  componentDidMount() {
+  }
+
   async _getMetadata(id) {
     const options = {
       method: 'POST',
@@ -57,11 +60,11 @@ export class MediaItems extends React.Component {
     const programs_url = "https://nile.rtst.co.za/api/artist/6/programs/" + id  + "/";
 
     return await fetch(programs_url, programs_options)
-      .then(metadata => metadata.json())
-      .then(metadata => {
-        let details =metadata["data"]
+      .then(details=> details.json())
+      .then(details => {
+        let metdat = details["data"]
 
-        return { id, details }
+        return { id, metdat }
     })
 
   }
@@ -71,6 +74,8 @@ export class MediaItems extends React.Component {
     const { onPressItem } = this.props;
     const { _onPressDelete } = this.props;
 
+    console.log("These are the `metaData details" + JSON.stringify(this.state.metadata))
+
     return (
       <TouchableOpacity  onPress={() => onPressItem(data.item.uri)} style={styles.item} key={data.item.name} >
  
@@ -78,6 +83,14 @@ export class MediaItems extends React.Component {
           style={styles.textTitle}
           color='white'
         >{data.item._id}</Text>
+        <Text
+          style={styles.textTitle}
+          color='white'
+        >{this.state.metadata.find(a => data.item._id === a.id) ?this.state.metadata.find(a => data.item._id === a.id).metdat.name : "Unknown"  }</Text>
+        <Text
+          style={styles.textTitle}
+          color='white'
+        >{this.state.metadata.find(a => data.item._id === a.id) ?this.state.metadata.find(a => data.item._id === a.id).metdat.description : "Unknown"  }</Text>
        
         
         {/* <Icon onPress={() => _onPressDelete(data.item.uri)} name="ios-trash" size={32} color="#d11a2a" /> */}
@@ -99,20 +112,21 @@ export class MediaItems extends React.Component {
     );
   }
   render() {
-    console.log("Current Statte In Render " + JSON.stringify(this.state))
 
     const { list } = this.props;
-    console.log("Current Props In Render " + JSON.stringify(this.props))
 
+    console.log("Current Statte In Render " + JSON.stringify(this.state))
 
     return (
       <ScrollView>
+        {this.state.metadata.length > 0 &&
         <FlatList
           data={list}
           horizontal={false}
           renderItem={item => this.renderItem(item)}
-          keyExtractor={item => item.name.toString()}
+          keyExtractor={item => item._id.toString()}
         />
+        }
       </ScrollView>
 
     );
