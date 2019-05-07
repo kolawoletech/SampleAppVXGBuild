@@ -1,5 +1,7 @@
 import * as types from "./actionTypes";
 //import axios from 'axios';
+import RNFS from 'react-native-fs'
+import { Alert } from "react-native";
 import { Actions } from "react-native-router-flux";
 const axios = require("axios");
 
@@ -93,9 +95,7 @@ export const sendMessage = (id, opts) => dispatch => {
   fetch(url, options)
     .then(token_data => token_data.json())
     .then(token_data => {
-     
       dispatch(apiUserRegistered(token_data["data"]));
-
 
       console.log("After Stringify " + JSON.stringify(opts));
 
@@ -111,7 +111,7 @@ export const sendMessage = (id, opts) => dispatch => {
       };
 
       axios
-        .post(channel_url, opts, config)   
+        .post(channel_url, opts, config)
         .then(function(response) {
           console.log("Axios Response: " + JSON.stringify(response["data"]));
         })
@@ -373,9 +373,50 @@ export const fetchProgramURILinks = (id, profile_id) => dispatch => {
         .then(uri => uri.json())
         .then(uri => {
           let link = uri["data"];
-          // console.log("..............Getting HERE .............")
-          //console.log(link);
+
           dispatch(programUriLinkLoaded(link));
+
+          downloadVideo = (name, url) => {
+            // Alert.alert(" Download Started, [Check Playlist when done]");
+            //RNFS.mkdir('NileMedia');
+            console.log(url);
+            this.createDirectory();
+
+            const destPath =
+              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+
+              console.log("Here I am");
+            let option = {
+              fromUrl: url,
+              toFile: destPath
+            };
+            RNFS.downloadFile(option).promise.then(res => {
+              console.log("res -----------------------------> ", res);
+            });
+          };
+
+          createDirectory = () => {
+            console.log(" Creating Folder");
+
+            key = {
+              NSURLIsExcludedFromBackupKey: true
+            };
+            
+            const VIDE0_FOLDER = RNFS.DocumentDirectoryPath + "/NileMediaVideos";
+            if (RNFS.exists(RNFS.DocumentDirectoryPath + "/NileMediaVideos")){
+              console.log("Folder Exists");
+            } else {
+              console.log("Folder Does Not Exists");
+
+              RNFS.mkdir(
+                RNFS.DocumentDirectoryPath + "/NileMediaVideos",
+                key
+              );
+            }
+           
+          };
+
+          this.downloadVideo(id, link);
         });
     });
 
@@ -469,7 +510,7 @@ export const playHighRSTPStream = (id, profile_id) => dispatch => {
     });
 };
 
-export const fetchMediaItemMetadata = ( id ) => dispatch => {
+export const fetchMediaItemMetadata = id => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
@@ -493,7 +534,8 @@ export const fetchMediaItemMetadata = ( id ) => dispatch => {
           "Content-Type": "application/x-www-form-urlencoded"
         })
       };
-      const programs_url = "https://nile.rtst.co.za/api/artist/6/programs/" + id  + "/";
+      const programs_url =
+        "https://nile.rtst.co.za/api/artist/6/programs/" + id + "/";
 
       fetch(programs_url, programs_options)
         .then(programs => programs.json())
@@ -503,7 +545,6 @@ export const fetchMediaItemMetadata = ( id ) => dispatch => {
         });
     });
 };
-
 
 export const fetchCatalogue = () => dispatch => {
   dispatch(apiUserRegistering());

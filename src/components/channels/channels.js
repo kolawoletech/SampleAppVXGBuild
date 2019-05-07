@@ -133,7 +133,7 @@ class Channels extends Component {
     return (
       <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
         style={{ height: '100%' }}>
-        <ChannelItems list={data.sort(function(a, b){return b-a})} onPressItem={this.onRemoveChannel} />
+        <ChannelItems list={data} onPressItem={this.onRemoveChannel} />
 
       </LinearGradient >
     );

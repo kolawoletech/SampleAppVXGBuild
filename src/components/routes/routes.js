@@ -38,6 +38,7 @@ const TabIcon = ({ selected, title }) => {
 export default class Routes extends React.Component {
 
   render() {
+    console.disableYellowBox = true;
     return (
       <Provider store={store}>
         <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
@@ -55,14 +56,13 @@ export default class Routes extends React.Component {
               <Scene key="channels"   component={ChannelsContainer} title="Channels"/>
               <Scene key="channel" component={ChannelContainer} title="Channel" />
               <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
-              <Scene key="catalogue" component={CatalogueContainer} title="Catalogue" />
+              <Scene key="catalogue" component={CatalogueContainer} title="Catalogue" initial={true}/>
               <Scene key="program" component={ProgramContainer} title="Program" />
               <Scene key="guide" component={GuideContainer} title="Guide" />
               <Scene key="settings" component={SettingsContainer} title="Settings"   />
               <Scene key="messages" component={MessagesContainer} title="Messages" />
               <Scene key="landing" component={LandingContainer} title="Landing" />
-              <Scene key="media" component={MediaContainer} title="Media" initial={true}/>
-
+              <Scene key="media"  component={MediaContainer} title="Media" />
             </Stack>
             </Drawer>
         </RouterRedux>

@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { fetchProgramURILink, getUID } from '../../actions/api/actions';
 
 
-
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 export class ProgramQuality extends React.Component {
 
@@ -153,6 +153,9 @@ export class ProgramQuality extends React.Component {
 
                             </View>
                         }
+                        <View>
+                        <Toast ref="toast"/>
+                        </View>
 
                     </View>
 

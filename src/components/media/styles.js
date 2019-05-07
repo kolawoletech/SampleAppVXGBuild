@@ -28,10 +28,8 @@ export const styles = StyleSheet.create({
   },
   item: {
     flexDirection: "column",
-    backgroundColor: "#0f516c",
-    padding: 15,
-    margin: 10,
-    marginBottom: 5
+
+  
   },
   text: {
     color: "#000",

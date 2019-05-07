@@ -18,11 +18,9 @@ import RNFS from 'react-native-fs'
 export class Program extends React.Component {
     constructor(props) {
         super(props);
-        //this.listenForNotifications = this.listenForNotifications.bind(this);
 
         // get a list of files and directories in the main bundle
 
-        // get a list of files and directories in the main bundle
         RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
             .then((result) => {
                 console.log('GOT RESULT', result);
@@ -49,18 +47,28 @@ export class Program extends React.Component {
     }
 
 
-    onFetchLink = (programmeID, profileID) => this.props.fetchLink(programmeID, profileID);
+    onFetchLink = (programmeID, profileID) => {
+        this.props.fetchLink(programmeID, profileID);
+        console.log("Working Fix")
+        //this.refs.toast.show(' Download Started, [Check Playlist when done] ', DURATION.LENGTH_LONG);
+        this.refs.toast.show('Download Started, [Check Playlist when done]', 5000, () => {
+            // something you want to do at close
+            
+        });
+
+
+    }
 
 
     notAvailable() {
         Alert.alert(" Selection not available, Please check back in the future");
-
+        
     }
 
     downloadVideo = (name, url) => {
 
         //RNFS.mkdir('NileMedia');
-          console.log(url)
+        console.log(url)
         this.createDirectory();
 
         const destPath = RNFS.DocumentDirectoryPath + '/NileMediaVideos/' + name + '.mp4';
@@ -215,12 +223,7 @@ export class Program extends React.Component {
                 <View>
                     <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
                         style={{ height: '100%' }}>
-                        <Toast
-                            ref={(ref) => this.toast = ref}
-                            style={{ backgroundColor: 'green', top: 10, position: 'absolute' }}
-                            textStyle={{ color: 'white' }}
-                            opacity={0.8}
-                        />
+                        <Toast ref="toast" position='bottom'/> 
                         <View>
 
 
@@ -284,7 +287,7 @@ export class Program extends React.Component {
                                             onPress={() => this.downloadVideo(programmeID, this.props.link)}
                                         // onPress = { this.notAvailable()} 
                                         >
-                                            {this.props.link !== null ? <Text style={styles.downloadText}> Download Now </Text> : null}
+                                            {this.props.link !== null ? <Text style={styles.downloadText}> ... </Text> : null}
                                         </TouchableOpacity>
                                     </View>
                                 </View>

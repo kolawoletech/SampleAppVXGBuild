@@ -8,10 +8,14 @@ import {
   TouchableOpacity,
   TouchableHighlight
 } from "react-native";
-//import { FileSystem, Constants, Notifications, Permissions, DocumentPicker, Video } from 'expo';
 import { MediaItems } from "./mediaItems";
 import { connect } from "react-redux";
-import { PlayVideo, Stop, FetchVideos , fetchMediaItemMetadata} from "../../actions/media/actions";
+import {
+  PlayVideo,
+  Stop,
+  FetchVideos,
+  fetchMediaItemMetadata
+} from "../../actions/media/actions";
 //import VideoPlayer from '@expo/videoplayer';
 //import { LinearGradient } from 'expo';
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
@@ -22,12 +26,14 @@ import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "rn-fetch-blob";
 
 export class Media extends Component {
+  _player = null;
+  
   playerRef = undefined;
   constructor(props) {
+    
     super(props);
     this.index = 0;
-    // this.toast = null;
-    // this.openFile = this.openFile.bind(this);
+
 
     this.document_dir = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
 
@@ -64,18 +70,33 @@ export class Media extends Component {
       hideVideo: false,
       uri: uri
     });
-    this.props.play(uri);
-    this.loadWithRetry(this.playerRef, uri);
-    console.log(uri);
+
+    if (this.state.hideVideo == true){
+
+      console.log("First Block" + this.state.hideVideo)
+      //this.playerRef.close();
+      this.props.play(uri);
+      this.loadWithRetry(this.playerRef, this.state.uri);
+      console.log(uri);
+      //this.playerRef.open();
+    } else  if (this.state.hideVideo == false){
+      console.log("Second Block" + this.state.hideVideo)
+
+      this.playerRef.close();
+      this.props.play(uri);
+      this.loadWithRetry(this.playerRef, this.state.uri);
+      console.log(uri);
+      this.playerRef.open();
+    }
+
   };
 
-  componentDidMount(){
-    console.log("Current Statte" + JSON.stringify(this.state))
-
+  componentDidMount() {
+    console.log("Current Statte" + JSON.stringify(this.state));
   }
   async componentWillUnmount() {
     console.log("unmount");
-    console.log("Current Statte " + JSON.stringify(this.state))
+    console.log("Current Statte " + JSON.stringify(this.state));
 
     if (this.playerRef) {
       console.log("unmount has playerRef");
@@ -141,15 +162,35 @@ export class Media extends Component {
 
     var arr = [];
     var len = input.length;
-    
+
     for (var i = 0; i < len; i++) {
-      var key = input[i].replace(/(.*)\.[^.]+$/, '$1');      
+
+  
+/* 
+      var stats = RNFetchBlob.fs.stat(loc + input[i])
+      .then((stats) => {
+        var size = stats.size;
+        var lastModified = stats.lastModified;
+        var type = stats.type
+        //arr.push({size})
+        console.log(size, type, lastModified)
+
+      })
+      .catch((err) => {
+        console.log(err)
+      }) */
+
+      var key = input[i].replace(/(.*)\.[^.]+$/, "$1");
+
       arr.push({
         _id: key,
         name: input[i],
         isVideo: true,
-        uri: loc + input[i]
+        uri: loc + input[i], 
       });
+
+      //console.log("These are styats: "+ JSON.stringify(stats))
+
     }
     return arr;
   }
@@ -174,7 +215,7 @@ export class Media extends Component {
   }
 
   async componentWillMount() {
-    console.log("Current Statte" + this.state)
+    console.log("Current Statte" + this.state);
     await this.loadWithRetry(this.playerRef, this.props.uri);
     console.log("load async success");
   }
@@ -207,43 +248,12 @@ export class Media extends Component {
   }
 
   async loadWithRetry(player, uri) {
-    for (let i = 0; i < 5; i++) {
-      console.log("unload success");
-      //player.loadAsync({ uri: uri }, { shouldPlay: true });
-      await this.timeout(41000);
-      console.log("waited 3 seconds");
-      //const status = await player.getStatusAsync();
-      console.log(status);
-      if (status.isPlaying) {
-        console.log("Already playing, no need to retry");
-        break;
-      } else {
-        console.log("Not playing, try to reload the same video");
-        // await player.playAsync()
-        // console.log('triggered play')
-      }
-    }
+    console.log("Retry")
+
+
+
   }
 
-  async loadWithRetry(player, uri) {
-    for (let i = 0; i < 5; i++) {
-      //await player.unloadAsync();
-      console.log("unload success");
-      //player.loadAsync({ uri: uri }, { shouldPlay: true });
-      await this.timeout(3000);
-      console.log("waited 3 seconds");
-      ///const status = await player.getStatusAsync();
-      //console.log(status);
-      //   if (status.isPlaying) {
-      //     console.log("Already playing, no need to retry");
-      //     break;
-      //   } else {
-      //     console.log("Not playing, try to reload the same video");
-      //     // await player.playAsync()
-      //     // console.log('triggered play')
-      //   }
-    }
-  }
 
   updatePlayerRef = async ref => {
     console.log("player changed");
@@ -274,45 +284,50 @@ export class Media extends Component {
     let videos = this.state.videos;
     return (
       <View style={{ height: "100%" }}>
-        <View>
-          {this.state.hideVideo !== true && (
-            <View>
-              <VXGMobileSDK
-                style={{
-                  height: 250,
-                  width: "100%"
-                }}
-                ref={this._assignPlayer}
-                config={{
-                  connectionUrl: this.state.uri,
-                  autoplay: true
-                }}
-              />
-              <TouchableHighlight onPress={this._onBack}>
-                <View style={styles.buttonText}>
-                  <Icon name="close" size={42} color="white" />
-                  <Text
-                    style={{
-                      fontSize: 18,
-                      fontWeight: "bold"
-                    }}
-                  >
-                    Close
-                  </Text>
-                </View>
-              </TouchableHighlight>
-            </View>
+        <LinearGradient
+          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          style={{ height: "100%" }}
+        >
+          <View>
+            {this.state.hideVideo !== true && (
+              <View>
+                <VXGMobileSDK
+                  style={{
+                    height: 250,
+                    width: "100%"
+                  }}
+                  ref={this._assignPlayer}
+                  config={{
+                    connectionUrl: this.state.uri,
+                    autoplay: true
+                  }}
+                />
+                <TouchableHighlight onPress={this._onBack}>
+                  <View style={styles.buttonText}>
+                    <Icon name="close" size={42} color="white" />
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Close
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+            )}
+          </View>
+          {this.state.showChild || this.state.data !== undefined ? (
+            <MediaItems
+              list={videos}
+              _onPressDelete={this.onDeleteURI}
+              onPressItem={this.onPlayURI}
+            />
+          ) : (
+            <Text style={styles.text}>Nothing Here</Text>
           )}
-        </View>
-        {this.state.showChild || this.state.data !== undefined ? (
-          <MediaItems
-            list={videos}
-            _onPressDelete={this.onDeleteURI}
-            onPressItem={this.onPlayURI}
-          />
-        ) : (
-          <Text style={styles.text}>Nothing Here</Text>
-        )}
+        </LinearGradient>
       </View>
     );
   }

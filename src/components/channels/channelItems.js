@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Text, StyleSheet, FlatList, Image, Dimensions }
 const { width, height } = Dimensions.get("window");
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
-import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -136,7 +135,7 @@ export class ChannelItems extends React.Component {
         <View >
           {this.state.images.length > 0 &&
             <FlatList
-              data={list}
+              data={list.reverse()}
 
               numColumns={1}
               renderItem={item => this.renderItem(item)}
