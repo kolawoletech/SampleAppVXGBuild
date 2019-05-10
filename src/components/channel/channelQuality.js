@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button} from 'react
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { AsyncStorage } from "react-native";
 
 export class ChannelQuality extends React.Component {
     constructor(props) {
@@ -14,8 +15,16 @@ export class ChannelQuality extends React.Component {
         }
     }
     renderItem = (qualityList) => {
+        AsyncStorage.getItem("aid").then((result) => {
+            let AID = result
+        });
+
+
+
         const { cid } = this.props;
+
         const { onPressItem } = this.props;
+
 
 
 

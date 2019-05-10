@@ -19,6 +19,10 @@ import RNFetchBlob from "rn-fetch-blob";
 
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
+
+import { AsyncStorage } from "react-native";
+
+
 export class MediaItems extends React.Component {
   constructor(props) {
     super(props);
@@ -82,9 +86,12 @@ export class MediaItems extends React.Component {
 
 
   async _getMetadata(id) {
+
+    let AID = await AsyncStorage.getItem("aid");
+
     const options = {
       method: "POST",
-      body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+      body: "aid="+AID,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
@@ -118,9 +125,11 @@ export class MediaItems extends React.Component {
   }
 
   async _getImages(id) {
+    let AID = await AsyncStorage.getItem("aid");
+
     const options = {
       method: "POST",
-      body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+      body: "aid="+AID,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }
@@ -132,6 +141,7 @@ export class MediaItems extends React.Component {
       .then(token_data => {
         return token_data["data"];
       });
+      
     const programs_options = {
       method: "GET",
       headers: new Headers({

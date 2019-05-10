@@ -14,7 +14,6 @@ export const Stop = index => dispatch => {
 
 export const FetchVideos = (videos) => dispatch => {
     dispatch(fetchVideos(videos));
-    //console.log("Load From Actions "+ videos )
 };
 
 

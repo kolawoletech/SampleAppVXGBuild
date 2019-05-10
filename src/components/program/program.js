@@ -12,6 +12,7 @@ import { Dimensions } from 'react-native'
 var { width, height } = Dimensions.get('window')
 
 import DeviceInfo from 'react-native-device-info';
+import { AsyncStorage } from "react-native";
 
 import RNFS from 'react-native-fs'
 
@@ -19,7 +20,6 @@ export class Program extends React.Component {
     constructor(props) {
         super(props);
 
-        // get a list of files and directories in the main bundle
 
         RNFS.readDir(RNFS.DocumentDirectoryPath) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
             .then((result) => {
@@ -101,45 +101,28 @@ export class Program extends React.Component {
     };
 
 
-    /* 
-        listenForNotifications = () => {
-            const _this = this;
-    
-            Notifications.addListener(notification => {
-                if (notification.origin === 'received') {
-                    // We could also make our own design for the toast
-                    // _this.refs.toast.show(<View><Text>hello world!</Text></View>);
-    
-                    const toastDOM =
-                        <TouchableWithoutFeedback
-                            onPress={() => { this.openFile(notification.data.fileUri) }}
-                            style={{ padding: '10', backgroundColor: 'green' }}>
-                            <Text style={styles.item}>{notification.data.body}</Text>
-                        </TouchableWithoutFeedback>;
-    
-                    _this.toast.show(toastDOM, DURATION.FOREVER);
-                }
-            });
-        }; */
+
 
     componentWillMount() {
-        //  getiOSNotificationPermission();
         this.props.link = null;
-        // this.listenForNotifications();
     }
 
     async componentDidMount() {
 
         try {
-
-
-            const program = this.props.programData;
-
-            this.props.imageURI(program.programme_id)
-
+            await this.getProgramImageWithAID()
         } catch (e) {
             console.log(e)
         }
+
+    }
+
+
+    async getProgramImageWithAID(){
+        let AID = await AsyncStorage.getItem("aid");
+        const program = this.props.programData;
+
+        this.props.imageURI(program.programme_id, AID);
 
     }
 

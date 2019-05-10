@@ -4,6 +4,7 @@ import { styles } from './styles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
+import { AsyncStorage } from "react-native";
 
 import { connect } from 'react-redux';
 import { fetchChannelObject, fetchChannelImage, fetchChannelRSTPLinks, playHighRSTPStream } from '../../actions/api/actions';
@@ -15,14 +16,25 @@ import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 export class Channel extends React.Component {
 
 
-    componentDidMount() {
+    async componentDidMount() {
         const channel = this.props.channelData;
-        this.props.channelObject(channel.id);
-        this.props.imageURI(channel.id) 
+        //this.props.channelObject(channel.id);
+        await this.getChannelWithAID()
+        await this.getChannelImageWithAID()
         this.autoQualityClick = this.autoQualityClick.bind(this); 
     }
 
-    onFetchRSTPLink = (channelID, profileID) => this.props.fetchRstpLink(channelID, profileID);
+    onFetchRSTPLink = (channelID, profileID) => {
+        this.props.fetchRstpLink(channelID, profileID)
+    };
+
+    async getChannelImageWithAID(){
+        const channel = this.props.channelData;
+
+        let AID = await AsyncStorage.getItem("aid");
+
+        this.props.imageURI(channel.id, AID ) 
+    }
 
     autoQualityClick (){
         console.log("Button Auto Quality Played")
@@ -42,7 +54,13 @@ export class Channel extends React.Component {
         
     }
     
-    //autoQualityClick = ( channelID, preferredProfile ) => this.props.autoQuality(channelID, preferredProfile)
+    async getChannelWithAID(){
+        let AID = await AsyncStorage.getItem("aid");
+    
+        const channel = this.props.channelData;
+        this.props.channelObject(channel.id, AID );
+
+    }
     render() {
 
         const {
@@ -215,6 +233,7 @@ const mapStateToProps = ({ routes, apiReducer: { channel, img } }) => ({
 
 const mapDispatchToProps = {
     channelObject: fetchChannelObject,
+    //TODO Consider `Not Fetching Again, Rather User Action Prop to Send if Possible
     imageURI: fetchChannelImage,
     fetchRstpLink: fetchChannelRSTPLinks,
     autoQuality:  playHighRSTPStream

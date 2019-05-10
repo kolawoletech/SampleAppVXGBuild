@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
-import { registerUser, fetchChannelImage } from "../../actions/api/actions";
+import { fetchChannelImage, newRegisterUser } from "../../actions/api/actions";
 import { ChannelItems } from "./channelItems";
 import { ChannelLogos } from "./channelLogos";
 import LinearGradient from "react-native-linear-gradient";
@@ -27,14 +27,11 @@ class Channels extends Component {
   }
 
   async componentDidMount() {
-    const { images: img } = this.props;
-
     this.checkUserSignedIn();
   }
 
  
   async checkUserSignedIn() {
-    let context = this;
     try {
       let value = await AsyncStorage.getItem("username");
       if (value != null) {
@@ -55,30 +52,23 @@ class Channels extends Component {
     }
   }
 
-  /*   componentWillRecieveProps(nextProps){
-      this.loadData(nextProps)
-    } */
-
-  loadData(nextProps) {
-    // Create a request based on nextProps
-  }
   async componentWillMount() {
-    await this.getChannelsWithoutImage();
-    //await this.props.getImageURI([2,5,17,16,8])
+    await this.getChannelsWithAID()
     const { channels: data } = this.props;
     this.setState = {
       channels: data
     };
-
-    await this.getChannelImages();
   }
 
-  async getChannelsWithoutImage() {
-    this.props.register();
+
+
+  async getChannelsWithAID(){
+    let AID = await AsyncStorage.getItem("aid");
+    this.props.registerWithAID(AID)
+
   }
 
-  async getChannelImages() {}
-
+ 
   FlatListItemSeparator = () => {
     return (
       <View
@@ -97,14 +87,7 @@ class Channels extends Component {
 
     //console.log(this.props)
 
-    let id = _.map(data, function(item) {
-      id = item["id"];
-      //this.props.getImageURI(id)
 
-      return id;
-    });
-    let ids = this.props;
-    //console.log("Is this an Array: " + JSON.stringify(ids))
 
     return (
       <LinearGradient
@@ -126,8 +109,8 @@ const mapStateToProps = ({ routes, apiReducer: { channels, channel } }) => ({
 });
 
 const mapDispatchToProps = {
-  register: registerUser,
-  getImageURI: fetchChannelImage
+  getImageURI: fetchChannelImage,
+  registerWithAID: newRegisterUser
 };
 
 export default connect(

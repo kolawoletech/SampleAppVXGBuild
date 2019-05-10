@@ -16,8 +16,7 @@ import {
   FetchVideos,
   fetchMediaItemMetadata
 } from "../../actions/media/actions";
-//import VideoPlayer from '@expo/videoplayer';
-//import { LinearGradient } from 'expo';
+
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -77,12 +76,10 @@ export class Media extends Component {
 
     if (this.state.hideVideo == true){
 
-      console.log("First Block" + this.state.hideVideo)
-      //this.playerRef.close();
       this.props.play(uri);
       this.loadWithRetry(this.playerRef, this.state.uri);
       console.log(uri);
-      //this.playerRef.open();
+
     } else  if (this.state.hideVideo == false){
       console.log("Second Block" + this.state.hideVideo)
 
@@ -95,27 +92,7 @@ export class Media extends Component {
 
   };
 
-  componentDidMount() {
-    console.log("Current Statte" + JSON.stringify(this.state));
-  }
-  async componentWillUnmount() {
-    console.log("unmount");
-    console.log("Current Statte " + JSON.stringify(this.state));
 
-    //Actions.media()
-    if (this.playerRef) {
-      console.log("unmount has playerRef");
-      try {
-        console.log("unmount call unloadAsync");
-        //await this.playerRef.unloadAsync();
-        console.log("unmount unload sucess");
-      } catch (e) {
-        console.log("unmount unload failed");
-      }
-    } else {
-      console.log("unmount no playerRef");
-    }
-  }
   onDeleteURI = uri => {
     this.setState({
       hideVideo: true
@@ -135,8 +112,7 @@ export class Media extends Component {
       showChild: false
     });
 
-    this.componentWillUnmount()
-      console.log("Refresh Page")
+
 
     setTimeout(() => {
       this.setState({

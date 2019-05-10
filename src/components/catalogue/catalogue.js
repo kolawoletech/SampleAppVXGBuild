@@ -14,9 +14,14 @@ import { AsyncStorage } from "react-native";
 class Catalogue extends Component {
 
   async componentDidMount() {
-    this.props.loadCatalogue();
+    await this.getCatalogueWithAID();
     await this.setDefaultWiFiOption();
     
+  }
+
+  async getCatalogueWithAID(){
+    let AID = await AsyncStorage.getItem("aid");
+    this.props.loadCatalogue(AID)
   }
 
   async setDefaultWiFiOption() {
@@ -74,14 +79,11 @@ class Catalogue extends Component {
 }
 
 const mapStateToProps = ({  apiReducer: { catalogue } }) => ({
-  
-  //token: apiReducer.token,
   catalogue: catalogue
 });
 
 const mapDispatchToProps = {
   loadCatalogue: fetchCatalogue,
-
 };
 
 export default connect(
