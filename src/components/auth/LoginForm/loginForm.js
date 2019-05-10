@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, Image, Button,  TouchableHighlight } from 'react-native';
+import { View, Alert, Image, Button,  TouchableHighlight, Text } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { connect } from 'react-redux';
@@ -8,8 +8,9 @@ import { LoadingIndicator } from '../../../components/loadingIndicator/loadingIn
 import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
-import { loginUser, restoreSession, loginAnonymously } from '../../../actions/session/actions';
+import { loginUser, restoreSession, loginAnonymously, apiRegisterUser } from '../../../actions/session/actions';
 const PRIVACY_POLICY = require('../../../../assets/html/privacy-policy.html');
+import { AsyncStorage } from "react-native";
 
 import LinearGradient from 'react-native-linear-gradient';
 //import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -20,13 +21,14 @@ class LoginFormComponent extends Component {
   componentDidMount() {
     this.props.restore();
     console.log(JSON.stringify(this.props))
+    this.props.registerAID();
   }
 
   componentDidUpdate(prevProps) {
     const { error, logged , loginAnonymously} = this.props;
 
     if (!prevProps.error && error) Alert.alert('error', error);
-
+    console.log("Logged: " +logged)
     if (logged) Actions.reset('channels');
   }
 
@@ -42,7 +44,10 @@ class LoginFormComponent extends Component {
         </View>
         <View style={loginBox}>
           {loading ? (
-            <LoadingIndicator color="#ffffff" size="large" />
+            <View>
+              <LoadingIndicator color="#ffffff" size="large" />
+            </View>
+            
           ) : (
             <View>
             <TouchableHighlight>
@@ -92,19 +97,21 @@ class LoginFormComponent extends Component {
   }
 }
 
-const mapStateToProps = ({ routes, sessionReducer: { restoring, loading, user, error, logged } }) => ({
+const mapStateToProps = ({ routes, sessionReducer: { restoring, loading, user, error, logged , aid} }) => ({
   routes: routes,
   restoring: restoring,
   loading: loading,
   user: user,
   error: error,
-  logged: logged
+  logged: logged,
+  aid: aid
 });
 
 const mapDispatchToProps = {
   login: loginUser,
   loginAnon: loginAnonymously,
-  restore: restoreSession
+  restore: restoreSession,
+  registerAID: apiRegisterUser
 };
 
 export default connect(

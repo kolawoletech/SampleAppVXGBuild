@@ -93,8 +93,6 @@ export class ProgramQuality extends React.Component {
                                         justifyContent: 'center',
                                         textAlign: 'center',
                                         fontSize: 10
-
-
                                     }}>{qualityList.video.width}x{qualityList.video.height}</Text>
                             </View>
                             <View>

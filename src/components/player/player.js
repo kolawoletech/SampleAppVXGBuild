@@ -17,7 +17,6 @@ import {
 } from "react-native";
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
-import { database } from "firebase";
 import { connect } from "react-redux";
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -28,7 +27,11 @@ const { width, height } = Dimensions.get("window");
 import Messages from "./../messages";
 var data = require("./data.json");
 
-import { fetchChannelChats, sendMessage } from "../../actions/api/actions";
+import {
+  fetchChannelChats,
+  sendMessage,
+  switchQuality
+} from "../../actions/api/actions";
 
 export class Player extends React.Component {
   _url = null;
@@ -38,11 +41,17 @@ export class Player extends React.Component {
     super();
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
+    this.decreaseQuality = this.decreaseQuality.bind(this);
+    this.increaseQuality = this.increaseQuality.bind(this);
+
     this.state = {
       newMessage: "",
       isDialogVisible: false,
       progress: 0,
-      indeterminate: true
+      indeterminate: true,
+      cost: 5,
+      timer: null,
+      id: ""
     };
   }
 
@@ -59,6 +68,34 @@ export class Player extends React.Component {
         this.setState({ progress });
       }, 500);
     }, 1500);
+  }
+
+  costCounter(seconds) {
+    this.cost * seconds;
+  }
+
+  clickProgressBar() {
+    console.log("Progress Bar Clicked");
+  }
+
+  decreaseQuality() {
+    var channelID = this.state.id;
+
+    const down = {
+      action: "down"
+    };
+
+    this.props.switchStream(channelID, down);
+  }
+
+  increaseQuality() {
+    var channelID = this.state.id;
+
+    const down = {
+      action: "up"
+    };
+
+    this.props.switchStream(channelID, down);
   }
 
   _retrieveData = async () => {
@@ -89,6 +126,8 @@ export class Player extends React.Component {
     this.loadUsername();
     this.animate();
     const channel = this.props.channel;
+
+    this.setState({ id: channel.id });
 
     console.log("Props From Player" + JSON.stringify(this.props));
 
@@ -181,9 +220,9 @@ export class Player extends React.Component {
     const rstp_link = this.props.link;
     const progressBarWidth = width * 0.84;
     const iconWidth = width * 0.08;
-    const unfilledColorHex = "#000"
-    const filledColorHex = "#0F516C"
-    const iconPosition = width * ((2 * 0.08) + (width* 0.5));
+    const unfilledColorHex = "#000";
+    const filledColorHex = "#0F516C";
+    const iconPosition = width * (2 * 0.08 + width * 0.5);
 
     return (
       <View>
@@ -196,56 +235,85 @@ export class Player extends React.Component {
           }}
         />
         <View style={styles.progressBarContainer}>
-          <View
-            style={{
-              width: iconWidth
-            }}>
-            <Symbol name="chevron-double-left" size={iconWidth} color="white" />
-          </View>
+          <TouchableHighlight onPress={this.decreaseQuality}>
+            <View
+              style={{
+                width: iconWidth
+              }}
+            >
+              <Symbol
+                name="chevron-double-left"
+                size={iconWidth}
+                color="white"
+              />
+            </View>
+          </TouchableHighlight>
+
           <View
             style={{
               width: progressBarWidth,
-              position:'relative',
-             
-            }}>
-             <Symbol 
+              position: "relative"
+            }}
+          >
+            <Symbol
               style={{
-                position: 'absolute',
-               
+                position: "absolute",
+
                 zIndex: 1000,
-                alignContent:'center',
-                alignItems:'center',
-                justifyContent:'center',
-                left:iconPosition
-                
+                alignContent: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                left: iconPosition
               }}
-              name="gesture-tap" size={iconWidth} color="white" 
-             />
-
-            <Progress.Bar
-              style={{
-                position: 'absolute',
-                zIndex: -1,
-                top: 0, 
-                left:0
-              }}
-              color={filledColorHex}
-              borderWidth={1}
-              unfilledColor={unfilledColorHex}
-              progress={this.state.progress}
-              indeterminate={this.state.indeterminate}
-              width={progressBarWidth}
-              height={iconWidth}
+              name="gesture-tap"
+              size={iconWidth}
+              color="white"
             />
-          </View>
+            <TouchableHighlight onPress={this.clickProgressBar}>
+              <View>
+                <Progress.Bar
+                  style={{
+                    position: "absolute",
+                    zIndex: -1,
+                    top: 0,
+                    left: 0
+                  }}
+                  showsText={true}
+                  color={filledColorHex}
+                  borderWidth={1}
+                  unfilledColor={unfilledColorHex}
+                  progress={this.state.progress}
+                  indeterminate={this.state.indeterminate}
+                  width={progressBarWidth}
+                  height={iconWidth}
+                />
+                <Text
+                  style={{
+                    color: "#fff",
 
-          <View
-            style={{
-              width: iconWidth
-            }}>
-            <Symbol name="chevron-double-right" size={iconWidth} color="white" />
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  {" "}
+                </Text>
+              </View>
+            </TouchableHighlight>
           </View>
-         
+          <TouchableHighlight onPress={this.increaseQuality}>
+            <View
+              style={{
+                width: iconWidth
+              }}
+            >
+              <Symbol
+                name="chevron-double-right"
+                size={iconWidth}
+                color="white"
+              />
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -275,14 +343,6 @@ export class Player extends React.Component {
   }
 
   render() {
-    console.log("Player Objects Props : " + this.props);
-    const rstp_link = this.props.link;
-
-    const channel_details = this.chan;
-    const channel = this.props.channel;
-
-    //console.log("This IS THE QUALITY NODE " + {quality})
-    //const channel_details = this.chan;
     if (this.props == "undefined") {
       return <View />;
     } else {
@@ -387,7 +447,8 @@ const mapStateToProps = ({ routes, apiReducer: { channel, chats } }) => ({
 const mapDispatchToProps = {
   //videoObject: fetchVideoObject
   loadChannelChats: fetchChannelChats,
-  postMessage: sendMessage
+  postMessage: sendMessage,
+  switchStream: switchQuality
 };
 
 export default connect(

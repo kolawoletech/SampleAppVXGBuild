@@ -944,6 +944,11 @@
     "@types/istanbul-lib-coverage" "^2.0.0"
     "@types/yargs" "^12.0.9"
 
+"@react-native-community/netinfo@^2.0.10":
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-2.0.10.tgz#d28a446352e75754b78509557988359133cdbcca"
+  integrity sha512-NrIzyLe0eSbhgMnHl2QdSEhaA7yXh6p9jzMomfUa//hoTXE+xbObGDdiWWSQm2bnXnZJg8XCU3AB9qzvqcuLnA==
+
 "@react-navigation/core@~3.4.1":
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-3.4.1.tgz#8c7e0e53cfb8ccaf87afb76a2733f5e5fde20cd8"
@@ -5377,6 +5382,13 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
+react-native-check-box@^2.1.7:
+  version "2.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-check-box/-/react-native-check-box-2.1.7.tgz#f349d3505a13c15d19949ec4cec40c7adc4f3626"
+  integrity sha512-dPVOoz4jKs2je2HSHp7+XJXNyZFq8Kij7IHutigrQKzB550Dko6ZAQu/1mG1FzdUMFxxkZ2nX59KmbR0Co0T8Q==
+  dependencies:
+    prop-types "^15.5.7"
+
 react-native-device-info@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-1.5.1.tgz#46810a42724089c7d4a0900974a1562bce057e73"
@@ -5596,7 +5608,7 @@ react-native-video@^4.3.1:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
-react-native-vxg-mobile-sdk@0.0.5:
+react-native-vxg-mobile-sdk@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/react-native-vxg-mobile-sdk/-/react-native-vxg-mobile-sdk-0.0.5.tgz#02f52733ce8bb06422fdec68a87e9fdde1107fe5"
   integrity sha512-w3zYAOnuB5QagbdUis102y/3Mm3xqed7shqwZANMdHqY3hsMBca0fEcd2Q28YZKiApMCeDAAtMkyBMqAVy5w/A==

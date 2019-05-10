@@ -97,6 +97,14 @@ export class CatalogueItems extends React.Component {
                                 width: '100%', height: '80%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
                             }}
                         />
+{/*                         <Image
+                            source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png', cache: 'only-if-cached' }}
+                            resizeMode="stretch"
+                            style={{
+                                width: '100%', height: '80%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
+                            }}
+                           
+                        /> */}
                         <Icon size={22} color="white"
                             style={{ position: 'absolute', top: 10, left: 10 }} name="cloud-download" size={22} color="white" />
 

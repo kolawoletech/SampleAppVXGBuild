@@ -136,7 +136,6 @@ export class ChannelItems extends React.Component {
           {this.state.images.length > 0 &&
             <FlatList
               data={list.reverse()}
-
               numColumns={1}
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.id.toString()}

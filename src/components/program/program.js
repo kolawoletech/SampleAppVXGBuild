@@ -50,9 +50,8 @@ export class Program extends React.Component {
     onFetchLink = (programmeID, profileID) => {
         this.props.fetchLink(programmeID, profileID);
         console.log("Working Fix")
-        //this.refs.toast.show(' Download Started, [Check Playlist when done] ', DURATION.LENGTH_LONG);
+       
         this.refs.toast.show('Download Started, [Check Playlist when done]', 5000, () => {
-            // something you want to do at close
             
         });
 
@@ -97,45 +96,6 @@ export class Program extends React.Component {
         //var regex = /[^\/]+$/;
         // let strippedName = regex.exec(name)
         Alert.alert("Selection Currently Unavailable");
-
-        /*            let fileUri = FileSystem.documentDirectory + 'NileMediaVideos/' + strippedName;
-                   FileSystem.downloadAsync(
-                       link,
-                       fileUri
-                   ).then(({ uri }) => {
-                       
-           
-                       const localnotification = {
-                           title: 'Download has finished',
-                           body: strippedName + " has been downloaded. Check Playlist.",
-                           android: {
-                               sound: true,
-                           },
-                           ios: {
-                               sound: true,
-                           },
-           
-                           data: {
-                               fileUri: uri
-                           },
-                       };
-                       localnotification.data.title = localnotification.title;
-                       localnotification.data.body = localnotification.body;
-                       let sendAfterFiveSeconds = Date.now();
-                       sendAfterFiveSeconds += 3000;
-           
-                       const schedulingOptions = { time: sendAfterFiveSeconds };
-                       Notifications.scheduleLocalNotificationAsync(
-                           localnotification,
-                           schedulingOptions
-                       );
-           
-                       this.props.link = null
-                   })
-                       .catch(error => {
-                           console.error(error);
-                           Alert.alert(error);
-                       }); */
         this.props.link = null
 
     };

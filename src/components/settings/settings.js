@@ -6,14 +6,17 @@ import {
   Text,
   FlatList,
   RefreshControl,
-  TouchableOpacity
+  TouchableOpacity,
+  Switch
 } from "react-native";
+
+import CheckBox from "react-native-check-box";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 import { styles } from "./styles";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import { fetchPlaylist, getUID } from "../../actions/playlist/actions";
-import { logoutUser } from "../../actions/session/actions";
+import { logoutUser, getWiFiSettingsOption } from "../../actions/session/actions";
 import { SettingsScreen } from "react-native-settings-screen";
 import { AsyncStorage } from "react-native";
 
@@ -33,11 +36,40 @@ export class Settings extends Component {
     }
   };
 
+  _getDownloadOverWifiOnly = async () => {
+    let value = await AsyncStorage.getItem("wifiBoolValue")
+    var boolValue = (value == "true" || value == "false")
+
+    this.setState({
+      isChecked: boolValue
+    });
+  }
+  
+  _setDownloadOverWifiOnly = async () => {
+    try {
+      this.setState({
+        isChecked: this.state.isChecked
+      });
+      
+      //this.props.getWiFiOption(this.state.isChecked);
+      var status = this.state.isChecked
+      var  boolValueToString = status.toString()
+
+      AsyncStorage.setItem("wifiBoolValue",boolValueToString).then( setValue => {
+        console.log(setValue)
+      });
+    } catch (error) {
+      // Error saving data
+      console.log(err)
+    }   
+  }
+
   componentDidMount() {
+    //console.log(this.props.getWiFiOption())
     const getUserId = async () => {
       let userId = "";
       try {
-        userId = (await AsyncStorage.getItem("userId")) || "none";
+        userId = (await AsyncStorage.getItem("wifi")) || "none";
       } catch (error) {
         // Error retrieving data
         console.log(error.message);
@@ -45,9 +77,7 @@ export class Settings extends Component {
       return userId;
     };
 
-    AsyncStorage.getItem("username").then(result => {
-      console.log(result);
-    });
+    this._getDownloadOverWifiOnly()
 
     this.loadUsername();
   }
@@ -63,7 +93,6 @@ export class Settings extends Component {
 
   constructor(props) {
     super(props);
-    console.log("HIHIHIHIHIHIHUI");
   }
 
   handler() {
@@ -84,6 +113,27 @@ export class Settings extends Component {
         <View>
           <Text style={styles.title}>Username</Text>
           <Text style={styles.entry}>{username}</Text>
+         
+ 
+        </View>
+        <View>
+          <View
+            style={{
+              flexDirection:'row'
+            }}>
+            <Text  style={styles.title}>Download over Wi-Fi only</Text>
+            <CheckBox 
+                style={{ flex: 1 }}
+                title="Click Here" 
+                isChecked={this.state.isChecked}//Get State From Props
+                leftText={" "}
+                checkBoxColor="#fff"
+                checkedCheckBoxColor="#76B6C4"
+                onClick={() => {
+                  this._setDownloadOverWifiOnly()
+                }}
+            />
+          </View>
         </View>
       </View>
     );
@@ -93,18 +143,20 @@ export class Settings extends Component {
 const mapStateToProps = ({
   routes,
   playlistReducer: { items },
-  sessionReducer: { user }
+  sessionReducer: { user, wifi }
 }) => ({
   routes: routes,
   //user: user,
   items: items,
-  user: user
+  user: user,
+  wifi: wifi
 });
 
 const mapDispatchToProps = {
   playlist: fetchPlaylist,
   userId: getUID,
-  logout: logoutUser
+  logout: logoutUser,
+  getWiFiOption: getWiFiSettingsOption
 };
 
 export default connect(

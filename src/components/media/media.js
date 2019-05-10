@@ -24,6 +24,8 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "rn-fetch-blob";
+var RNFS = require('react-native-fs');
+
 
 export class Media extends Component {
   _player = null;
@@ -71,6 +73,8 @@ export class Media extends Component {
       uri: uri
     });
 
+    
+
     if (this.state.hideVideo == true){
 
       console.log("First Block" + this.state.hideVideo)
@@ -98,6 +102,7 @@ export class Media extends Component {
     console.log("unmount");
     console.log("Current Statte " + JSON.stringify(this.state));
 
+    //Actions.media()
     if (this.playerRef) {
       console.log("unmount has playerRef");
       try {
@@ -115,23 +120,29 @@ export class Media extends Component {
     this.setState({
       hideVideo: true
     });
-    this.props.play(uri);
-    //FileSystem.deleteAsync(uri)
+
+
+
+    RNFS.unlink(uri).then(()=>{
+      
+
+    });
+
+    console.log("Path to Delete" + uri)
+
 
     this.setState({
       showChild: false
     });
 
-    this.componentDidMount();
-    //this.componentWillUnmount()
-    this.componentWillMount();
+    this.componentWillUnmount()
+      console.log("Refresh Page")
+
     setTimeout(() => {
       this.setState({
         showChild: true
       });
     }, 100);
-
-    console.log("Reload Child Invoked");
   };
 
   renderItem = (text, i) => {

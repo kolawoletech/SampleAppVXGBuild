@@ -1,4 +1,4 @@
-import * as types from '../../actions/session/actionsTypes';
+import * as types from "../../actions/session/actionsTypes";
 
 const initialState = {
   restoring: false,
@@ -6,7 +6,9 @@ const initialState = {
   user: {},
   error: null,
   logged: null,
-  registered: null
+  registered: null,
+  aid: null,
+  wifi: []
 };
 
 const sessionReducer = (state = initialState, action) => {
@@ -45,6 +47,37 @@ const sessionReducer = (state = initialState, action) => {
         logged: null,
         registered: null
       };
+
+    case types.API_SESSION_REGISTER:
+      return {
+        ...state,
+        restoring: false,
+        loading: false,
+        user: action.user,
+        error: action.error,
+        logged: null,
+        registered: null,
+        aid: action.aid
+      };
+
+    case types.API_SESSION_LOADING:
+      return {
+        ...state,
+        restoring: false,
+        loading: true,
+        error: null
+      };
+
+    case types.GET_WIFI_OPTION:
+      return {
+        ...state,
+        wifi: action.wifi,
+        error: null,
+        logged: null,
+        registered: null,
+        aid: action.aid
+      };
+
     case types.SESSION_LOGOUT:
       return initialState;
     default:

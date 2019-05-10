@@ -8,12 +8,35 @@ import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import { fetchCatalogue } from '../../actions/api/actions';
 import { CatalogueItems } from './catalogueItems';
 import LinearGradient from 'react-native-linear-gradient';
+import { AsyncStorage } from "react-native";
 
 
 class Catalogue extends Component {
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.loadCatalogue();
+    await this.setDefaultWiFiOption();
+    
+  }
+
+  async setDefaultWiFiOption() {
+    let context = this;
+    
+    let value = await AsyncStorage.getItem("wifiBoolValue");
+
+    if (value != null) {
+      // do nothing
+      console.log("Option Already Set: "  + JSON.parse(value) );
+
+    } else {
+
+      const wifiOption = JSON.stringify(true);
+
+      AsyncStorage.setItem("wifiBoolValue", wifiOption).then(value => {
+        console.log(value);
+      });
+    }
+    
   }
 
   FlatListItemSeparator = () => {

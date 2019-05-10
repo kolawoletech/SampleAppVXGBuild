@@ -1,10 +1,13 @@
 import * as types from "./actionTypes";
-//import axios from 'axios';
-import RNFS from 'react-native-fs'
+import RNFS from "react-native-fs";
 import { Alert } from "react-native";
 import { Actions } from "react-native-router-flux";
 const axios = require("axios");
+import { AsyncStorage } from "react-native";
+import Toast, { DURATION } from 'react-native-easy-toast';
+import NetInfo from "@react-native-community/netinfo";
 
+const AID = AsyncStorage.getItem("aid");
 export const registerUser = () => dispatch => {
   dispatch(apiUserRegistering());
 
@@ -37,6 +40,51 @@ export const registerUser = () => dispatch => {
           let chans = channels["data"];
 
           dispatch(channelsLoaded(chans));
+        });
+    });
+
+  //.catch(err => console.log("An error occured", err))
+};
+
+export const switchQuality = (id, action) => dispatch => {
+  dispatch(apiUserRegistering());
+
+  const options = {
+    method: "POST",
+    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  };
+
+  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+  fetch(url, options)
+    .then(token_data => token_data.json())
+    .then(token_data => {
+      dispatch(apiUserRegistered(token_data["data"]));
+      const channels_options = {
+        method: "GET",
+
+        headers: new Headers({
+          Authorization: "Bearer " + token_data["data"],
+          "Content-Type": "application/x-www-form-urlencoded"
+        })
+      };
+
+      const channel_url =
+        "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/switch";
+
+      var config = {
+        headers: { Authorization: "Bearer " + token_data["data"] }
+      };
+
+      axios
+        .post(channel_url, action, config)
+        .then(function(response) {
+          console.log("Axios Response: " + JSON.stringify(response["data"]));
+        })
+        .catch(function(error) {
+          console.log("Axios Error: " + error);
         });
     });
 
@@ -377,23 +425,66 @@ export const fetchProgramURILinks = (id, profile_id) => dispatch => {
           dispatch(programUriLinkLoaded(link));
 
           downloadVideo = (name, url) => {
-            // Alert.alert(" Download Started, [Check Playlist when done]");
-            //RNFS.mkdir('NileMedia');
             console.log(url);
+
+            NetInfo.getConnectionInfo().then(data => {
+              console.log("Connection type", data.type);
+              console.log("Connection effective type", data.effectiveType);
+            });
             this.createDirectory();
 
             const destPath =
               RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
 
-              console.log("Here I am");
+            console.log("Here I am");
             let option = {
               fromUrl: url,
               toFile: destPath
             };
+            const FILE_LOCATION = RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
+       
+            if (RNFS.exists(FILE_LOCATION)){
+              console.log("File Already Exist")
+              Alert.alert(
+                'Program Already Exists In Playlist',
+                'Overwrite?',
+                [
+                  {
+                    text: 'Yes',
+                    onPress: () => {this.continueDownload(url)} ,
+                    style: 'ok',
+                  },
+                  {
+                    text: 'No', 
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                  },
+                ],
+                {cancelable: false},
+              )
+            } else {
+              RNFS.downloadFile(option).promise.then(res => {
+                console.log("res -----------------------------> ", res);
+              });
+            }
+            
+          };
+          
+          continueDownload = (url) => {
+          console.log(url)
+            const destPath =
+            RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+
+            let option = {
+              fromUrl: url,
+              toFile: destPath
+            };
+
+            console.log('continuing download')
             RNFS.downloadFile(option).promise.then(res => {
               console.log("res -----------------------------> ", res);
             });
-          };
+          }
 
           createDirectory = () => {
             console.log(" Creating Folder");
@@ -401,19 +492,11 @@ export const fetchProgramURILinks = (id, profile_id) => dispatch => {
             key = {
               NSURLIsExcludedFromBackupKey: true
             };
-            
-            const VIDE0_FOLDER = RNFS.DocumentDirectoryPath + "/NileMediaVideos";
-            if (RNFS.exists(RNFS.DocumentDirectoryPath + "/NileMediaVideos")){
-              console.log("Folder Exists");
-            } else {
-              console.log("Folder Does Not Exists");
 
-              RNFS.mkdir(
-                RNFS.DocumentDirectoryPath + "/NileMediaVideos",
-                key
-              );
-            }
-           
+            const VIDE0_FOLDER =
+              RNFS.DocumentDirectoryPath + "/NileMediaVideos/";
+
+            RNFS.mkdir(RNFS.DocumentDirectoryPath + "/NileMediaVideos/", key);
           };
 
           this.downloadVideo(id, link);

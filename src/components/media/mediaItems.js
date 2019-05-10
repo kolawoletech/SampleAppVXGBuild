@@ -233,7 +233,7 @@ export class MediaItems extends React.Component {
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={{ color: "white", margin: 6, fontSize: 15 }}
+              style={{ color: "white", margin: 6, fontSize: 13 }}
             >
               {this.state.metadata.find(a => data.item._id === a.id)
                 ? this.state.metadata.find(a => data.item._id === a.id).metdat
@@ -243,18 +243,25 @@ export class MediaItems extends React.Component {
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={{ color: "white", margin: 6, fontSize: 15 }}
+              style={{ color: "white", margin: 6, fontSize: 13 }}
             >
               {this.state.path.find(a => data.item.uri === a)
                 ? this.state.path.find(a => data.item.uri === a).size
                 : ""}
             </Text>
+            <View style={{
+              justifyContent: 'center',
+              flexDirection: 'row',
+              alignContent:'center',
+              alignItems: 'center'
+            }}>
             <Icon
               onPress={() => _onPressDelete(data.item.uri)}
               name="delete"
-              size={32}
-              color="#d11a2a"
+              size={22}
+              color="#DCDCDC"
             />
+            </View>
           </View>
         </View>
         </LinearGradient>
