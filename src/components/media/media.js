@@ -75,23 +75,44 @@ export class Media extends Component {
     
 
     if (this.state.hideVideo == true){
-
-      this.props.play(uri);
-      this.loadWithRetry(this.playerRef, this.state.uri);
-      console.log(uri);
-
-    } else  if (this.state.hideVideo == false){
-      console.log("Second Block" + this.state.hideVideo)
-
-      this.playerRef.close();
-      this.props.play(uri);
-      this.loadWithRetry(this.playerRef, this.state.uri);
-      console.log(uri);
-      this.playerRef.open();
-    }
+      console.log("Current Statte" + JSON.stringify(this.state))	
+         console.log("First Block" + this.state.hideVideo)
+        //this.playerRef.close();
+        this.props.play(uri);
+        this.loadWithRetry(this.playerRef, this.state.uri);
+        console.log(uri);
+        //this.playerRef.open();
+      } else  if (this.state.hideVideo == false){
+        console.log("Second Block" + this.state.hideVideo)
+  
+         this.playerRef.close();
+        this.props.play(uri);
+        this.loadWithRetry(this.playerRef, this.state.uri);
+        console.log(uri);
+        this.playerRef.open();
+      }
 
   };
 
+  componentDidMount() {
+    console.log("Current Statte" + JSON.stringify(this.state));
+  }
+  async componentWillUnmount() {
+    console.log("unmount");
+    console.log("Current Statte " + JSON.stringify(this.state));
+    if (this.playerRef) {
+      console.log("unmount has playerRef");
+      try {
+        console.log("unmount call unloadAsync");
+        //await this.playerRef.unloadAsync();
+        console.log("unmount unload sucess");
+      } catch (e) {
+        console.log("unmount unload failed");
+      }
+    } else {
+      console.log("unmount no playerRef");
+    }
+  }
 
   onDeleteURI = uri => {
     this.setState({
@@ -104,6 +125,7 @@ export class Media extends Component {
       
 
     });
+    Actions.media();
 
     console.log("Path to Delete" + uri)
 
@@ -112,6 +134,9 @@ export class Media extends Component {
       showChild: false
     });
 
+    this.componentDidMount();
+    //this.componentWillUnmount()
+    this.componentWillMount();
 
 
     setTimeout(() => {

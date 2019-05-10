@@ -50,10 +50,10 @@ export class Program extends React.Component {
     onFetchLink = (programmeID, profileID) => {
         this.props.fetchLink(programmeID, profileID);
         console.log("Working Fix")
-       
+  /*      
         this.refs.toast.show('Download Started, [Check Playlist when done]', 5000, () => {
             
-        });
+        }); */
 
 
     }

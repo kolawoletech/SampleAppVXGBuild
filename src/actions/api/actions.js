@@ -552,6 +552,11 @@ export const fetchProgramURILinks =  (id, profile_id) => dispatch => {
                 RNFS.downloadFile(option).promise.then(res => {
                   console.log("res -----------------------------> ", res);
                 });
+
+                Alert.alert(
+                  'Download Started',
+                  'Check Playlist When Done'
+                )
               }
             })
    
@@ -572,10 +577,16 @@ export const fetchProgramURILinks =  (id, profile_id) => dispatch => {
             RNFS.downloadFile(option).promise.then(res => {
               console.log("res -----------------------------> ", res);
             });
+
+
+            Alert.alert(
+              'Download Started',
+              'Check Playlist When Done'
+            )
           }
 
           createDirectory = () => {
-            console.log(" Creating Folder");
+            console.log(" Created Folder and Download Running");
 
             key = {
               NSURLIsExcludedFromBackupKey: true
