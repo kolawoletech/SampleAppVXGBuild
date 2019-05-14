@@ -16,6 +16,10 @@ import PlayerContainer from '../player';
 
 
 
+//import AdvancedMediaPlayerContainer from '../advancedMediaPlayer';
+
+//import VideoPlayerContainer from '../advancedMediaPlayer';
+
 import CatalogueContainer from '../catalogue';
 import ProgramContainer from '../program';
 //import PlaylistContainer from '../playlist';
@@ -47,13 +51,13 @@ export default class Routes extends React.Component {
             type="overlay"
             key="root"
             drawerPosition='100'
-           
+
             contentComponent={TabsContainer}>
           <Stack key="root" >      
-              <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" initial={true}/>
+              <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" />
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
-              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
+              <Scene key="channels"   component={ChannelsContainer} title="Channels" initial={true} />
               <Scene key="channel" component={ChannelContainer} title="Channel" />
               <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
               <Scene key="catalogue" component={CatalogueContainer} title="Catalogue"/>
@@ -62,7 +66,7 @@ export default class Routes extends React.Component {
               <Scene key="settings" component={SettingsContainer} title="Settings" />
               <Scene key="messages" component={MessagesContainer} title="Messages" />
               <Scene key="landing" component={LandingContainer} title="Landing" />
-              <Scene key="media"  component={MediaContainer} title="Media" />
+              <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
             </Stack>
             </Drawer>
         </RouterRedux>

@@ -120,6 +120,8 @@ export class ChannelItems extends React.Component {
     );
   }
   render() {
+    console.log("After Rendering " + JSON.stringify(this.props))
+
     if (this.props == "undefined") {
       return (
         <TouchableOpacity>

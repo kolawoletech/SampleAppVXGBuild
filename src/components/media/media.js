@@ -17,24 +17,28 @@ import {
   fetchMediaItemMetadata
 } from "../../actions/media/actions";
 
+import VideoPlayer from "react-native-video-player";
+import Drawer from "react-native-drawer";
+
 import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "rn-fetch-blob";
-var RNFS = require('react-native-fs');
-
+var RNFS = require("react-native-fs");
+import Tabs from "../tabs";
+import { white } from "ansi-colors";
 
 export class Media extends Component {
   _player = null;
-  
-  playerRef = undefined;
+
+  player = undefined;
   constructor(props) {
-    
+    //console.log( "Therea rre media page props" + this.props)
+
     super(props);
     this.index = 0;
-
 
     this.document_dir = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
 
@@ -56,61 +60,52 @@ export class Media extends Component {
     };
   }
 
-  _assignPlayer = plr => {
-    this.playerRef = plr;
-  };
-
-  _onBack = () => {
-    Actions.pop();
-
-    this.playerRef.close();
-  };
-
   onPlayURI = uri => {
     this.setState({
       hideVideo: false,
       uri: uri
     });
 
-    
+    if (this.state.hideVideo == true) {
+      console.log("Current Statte" + JSON.stringify(this.state));
+      console.log("First Block" + this.state.hideVideo);
+      //this.playerRef.close();
+      this.props.play(uri);
+      this.loadWithRetry(this.player, this.state.uri);
+      console.log(uri);
+      //this.playerRef.open();
+    } else if (this.state.hideVideo == false) {
+      console.log("Second Block" + this.state.hideVideo);
 
-    if (this.state.hideVideo == true){
-      console.log("Current Statte" + JSON.stringify(this.state))	
-         console.log("First Block" + this.state.hideVideo)
-        //this.playerRef.close();
-        this.props.play(uri);
-        this.loadWithRetry(this.playerRef, this.state.uri);
-        console.log(uri);
-        //this.playerRef.open();
-      } else  if (this.state.hideVideo == false){
-        console.log("Second Block" + this.state.hideVideo)
-  
-         this.playerRef.close();
-        this.props.play(uri);
-        this.loadWithRetry(this.playerRef, this.state.uri);
-        console.log(uri);
-        this.playerRef.open();
-      }
-
+      //this.player.close();
+      this.props.play(uri);
+      this.loadWithRetry(this.player, this.state.uri);
+      console.log(uri);
+      //this.player.open();
+    }
   };
 
   componentDidMount() {
     console.log("Current Statte" + JSON.stringify(this.state));
   }
+
   async componentWillUnmount() {
     console.log("unmount");
     console.log("Current Statte " + JSON.stringify(this.state));
-    if (this.playerRef) {
+    if (this.player) {
       console.log("unmount has playerRef");
+      this.props.play("");
       try {
         console.log("unmount call unloadAsync");
-        //await this.playerRef.unloadAsync();
+        //await this.player.stop();
+        this.props.play("");
         console.log("unmount unload sucess");
       } catch (e) {
         console.log("unmount unload failed");
       }
     } else {
       console.log("unmount no playerRef");
+      this.props.play("");
     }
   }
 
@@ -119,16 +114,10 @@ export class Media extends Component {
       hideVideo: true
     });
 
-
-
-    RNFS.unlink(uri).then(()=>{
-      
-
-    });
+    RNFS.unlink(uri).then(() => {});
     Actions.media();
 
-    console.log("Path to Delete" + uri)
-
+    console.log("Path to Delete" + uri);
 
     this.setState({
       showChild: false
@@ -137,7 +126,6 @@ export class Media extends Component {
     this.componentDidMount();
     //this.componentWillUnmount()
     this.componentWillMount();
-
 
     setTimeout(() => {
       this.setState({
@@ -176,33 +164,16 @@ export class Media extends Component {
     var len = input.length;
 
     for (var i = 0; i < len; i++) {
-
-  
-/* 
-      var stats = RNFetchBlob.fs.stat(loc + input[i])
-      .then((stats) => {
-        var size = stats.size;
-        var lastModified = stats.lastModified;
-        var type = stats.type
-        //arr.push({size})
-        console.log(size, type, lastModified)
-
-      })
-      .catch((err) => {
-        console.log(err)
-      }) */
-
       var key = input[i].replace(/(.*)\.[^.]+$/, "$1");
 
       arr.push({
         _id: key,
         name: input[i],
         isVideo: true,
-        uri: loc + input[i], 
+        uri: loc + input[i]
       });
 
       //console.log("These are styats: "+ JSON.stringify(stats))
-
     }
     return arr;
   }
@@ -228,7 +199,7 @@ export class Media extends Component {
 
   async componentWillMount() {
     console.log("Current Statte" + this.state);
-    await this.loadWithRetry(this.playerRef, this.props.uri);
+    await this.loadWithRetry(this.player, this.props.uri);
     console.log("load async success");
   }
   async componentWillMount() {
@@ -260,16 +231,12 @@ export class Media extends Component {
   }
 
   async loadWithRetry(player, uri) {
-    console.log("Retry")
-
-
-
+    console.log("Retry");
   }
-
 
   updatePlayerRef = async ref => {
     console.log("player changed");
-    if (this.playerRef) {
+    if (this.player) {
       console.log("has old player");
       try {
         console.log("updatePlayerRef call unloadAsync");
@@ -282,7 +249,7 @@ export class Media extends Component {
     } else {
       console.log("no old player");
     }
-    this.playerRef = ref;
+    this.player = ref;
   };
 
   render() {
@@ -298,47 +265,81 @@ export class Media extends Component {
       <View style={{ height: "100%" }}>
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-          style={{ height: "100%" }}
+          style={{ height: "100%", paddingTop: 35 }}
         >
-          <View>
-            {this.state.hideVideo !== true && (
-              <View>
-                <VXGMobileSDK
-                  style={{
-                    height: 250,
-                    width: "100%"
-                  }}
-                  ref={this._assignPlayer}
-                  config={{
-                    connectionUrl: this.state.uri,
-                    autoplay: true
-                  }}
-                />
-                <TouchableHighlight onPress={this._onBack}>
-                  <View style={styles.buttonText}>
-                    <Icon name="close" size={42} color="white" />
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Close
-                    </Text>
-                  </View>
-                </TouchableHighlight>
+          <Drawer
+            type="overlay"
+            tapToClose={true}
+            openDrawerOffset={0.2} // 20% gap on the right side of drawer
+            panCloseMask={0.2}
+            closedDrawerOffset={-3}
+            tweenHandler={ratio => ({
+              main: { opacity: (2 - ratio) / 2 }
+            })}
+            ref={ref => (this._drawer = ref)}
+            content={<Tabs />}
+          >
+          <View style={{
+            flexDirection : 'row',
+            justifyContent:'flex-start',
+            alignItems: 'center',
+            alignContent: 'flex-start'
+          
+          }}>
+          <TouchableHighlight
+              onPress={() => {
+                this._drawer.open();
+                this.setState({
+                  hideVideo: true
+                });
+              }}
+            >
+              <View
+                style={{
+                  padding: 5,
+                  width: 32
+                }}
+              >
+                <Icon name="menu" size={35} color="white" />
               </View>
-            )}
+            </TouchableHighlight>
+            <View>
+              <Text style={{
+                fontSize:21,
+                color:'#fff',
+                paddingLeft: 150,
+                fontWeight: 'bold',
+               
+              }}> Media</Text>
+            </View>
           </View>
-          {this.state.showChild || this.state.data !== undefined ? (
-            <MediaItems
-              list={videos}
-              _onPressDelete={this.onDeleteURI}
-              onPressItem={this.onPlayURI}
-            />
-          ) : (
-            <Text style={styles.text}>Nothing Here</Text>
-          )}
+  
+            <View>
+              {this.state.hideVideo !== true && (
+                <View>
+                  <VideoPlayer
+                    video={{ uri: this.state.uri }}
+                    resizeMode="contain"
+                    autoplay
+                    //duration={this.state.video.duration/* I'm using a hls stream here, react-native-video
+                    //can't figure out the length, so I pass it here from the vimeo config */}
+                    ref={r => (this.player = r)}
+                  />
+                </View>
+              )}
+            </View>
+            {this.state.showChild || this.state.data !== undefined ? (
+              <View>
+                <MediaItems
+                  list={videos}
+                  _onPressDelete={this.onDeleteURI}
+                  onPressItem={this.onPlayURI}
+                />
+              </View>
+            ) : (
+              <Text style={styles.text}>Nothing Here</Text>
+            )}
+          </Drawer>
         </LinearGradient>
       </View>
     );
@@ -361,12 +362,16 @@ export default connect(
   mapDispatchToProps
 )(Media);
 
+const drawerStyles = {
+  drawer: { shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 3 },
+  main: { paddingLeft: 3 }
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    //paddingTop: Constants.statusBarHeight,
     backgroundColor: "#ecf0f1"
   },
   buttonsContainer: {

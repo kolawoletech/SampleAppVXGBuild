@@ -15,7 +15,7 @@ AsyncStorage.getItem("aid").then(AID => {
 export const newRegisterUser = (aid) => dispatch => {
 
   //dispatch(apiUserRegistering());
-  console.log("AID Fdrom Action: " + aid)
+
   
 
 
@@ -28,7 +28,6 @@ export const newRegisterUser = (aid) => dispatch => {
     }
   };
 
-  console.log ( aid )
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)

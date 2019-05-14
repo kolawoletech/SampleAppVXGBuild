@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   FlatList,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -24,11 +25,18 @@ import _ from "lodash";
 class Channels extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      orientation: "",
+      screen: Dimensions.get("window")
+    };
   }
+
 
   async componentDidMount() {
     this.checkUserSignedIn();
   }
+  
 
  
   async checkUserSignedIn() {
@@ -58,6 +66,22 @@ class Channels extends Component {
     this.setState = {
       channels: data
     };
+
+    const { orientation : rotated } = this.props;
+
+
+    Dimensions.addEventListener("change", () => {
+   /*    this.setState({
+        orientation: isPortrait() ? "portrait" : "landscape"
+      }); */
+    });
+
+
+    const isPortrait = () => {
+      const dim = Dimensions.get("screen");
+      return dim.height >= dim.width;
+    };
+    
   }
 
 
@@ -65,7 +89,6 @@ class Channels extends Component {
   async getChannelsWithAID(){
     let AID = await AsyncStorage.getItem("aid");
     this.props.registerWithAID(AID)
-
   }
 
  
@@ -84,27 +107,23 @@ class Channels extends Component {
 
   render() {
     const { channels: data } = this.props;
-
-    //console.log(this.props)
-
-
+    const { orientation: rotated } = this.props;
 
     return (
       <LinearGradient
         colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-        style={{ height: "100%" }}
-      >
+        style={{ height: "100%" }}>
         <ChannelItems list={data} onPressItem={this.onRemoveChannel} />
       </LinearGradient>
     );
   }
 }
 
-const mapStateToProps = ({ routes, apiReducer: { channels, channel } }) => ({
+const mapStateToProps = ({ routes, apiReducer: { channels, channel }, orientation }) => ({
   routes: routes,
   //token: apiReducer.token,
   channels: channels,
-
+  orientation: orientation,
   channel: channel
 });
 

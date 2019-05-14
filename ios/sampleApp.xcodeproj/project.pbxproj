@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -41,6 +40,7 @@
 		D3210D04F6E4477CB66E123A /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFA27BAF725D4F048509BC87 /* Octicons.ttf */; };
 		D814358C228569AA003F08D4 /* license in Resources */ = {isa = PBXBuildFile; fileRef = D814358B228569AA003F08D4 /* license */; };
 		D814AB7F228025A100F8250C /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D814AB472280259300F8250C /* libART.a */; };
+		D83E3C26228B288A001E98C5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A670662274DB61001E12F3 /* libRCTVideo.a */; };
 		D88A123B227AE8DF008B7D57 /* ffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D88A123A227AE8D4008B7D57 /* ffmpeg.framework */; };
 		D88A123C227AE8DF008B7D57 /* ffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D88A123A227AE8D4008B7D57 /* ffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D89E5F8B22774967003C1F49 /* libRCTVXGMobileSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D89E5F2922773955003C1F49 /* libRCTVXGMobileSDK.a */; };
@@ -560,6 +560,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D83E3C26228B288A001E98C5 /* libRCTVideo.a in Frameworks */,
 				D814AB7F228025A100F8250C /* libART.a in Frameworks */,
 				D89E5F8B22774967003C1F49 /* libRCTVXGMobileSDK.a in Frameworks */,
 				D8A672DE2276DD47001E12F3 /* libRNGestureHandler.a in Frameworks */,
