@@ -398,16 +398,18 @@ export const fetchChannelGuide = id => dispatch => {
     .catch(err => console.log("An error occured", err));
 };
 
-export const fetchChannelChats = id => dispatch => {
+export const fetchChannelChats = (id, AID) => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    body: "aid="+AID,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
+
+  console.log(AID + " : + +++ USING AID");
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
@@ -440,12 +442,12 @@ export const fetchChannelChats = id => dispatch => {
     .catch(err => console.log("An error occured", err));
 };
 
-export const fetchProgramURILinks =  (id, profile_id) => dispatch => {
+export const fetchProgramURILinks =  (id, profile_id, aid ) => dispatch => {
   dispatch(apiUserRegistering());
-
+console.log("Program Links:  " + aid) 
   const options = {
     method: "POST",
-    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    body: "aid="+aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -605,12 +607,12 @@ export const fetchProgramURILinks =  (id, profile_id) => dispatch => {
   // .catch(err => console.log("An error occured", err))
 };
 
-export const fetchChannelRSTPLinks = (id, profile_id) => dispatch => {
+export const fetchChannelRSTPLinks = (id, profile_id, aid) => dispatch => {
   dispatch(apiUserRegistering());
-  console.log("OnPressItem: " + JSON.stringify(aid))
+  console.log("OnPressItem: " +  aid )
   const options = {
     method: "POST",
-    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    body: "aid="+aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -763,16 +765,18 @@ export const fetchCatalogue = ( aid ) => dispatch => {
     });
 };
 
-export const fetchChatStream = () => dispatch => {
+export const fetchChatStream = (aid) => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    body: "aid="+aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
+
+  console.log(" USING AUD: " + aid)
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)

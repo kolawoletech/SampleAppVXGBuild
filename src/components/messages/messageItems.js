@@ -46,9 +46,11 @@ export class MessageItems extends React.Component {
   }
 
   async _getImage(id) {
+    let AID = await AsyncStorage.getItem("aid");
+
     const options = {
       method: "POST",
-      body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+      body: "aid="+AID,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       }

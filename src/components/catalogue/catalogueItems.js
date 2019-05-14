@@ -5,9 +5,9 @@ import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
 import LinearGradient from 'react-native-linear-gradient';
 
-//import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { Card, CardTitle, CardContent, CardAction, CardButton, CardImage } from 'react-native-material-cards'
+import { AsyncStorage } from "react-native";
 
 export class CatalogueItems extends React.Component {
 
@@ -35,23 +35,22 @@ export class CatalogueItems extends React.Component {
             this.setState({
                 images: results
             })
-            //console.log( results, 'Done')
-
-
-
         }
     }
 
 
     async _getImage(id) {
+        let AID = await AsyncStorage.getItem("aid");
+
        
         const options = {
             method: 'POST',
-            body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+            body: "aid="+AID,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
+
 
         const url = 'https://nile.rtst.co.za/api/artist/6/tokens';
         const token = await fetch(url, options).then(token_data => token_data.json())

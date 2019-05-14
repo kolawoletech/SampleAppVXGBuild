@@ -16,12 +16,18 @@ var data = require('./data.json');
  
 class Messages extends Component {
 
-  componentDidMount() {
-    //this.props.loadMessages();
-    this.props.loadChats();
+  async componentDidMount() {
+    //this.props.loadChats();
+    await this.getMessagesWithAID();
     console.log("Loaded MESSAGES" + JSON.stringify(this.props));
-    //setInterval(() => { this.props.loadChats(), console.log("Run Later") }, 5);
+  }
 
+  async getMessagesWithAID(){
+    let AID = await AsyncStorage.getItem("aid");
+    //this.props.registerWithAID(AID)
+    const channel = this.props.channel;
+
+    this.props.loadChats(AID);
 
   }
 
@@ -47,15 +53,15 @@ class Messages extends Component {
 
  
 
-    console.log(JSON.stringify(this.props))
+    //console.log(JSON.stringify(this.props))
     
 
     return (
 /*       <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
         style={{ height: '100%' }}> */
         <View
-        style={{ height: '100%' , backgroundColor: '#0F516C'}}>
-         <MessageItems list={chatsData} />
+          style={{ height: '100%' , backgroundColor: '#0F516C'}}>
+          <MessageItems list={chatsData} />
          </View>
 
       /* </LinearGradient> */

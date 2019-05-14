@@ -121,7 +121,7 @@ export class Player extends React.Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     console.log("PLAYER PAYLOAD:............" + JSON.stringify(this.props));
     this.loadUsername();
     this.animate();
@@ -131,10 +131,21 @@ export class Player extends React.Component {
 
     console.log("Props From Player" + JSON.stringify(this.props));
 
+    
+      //this.props.loadChannelChats(channel.id);
+      await this.getMessagesWithAID()
+
+  }
+
+  async getMessagesWithAID(){
+    let AID = await AsyncStorage.getItem("aid");
+    //this.props.registerWithAID(AID)
+    const channel = this.props.channel;
     setTimeout(() => {
-      this.props.loadChannelChats(channel.id);
+      this.props.loadChannelChats(channel.id, AID );
       //console.log("Props From TimeOut" + JSON.stringify(this.props));
     }, 3000);
+
   }
 
   _onBack = () => {
@@ -161,7 +172,6 @@ export class Player extends React.Component {
       isDialogVisible: false
     });
     setTimeout(() => {
-      //this.props.loadChannelChats(channel.id);
       const updatedUsername = AsyncStorage.getItem("username");
 
       this.setState({

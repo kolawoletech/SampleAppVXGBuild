@@ -24,8 +24,8 @@ export class Channel extends React.Component {
         this.autoQualityClick = this.autoQualityClick.bind(this); 
     }
 
-    onFetchRSTPLink = (channelID, profileID) => {
-        this.props.fetchRstpLink(channelID, profileID)
+    onFetchRSTPLink = (channelID, profileID, AID) => {
+        this.props.fetchRstpLink(channelID, profileID, AID)
     };
 
     async getChannelImageWithAID(){

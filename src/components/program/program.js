@@ -47,8 +47,8 @@ export class Program extends React.Component {
     }
 
 
-    onFetchLink = (programmeID, profileID) => {
-        this.props.fetchLink(programmeID, profileID);
+    onFetchLink = (programmeID, profileID, AID ) => {
+        this.props.fetchLink(programmeID, profileID, AID );
         console.log("Working Fix")
   /*      
         this.refs.toast.show('Download Started, [Check Playlist when done]', 5000, () => {
@@ -234,18 +234,7 @@ export class Program extends React.Component {
                                         </TouchableOpacity>
                                     </View>
                                 </View>
-                                {/*                             <CardAction
-                                separator={true}
-                                inColumn={false}
-                                style={{
-                                    display: 'inline', maxHeight: 50, minHeight: 50, position: 'absolute', bottom: 1, width: '100%', textAlign: 'center'
-                                }}>
-                                <CardButton
-                                    onPress={() => { }}
-                                    title="Guide"
-                                    color="blue"
-                                />
-                            </CardAction> */}
+                       
                                 <View style={{ flexDirection: "row", paddingTop: 10 }}>
                                     <View
                                         style={{

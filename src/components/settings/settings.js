@@ -108,7 +108,7 @@ export class Settings extends Component {
       <View style={styles.container}>
         <View>
           <Text style={styles.title}>Version</Text>
-          <Text style={styles.entry}>1.0.6</Text>
+          <Text style={styles.entry}>1.0.5</Text>
         </View>
         <View>
           <Text style={styles.title}>Username</Text>

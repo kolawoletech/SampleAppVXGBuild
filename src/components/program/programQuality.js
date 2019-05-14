@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button, Alert } from 'react-native';
 import { styles } from './styles';
 import { connect } from 'react-redux';
+import { AsyncStorage } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -12,14 +13,31 @@ import { fetchProgramURILink, getUID } from '../../actions/api/actions';
 import Toast, {DURATION} from 'react-native-easy-toast'
 
 export class ProgramQuality extends React.Component {
+    constructor(props) {
+        super(props)
 
+        this.state = {
+            aid : ""
+        }
+    }
 
 
 
     handleButtonPress = () => {
     };
 
+    async componentDidMount(){
+        await AsyncStorage.getItem("aid").then((result) => {
+            console.log(result)
+            this.setState({
+                aid: result
+            })
+        });
 
+        console.log("Loadedf Chiledldj: =>" + this.state.aid)
+
+
+    }
 
     renderItem = (qualityList) => {
         const { pid } = this.props;
@@ -29,14 +47,11 @@ export class ProgramQuality extends React.Component {
         if (qualityList.profile_id == 7) {
             let quality = 7;
         }
-        //console.log(this.props)
-        //console.log(onPressItem)
 
-        //console.log(pid, qualityList.profile_id)
 
         return (
 
-            <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id)} key={qualityList.profile_id} >
+            <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id, this.state.aid)} key={qualityList.profile_id} >
 
                 {
                     <View>
