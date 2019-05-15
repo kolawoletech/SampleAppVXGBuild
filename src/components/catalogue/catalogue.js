@@ -111,7 +111,7 @@ class Catalogue extends Component {
       return(
         <LinearGradient
         colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-        style={{ height: "100%" }}s
+        style={{ height: "100%" }}
       >
         <View style={{ height: "100%" }}>
         {/* //TODO Find out why importan */}

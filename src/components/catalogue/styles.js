@@ -27,7 +27,10 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-
+    margin: 8
+  },
+  itemLandscape: {
+    margin: 12
   },
   text: {
     color: '#000',

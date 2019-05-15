@@ -17,6 +17,7 @@
     "prop-types": "^15.7.1",
     "react": "^16.6.3",
     "react-native": "0.58.5",
+    "react-native-cached-image": "^1.4.3",
     "react-native-check-box": "^2.1.7",
     "react-native-device-info": "^1.5.1",
     "react-native-dialog-input": "^1.0.7",

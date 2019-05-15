@@ -6,24 +6,26 @@ import {
   StyleSheet,
   FlatList,
   Button,
-  Image,  Dimensions
+  Image,
+  Dimensions
 } from "react-native";
+
+
+import { CachedImage } from 'react-native-cached-image';
+
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import LinearGradient from "react-native-linear-gradient";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
-import {
-  Card,
-  CardImage
-} from "react-native-material-cards";
+import { Card, CardImage } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
+let {width, height} = Dimensions.get('window')
 
 export class CatalogueItems extends React.Component {
   constructor(props) {
     super(props);
-    //this._onLayout= this._onLayout.bind(this);
     console.log(
       "THESE ARE THE PROPS IN CONSTRUCT~OR" +
         JSON.stringify(this.props.orientation)
@@ -31,8 +33,10 @@ export class CatalogueItems extends React.Component {
     this.state = {
       showTheThing: false,
       images: [],
-      facedown : this.props.orientation
+      facedown: this.props.orientation
     };
+
+
   }
 
   componentDidMount() {
@@ -41,14 +45,6 @@ export class CatalogueItems extends React.Component {
       "THESE ARE THE PROPS THAT DID MOUNT" +
         JSON.stringify(this.props.orientation)
     );
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.orientation!= nextProps.orientation){
-        console.log("Reload Compent")
-        this.forceUpdate();
-
-    }  
   }
 
 
@@ -64,20 +60,23 @@ export class CatalogueItems extends React.Component {
       });
     }
 
-    if (this.props.orientation!= prevProps.orientation){
-        console.log("Reload Compent")
+    if (this.props.orientation != prevProps.orientation) {
+      console.log("Reload Compent");
 
-        //const results = await Promise.all(promises);
-      
-        setTimeout(  
-          this.setState({
-            facedown: this.props.orientation
-          }),
-           3000);
+      this.setState({
+        facedown: this.props.orientation
+      });
 
+      const promises = this.props.list.map(item => {
+        return this._getImage(item.programme_id);
+      });
 
-        this.forceUpdate();
+      const results = await Promise.all(promises);
+      this.setState({
+        images: results
+      });
 
+      this.forceUpdate()
     }
   }
 
@@ -139,10 +138,9 @@ export class CatalogueItems extends React.Component {
                       .img
                   : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
               }}
-              resizeMode="stretch"
+              resizeMode="contain"
               style={{
-                width: "100%",
-                height: "80%",
+                
                 backgroundColor: "transparent",
                 maxHeight: 83,
                 minHeight: 83
@@ -159,7 +157,7 @@ export class CatalogueItems extends React.Component {
             <Icon
               size={22}
               color="white"
-              style={{ position: "absolute", top: 10, left: 10 }}
+              style={{ position: "absolute", left: 10 }}
               name="cloud-download"
               size={22}
               color="white"
@@ -169,14 +167,12 @@ export class CatalogueItems extends React.Component {
               numberOfLines={2}
               style={{
                 fontSize: 14,
-                height: "20%",
+                height: "30%",
                 width: "100%",
                 fontWeight: "normal",
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white",
-                maxHeight: 22,
-                minHeight: 22
               }}
             >
               {data.item.name}
@@ -191,7 +187,7 @@ export class CatalogueItems extends React.Component {
     return (
       <View style={{ width: "50%", height: "50%" }}>
         <TouchableOpacity
-          style={styles.item}
+          style={styles.itemLandscape}
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}
         >
@@ -206,17 +202,16 @@ export class CatalogueItems extends React.Component {
                   : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
               }}
               resizeMode="contain"
-              style={{
-                width: "100%",
-                height: "80%",
-                backgroundColor: "transparent"
-              
+              style={{  
+                backgroundColor: "transparent",
+                maxHeight: width* 0.2,
+                height:  width* 0.2,
               }}
             />
             <Icon
               size={22}
               color="white"
-              style={{ position: "absolute", top: 10, left: 10 }}
+              style={{ position: "absolute", left: 10 }}
               name="cloud-download"
               size={22}
               color="white"
@@ -226,17 +221,16 @@ export class CatalogueItems extends React.Component {
               numberOfLines={2}
               style={{
                 fontSize: 14,
-                height: "20%",
+                height:40,
+                maxHeight: 40,
                 width: "100%",
-                fontWeight: "normal",
+                fontWeight: "bold",
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white",
-                maxHeight: 22,
-                minHeight: 22
               }}
             >
-              Landscape{data.item.name}
+             {data.item.name}
             </Text>
           </Card>
         </TouchableOpacity>
@@ -246,12 +240,11 @@ export class CatalogueItems extends React.Component {
 
   onLayout(e) {
     this.setState({
-      width: Dimensions.get('window').width,
-      height: Dimensions.get('window').height,
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height
     });
   }
 
-  
   FlatListItemSeparator = () => {
     return (
       <View
@@ -272,36 +265,56 @@ export class CatalogueItems extends React.Component {
           <LoadingIndicator />
         </TouchableOpacity>
       );
-    } else if (this.state.facedown == 'portrait' ) {
+    } else if (this.state.facedown == "portrait") {
       const { list } = this.props;
       const { orientation } = this.props;
 
       return (
-        <View onLayout={this._onLayout}>       
+        <View>
+          {this.state.images.length === 0 && (
             <FlatList
               data={list}
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.programme_id.toString()}
               numColumns={2}
             />
+          )}
+          {this.state.images.length > 0 && (
+            <FlatList
+              data={list}
+              renderItem={item => this.renderItem(item)}
+              keyExtractor={item => item.programme_id.toString()}
+              numColumns={2}
+            />
+          )}
         </View>
       );
-    } else if (this.state.facedown== 'landscape' ){
+    } else if (this.state.facedown == "landscape") {
       const { list } = this.props;
       const { orientation } = this.props;
 
       return (
         <View onLayout={this._onLayout}>
+          {this.state.images.length === 0 && (
             <FlatList
               data={list}
               renderItem={item => this.renderItemInLandscape(item)}
               keyExtractor={item => item.programme_id.toString()}
-              numColumns={2}
-            /> 
+              numColumns={3}
+            />
+          )}
+          {this.state.images.length > 0 && (
+            <FlatList
+              data={list}
+              renderItem={item => this.renderItemInLandscape(item)}
+              keyExtractor={item => item.programme_id.toString()}
+              numColumns={3}
+            />
+          )}
         </View>
       );
-    } else{
-        <Text>Breakdown</Text>
+    } else {
+      <Text>Breakdown</Text>;
     }
   }
 }
