@@ -35,8 +35,6 @@ export class Media extends Component {
 
   player = undefined;
   constructor(props) {
-    //console.log( "Therea rre media page props" + this.props)
-
     super(props);
     this.index = 0;
 
@@ -69,19 +67,16 @@ export class Media extends Component {
     if (this.state.hideVideo == true) {
       console.log("Current Statte" + JSON.stringify(this.state));
       console.log("First Block" + this.state.hideVideo);
-      //this.playerRef.close();
+
       this.props.play(uri);
       this.loadWithRetry(this.player, this.state.uri);
       console.log(uri);
-      //this.playerRef.open();
     } else if (this.state.hideVideo == false) {
       console.log("Second Block" + this.state.hideVideo);
 
-      //this.player.close();
       this.props.play(uri);
       this.loadWithRetry(this.player, this.state.uri);
       console.log(uri);
-      //this.player.open();
     }
   };
 
@@ -308,9 +303,8 @@ export class Media extends Component {
                 fontSize:21,
                 color:'#fff',
                 paddingLeft: 150,
-                fontWeight: 'bold',
-               
-              }}> Media</Text>
+                fontWeight: 'bold',     
+              }}> Playlist</Text>
             </View>
           </View>
   
