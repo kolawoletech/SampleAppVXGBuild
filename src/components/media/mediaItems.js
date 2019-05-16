@@ -12,15 +12,18 @@ import {
   Dimensions
 } from "react-native";
 const { width, height } = Dimensions.get("window");
-
+import moment from "moment";
+import 'moment-timezone';
 import LinearGradient from 'react-native-linear-gradient';
 import RNFetchBlob from "rn-fetch-blob";
+var RNFS = require('react-native-fs');
 
 
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { AsyncStorage } from "react-native";
+import { setReadable } from "react-native-fs";
 
 
 export class MediaItems extends React.Component {
@@ -36,22 +39,33 @@ export class MediaItems extends React.Component {
   }
 
   async componentWillMount(){
-    
-    const statPromises = this.props.list.map(item => {
-      console.log("statPromises :" + item.uri)
-      return this._getPaths(item.uri);
-    });
 
-    const statsResults = await Promise.all(statPromises);
-
-    console.log("Logging The stat results" + statsResults)
-    //this._getPaths()
-
-    this.setState({
-      path: statsResults
-    });
+   
   }
 
+  async getDetails(){
+    const pathPromises = this.props.list.map(item => {
+      var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+
+      return this._getPaths(VIDEO_FOLDER+item._id+'.mp4', item._id);
+    });
+    const pathResults = await Promise.all(pathPromises);
+
+    this.setState({
+      path: pathResults
+     
+    });
+
+    
+    
+    console.log("These aere rtuemws Secons" + this.state.path )
+    setTimeout(() => {
+      console.log("These aere rtuemws Secons" + JSON.stringify(pathResults) )
+    }, 1000);
+    //console.log("NOW RUNIING")
+
+    //console.log(this.state.path)
+  }
 
   async componentDidUpdate(prevProps) {
     if ((this.props.list != prevProps.list)) {
@@ -64,21 +78,26 @@ export class MediaItems extends React.Component {
         return this._getImages(item._id);
       });
 
+      await this.getDetails()
+
+
+     
      
 
       const results = await Promise.all(promises);
       const thumbnailResults = await Promise.all(thumbmailPromises);
-      //const statsResults = await Promise.all(statPromises);
-
       
-      //console.log("Logging The stat results" + statsResults)
+      
 
       this.setState({
         metadata: results,
         thumbnails: thumbnailResults,
-        //path: statsResults
       });
+
     }
+
+
+
 
 
   }
@@ -162,14 +181,18 @@ export class MediaItems extends React.Component {
       });
   }
 
-  async _getPaths(path) {
-    RNFetchBlob.fs.stat(path).then((stats)=>{
-      var size = stats.size;
-      var lastModified = stats.lastModified;
-      var type = stats.type
-      console.log(size, type, lastModified)
+  async _getPaths(path, id) {
+   return await RNFS.stat(path).then((stats)=>{
+      let size = stats.size;
+      let creationTime = stats.ctime;
+   
+      let path = stats.path;
       
-      return { size, type, lastModified };
+      console.log(id, size, creationTime, path)
+
+      
+      
+      return { id, size, creationTime, path };
     }).catch(err=>{
       console.log(err)
     })
@@ -255,10 +278,21 @@ export class MediaItems extends React.Component {
               ellipsizeMode="tail"
               style={{ color: "white", margin: 6, fontSize: 13 }}
             >
-              {this.state.path.find(a => data.item.uri === a)
-                ? this.state.path.find(a => data.item.uri === a).size
-                : ""}
+              {this.state.path.find(a => data.item._id === a.id)
+                ? Math.floor(this.state.path.find(a => data.item._id === a.id).size/1000000) +"MB"
+                : "Network"}
             </Text>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ color: "white", margin: 6, fontSize: 13 }}
+            >
+              {this.state.path.find(a => data.item._id === a.id)
+                ?  moment(this.state.path.find(a => data.item._id === a.id).creationTime).format("YYYY-MM-DD h:mm:ss")
+                : "Network"}
+            </Text>
+
+            
             <View style={{
               justifyContent: 'center',
               flexDirection: 'row',
