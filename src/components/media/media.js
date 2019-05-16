@@ -274,40 +274,46 @@ export class Media extends Component {
             ref={ref => (this._drawer = ref)}
             content={<Tabs />}
           >
-          <View style={{
-            flexDirection : 'row',
-            justifyContent:'flex-start',
-            alignItems: 'center',
-            alignContent: 'flex-start'
-          
-          }}>
-          <TouchableHighlight
-              onPress={() => {
-                this._drawer.open();
-                this.setState({
-                  hideVideo: true
-                });
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                alignContent: "flex-start"
               }}
             >
-              <View
-                style={{
-                  padding: 5,
-                  width: 32
+              <TouchableHighlight
+                onPress={() => {
+                  this._drawer.open();
+                  this.setState({
+                    hideVideo: true
+                  });
                 }}
               >
-                <Icon name="menu" size={35} color="white" />
+                <View
+                  style={{
+                    padding: 5,
+                    width: 32
+                  }}
+                >
+                  <Icon name="menu" size={35} color="white" />
+                </View>
+              </TouchableHighlight>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 21,
+                    color: "#fff",
+                    paddingLeft: 150,
+                    fontWeight: "bold"
+                  }}
+                >
+                  {" "}
+                  Playlist
+                </Text>
               </View>
-            </TouchableHighlight>
-            <View>
-              <Text style={{
-                fontSize:21,
-                color:'#fff',
-                paddingLeft: 150,
-                fontWeight: 'bold',     
-              }}> Playlist</Text>
             </View>
-          </View>
-  
+
             <View>
               {this.state.hideVideo !== true && (
                 <View>
@@ -315,8 +321,7 @@ export class Media extends Component {
                     video={{ uri: this.state.uri }}
                     resizeMode="contain"
                     autoplay
-                    //duration={this.state.video.duration/* I'm using a hls stream here, react-native-video
-                    //can't figure out the length, so I pass it here from the vimeo config */}
+                    controls
                     ref={r => (this.player = r)}
                   />
                 </View>
