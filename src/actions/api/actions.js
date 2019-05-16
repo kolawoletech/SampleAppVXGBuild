@@ -128,7 +128,8 @@ export const switchQuality = (id, action) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/switch";
 
       var config = {
-        headers: { Authorization: "Bearer " + token_data["data"] }
+        headers: { Authorization: "Bearer " + token_data["data"] },
+        
       };
 
       axios
@@ -181,12 +182,12 @@ export const fetchChannels = () => dispatch => {
   // .catch(err => console.log("An error occured", err))
 };
 
-export const sendMessage = (id, opts) => dispatch => {
+export const sendMessage = (id, opts, aid) => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    body: "aid="+aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -208,7 +209,8 @@ export const sendMessage = (id, opts) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages";
 
       var config = {
-        headers: { Authorization: "Bearer " + token_data["data"] }
+        headers: { Authorization: "Bearer " + token_data["data"] },
+    
       };
 
       axios

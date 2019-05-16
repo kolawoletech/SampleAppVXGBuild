@@ -14,6 +14,7 @@ import { Actions } from "react-native-router-flux";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import moment from "moment";
 import "moment-timezone";
+import { AsyncStorage } from "react-native";
 
 export class MessageItems extends React.Component {
   constructor(props) {
@@ -32,58 +33,9 @@ export class MessageItems extends React.Component {
     //Actions.refresh({ key: 'drawer', open: false });
   }
 
-  async componentDidUpdate(prevProps) {
-    if (this.props.list != prevProps.list) {
-      const promises = this.props.list.map(item => {
-        return this._getImage(item.programme_id);
-      });
 
-      const results = await Promise.all(promises);
-      this.setState({
-        images: results
-      });
-    }
-  }
 
-  async _getImage(id) {
-    let AID = await AsyncStorage.getItem("aid");
 
-    const options = {
-      method: "POST",
-      body: "aid="+AID,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      }
-    };
-
-    const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-    const token = await fetch(url, options)
-      .then(token_data => token_data.json())
-      .then(token_data => {
-        //console.log("This is TOKEN from STORE "+ token_data["data"]);
-
-        return token_data["data"];
-      });
-    const channels_options = {
-      method: "GET",
-
-      headers: new Headers({
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/x-www-form-urlencoded"
-      })
-    };
-
-    const channel_url =
-      "https://nile.rtst.co.za/api/artist/6/programs/" + id + "/" + "icon/";
-
-    return await fetch(channel_url, channels_options)
-      .then(icon => icon.json())
-      .then(icon => {
-        let img = icon["data"];
-
-        return { id, img };
-      });
-  }
   renderItem = data => {
     const end = moment(data.item.end_date_time).format("h:mm a");
     const start = moment(data.item.start_date_time).format("h:mm");

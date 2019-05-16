@@ -173,8 +173,7 @@ export class CatalogueItems extends React.Component {
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white",
-              }}
-            >
+              }}>
               {data.item.name}
             </Text>
           </Card>
@@ -202,11 +201,11 @@ export class CatalogueItems extends React.Component {
                   : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
               }}
               resizeMode="contain"
-              style={{  
+              style={{
                 backgroundColor: "transparent",
-                maxHeight: width* 0.2,
-                height:  width* 0.2,
+
               }}
+             
             />
             <Icon
               size={22}
@@ -220,7 +219,7 @@ export class CatalogueItems extends React.Component {
             <Text
               numberOfLines={2}
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 height:40,
                 maxHeight: 40,
                 width: "100%",

@@ -29,7 +29,10 @@ class LoginFormComponent extends Component {
 
     if (!prevProps.error && error) Alert.alert('error', error);
     console.log("Logged: " +logged)
-    if (logged) Actions.reset('catalogue');
+    if (logged) {Actions.reset('catalogue')}
+    else {
+      Actions.catalogue()
+    }
   }
 
   render() {

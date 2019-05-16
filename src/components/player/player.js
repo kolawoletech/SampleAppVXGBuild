@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { AsyncStorage } from "react-native";
 import DialogInput from "react-native-dialog-input";
 
 import {
@@ -23,6 +22,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import Symbol from "react-native-vector-icons/MaterialCommunityIcons";
 import * as Progress from "react-native-progress";
 const { width, height } = Dimensions.get("window");
+import { AsyncStorage } from "react-native";
 
 import Messages from "./../messages";
 var data = require("./data.json");
@@ -54,6 +54,9 @@ export class Player extends React.Component {
       id: ""
     };
   }
+  
+ 
+
 
   animate() {
     let progress = 0;
@@ -78,22 +81,28 @@ export class Player extends React.Component {
     console.log("Progress Bar Clicked");
   }
 
-  decreaseQuality() {
+  async decreaseQuality() {
     var channelID = this.state.id;
+    let AID = await AsyncStorage.getItem("aid");
 
     const down = {
-      action: "down"
+      action: "down",
+      aid: "aid="+AID
     };
 
     this.props.switchStream(channelID, down);
   }
 
-  increaseQuality() {
+  async increaseQuality() {
     var channelID = this.state.id;
+    let AID = await AsyncStorage.getItem("aid");
 
     const down = {
-      action: "up"
+      action: "up",
+      aid: "aid="+AID
     };
+
+    console.log(AID)
 
     this.props.switchStream(channelID, down);
   }
@@ -187,9 +196,10 @@ export class Player extends React.Component {
     });
   };
 
-  sendChat = () => {
+  async sendChat(){
     console.log("Sending: " + JSON.stringify(this.state.newMessage));
     console.log("Send To API");
+    let AID = await AsyncStorage.getItem("aid");
 
     var content = this.state.newMessage;
     var username = this.state.username;
@@ -207,7 +217,11 @@ export class Player extends React.Component {
       console.log("Returned Username: " + username);
       const channel = this.props.channel;
 
-      this.props.postMessage(channel.id, opts);
+      this.props.postMessage(channel.id, opts, AID);
+      this.setState({
+        newMessage: ""
+      });
+
     }
   };
 
