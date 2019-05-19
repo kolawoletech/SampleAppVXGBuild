@@ -26,7 +26,7 @@ import { AsyncStorage } from "react-native";
 
 import Messages from "./../messages";
 var data = require("./data.json");
-
+var totalBitrate = 0;
 import {
   fetchChannelChats,
   sendMessage,
@@ -51,12 +51,11 @@ export class Player extends React.Component {
       indeterminate: true,
       cost: 5,
       timer: null,
-      id: ""
+      id: "",
+      totalRate: 0,
+      totalCost: 0
     };
   }
-  
- 
-
 
   animate() {
     let progress = 0;
@@ -87,7 +86,7 @@ export class Player extends React.Component {
 
     const down = {
       action: "down",
-      aid: "aid="+AID
+      aid: "aid=" + AID
     };
 
     this.props.switchStream(channelID, down);
@@ -99,10 +98,10 @@ export class Player extends React.Component {
 
     const down = {
       action: "up",
-      aid: "aid="+AID
+      aid: "aid=" + AID
     };
 
-    console.log(AID)
+    console.log(AID);
 
     this.props.switchStream(channelID, down);
   }
@@ -131,30 +130,65 @@ export class Player extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("PLAYER PAYLOAD:............" + JSON.stringify(this.props));
     this.loadUsername();
     this.animate();
     const channel = this.props.channel;
 
+    await AsyncStorage.getItem("costPerMB").then((costPerMB)=>{
+      this.setState({
+        rate : costPerMB
+      })
+
+    })
     this.setState({ id: channel.id });
 
-    console.log("Props From Player" + JSON.stringify(this.props));
 
-    
-      //this.props.loadChannelChats(channel.id);
-      await this.getMessagesWithAID()
+    timeout = ()  => {
+    var totalCost = totalBitrate*rate
+    this.setState({
+      totalCost : totalCost
+    });
+    const rate = this.state.rate
+    const totalRate = this.state.totalRate
+
+    console.log(rate*totalBitrate + " " + this.state.totalCost)
+  
+      setTimeout(function() {
+        // Do Something Here
+        // Then recall the parent function to
+        // create a recursive loop.
+        
+        var myArray = [5, 19, 4];
+        var rand = myArray[Math.floor(Math.random() * myArray.length)];
+
+
+        totalBitrate += rand;
+
+        console.log("TRhis is Random Bit" + rand);
+
+        console.log("TRhis is Total" + totalBitrate*rate + " " + rate);
+
+
+
+
+        this.timeout();
+      }, 1000);
+    }
+
+    timeout();
+    //this.props.loadChannelChats(channel.id);
+    await this.getMessagesWithAID();
 
   }
 
-  async getMessagesWithAID(){
+  async getMessagesWithAID() {
     let AID = await AsyncStorage.getItem("aid");
     //this.props.registerWithAID(AID)
     const channel = this.props.channel;
     setTimeout(() => {
-      this.props.loadChannelChats(channel.id, AID );
+      this.props.loadChannelChats(channel.id, AID);
       //console.log("Props From TimeOut" + JSON.stringify(this.props));
     }, 3000);
-
   }
 
   _onBack = () => {
@@ -196,7 +230,7 @@ export class Player extends React.Component {
     });
   };
 
-  async sendChat(){
+  async sendChat() {
     console.log("Sending: " + JSON.stringify(this.state.newMessage));
     console.log("Send To API");
     let AID = await AsyncStorage.getItem("aid");
@@ -221,9 +255,8 @@ export class Player extends React.Component {
       this.setState({
         newMessage: ""
       });
-
     }
-  };
+  }
 
   updateMessageState(text) {
     this.setState({ newMessage: text });
@@ -247,6 +280,7 @@ export class Player extends React.Component {
     const unfilledColorHex = "#000";
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
+
 
     return (
       <View>
@@ -367,6 +401,8 @@ export class Player extends React.Component {
   }
 
   render() {
+    const { totalRate } = this.state
+
     if (this.props == "undefined") {
       return <View />;
     } else {
@@ -393,6 +429,7 @@ export class Player extends React.Component {
           <ScrollView>
             <View>
               <View style={styles.messagesContainer}>
+              <Text>{ totalRate }</Text>
                 <Messages />
               </View>
               <View>

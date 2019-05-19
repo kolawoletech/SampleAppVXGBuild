@@ -188,10 +188,13 @@ export class Program extends React.Component {
                                         <Text
                                             numberOfLines={2}
                                             style={{
-                                                color: '#0F516C', fontSize: 19, fontWeight: 'bold', left: 10, backgroundColor: "rgba(255,255,255,0.5)", margin: 0, justifyContent: 'center', alignContent: 'center', alignItems: 'center',
-                                                width: '80%',
+                                                color: '#0F516C', fontSize: 19, fontWeight: 'bold', backgroundColor: "rgba(255,255,255,0.5)", margin: 0,
                                                 padding: 0,
-                                                justifyContent: 'center'
+                                                alignContent: 'center',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                textAlign: 'center'
+                                                
 
                                             }}>{list.name}</Text>
                                     </View>
@@ -242,6 +245,7 @@ export class Program extends React.Component {
                                             paddingTop: 6
                                         }}
                                     ><Text
+                                        
                                         style={{
                                             color: '#fff',
                                             padding: 7

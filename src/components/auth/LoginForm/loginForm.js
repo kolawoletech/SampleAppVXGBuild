@@ -22,6 +22,9 @@ class LoginFormComponent extends Component {
     this.props.restore();
     console.log(JSON.stringify(this.props))
     this.props.registerAID();
+
+    
+
   }
 
   componentDidUpdate(prevProps) {
@@ -29,7 +32,10 @@ class LoginFormComponent extends Component {
 
     if (!prevProps.error && error) Alert.alert('error', error);
     console.log("Logged: " +logged)
-    if (logged) {Actions.reset('media')}
+    if (logged) {Actions.reset('catalogue')}
+    else{
+      Actions.reset('catalogue')
+    }
   
   }
 
