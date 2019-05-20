@@ -59,6 +59,7 @@ export class Media extends Component {
   }
 
   onPlayURI = uri => {
+
     this.setState({
       hideVideo: false,
       uri: uri
@@ -92,7 +93,6 @@ export class Media extends Component {
       this.props.play("");
       try {
         console.log("unmount call unloadAsync");
-        //await this.player.stop();
         this.props.play("");
         console.log("unmount unload sucess");
       } catch (e) {
@@ -138,8 +138,7 @@ export class Media extends Component {
       <TouchableOpacity
         style={styles.item}
         onPress={() => onPressItem(i)}
-        key={i}
-      >
+        key={i}>
         <Text style={styles.text}>{text}</Text>
       </TouchableOpacity>
     );
@@ -148,7 +147,6 @@ export class Media extends Component {
     is_camera_visible: false,
     is_photo_visible: false,
     has_camera_permission: null,
-    //type: Camera.Constants.Type.back,
     progress_photos: []
   };
 
@@ -167,14 +165,11 @@ export class Media extends Component {
         isVideo: true,
         uri: loc + input[i]
       });
-
-      //console.log("These are styats: "+ JSON.stringify(stats))
     }
     return arr;
   }
 
   _convertArrayToObject2(input) {
-    //let loc = `${FileSystem.documentDirectory}NileMediaVideos/`;
 
     var arr = [];
     var len = input.length;
@@ -260,8 +255,7 @@ export class Media extends Component {
       <View style={{ height: "100%" }}>
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-          style={{ height: "100%", paddingTop: 35 }}
-        >
+          style={{ height: "100%", paddingTop: 35 }}>
           <Drawer
             type="overlay"
             tapToClose={true}
@@ -272,30 +266,26 @@ export class Media extends Component {
               main: { opacity: (2 - ratio) / 2 }
             })}
             ref={ref => (this._drawer = ref)}
-            content={<Tabs />}
-          >
+            content={<Tabs />}>
             <View
               style={{
                 flexDirection: "row",
                 justifyContent: "flex-start",
                 alignItems: "center",
                 alignContent: "flex-start"
-              }}
-            >
+              }}>
               <TouchableHighlight
                 onPress={() => {
                   this._drawer.open();
                   this.setState({
                     hideVideo: true
                   });
-                }}
-              >
+                }}>
                 <View
                   style={{
                     padding: 5,
                     width: 32
-                  }}
-                >
+                  }}>
                   <Icon name="menu" size={35} color="white" />
                 </View>
               </TouchableHighlight>
@@ -306,8 +296,7 @@ export class Media extends Component {
                     color: "#fff",
                     paddingLeft: 150,
                     fontWeight: "bold"
-                  }}
-                >
+                  }}>
                   {" "}
                   Playlist
                 </Text>

@@ -53,7 +53,10 @@ export class Player extends React.Component {
       timer: null,
       id: "",
       totalRate: 0,
-      totalCost: 0
+      totalCost: 0,
+      curremncySymbol: "",
+      totalBitrate:0,
+      totalDataUsage:0
     };
   }
 
@@ -129,56 +132,109 @@ export class Player extends React.Component {
     }
   }
 
+  async getCurrencySymbol() {
+    try {
+      const currencySymbol = await AsyncStorage.getItem("currencySymbol");
+      this.setState({ currencySymbol: currencySymbol });
+
+      console.log("This is this curremncySymbol" + this.state.currencySymbol);
+    } catch (error) {
+      // Manage error handling
+    }
+  }
+
   async componentDidMount() {
     this.loadUsername();
     this.animate();
+    this.getCurrencySymbol();
     const channel = this.props.channel;
 
-    await AsyncStorage.getItem("costPerMB").then((costPerMB)=>{
+    await AsyncStorage.getItem("costPerMB").then(costPerMB => {
       this.setState({
-        rate : costPerMB
-      })
-
-    })
+        rate: costPerMB
+      });
+    });
     this.setState({ id: channel.id });
 
+    timeout = () => {
+      var intRate = totalBitrate * rate;
+      var intTotalBitrate = parseFloat(totalBitrate);
+      var totalCost = parseInt(intTotalBitrate);
+      var VVV = totalCost * rate;
+      var parsedTotalCoast = parseFloat(totalCost);
 
-    timeout = ()  => {
-    var totalCost = totalBitrate*rate
-    this.setState({
-      totalCost : totalCost
-    });
-    const rate = this.state.rate
-    const totalRate = this.state.totalRate
+      const rate = this.state.rate;
+      const totalRate = this.state.totalRate;
 
-    console.log(rate*totalBitrate + " " + this.state.totalCost)
-  
-      setTimeout(function() {
-        // Do Something Here
-        // Then recall the parent function to
-        // create a recursive loop.
-        
-        var myArray = [5, 19, 4];
-        var rand = myArray[Math.floor(Math.random() * myArray.length)];
+      console.log(
+        parseInt(rate * totalBitrate, 10) + "  " + this.state.totalCost
+      );
 
+      setTimeout(
+        function() {
+          // Do Something Here
+          // Then recall the parent function to
+          // create a recursive loop.
 
-        totalBitrate += rand;
+          var myArray = [5, 19, 4];
+          var lowRange = [26, 30, 34, 38, 46, 54, 64];
+          var midRange = [0.14, 0.16, 0.19, 0.22, 0.28, 0.34, 0.4];
+          var HighRange = [500, 750, 1000, 1250];
 
-        console.log("TRhis is Random Bit" + rand);
+          var rand = midRange[Math.floor(Math.random() * midRange.length)];
 
-        console.log("TRhis is Total" + totalBitrate*rate + " " + rate);
+          totalBitrate += rand;
+          var num = parseFloat(totalBitrate * rate).toFixed(2);
 
+          console.log("TRhis is Total" + num);
 
+          this.setState({
+            totalCost: num,
+            totalDataUsage: parseFloat(totalBitrate).toFixed(2),
+            totalBitrate: rand*1000
+          });
 
-
-        this.timeout();
-      }, 1000);
-    }
+          timeout();
+        }.bind(this),
+        1000
+      );
+    };
 
     timeout();
     //this.props.loadChannelChats(channel.id);
     await this.getMessagesWithAID();
+  }
 
+  updateProgressBarOnWifi = () => {
+    switch(mMeasure) {
+      case "total":
+        text = "Banana is good!";
+        break;
+      case "cost":
+        text = "I am not a fan of orange.";
+        break;
+      case "average":
+        text = "How you like them apples?";
+        break;
+      default:
+        text = "I have never heard of that fruit...";
+    }
+  }
+
+  updateProgressBarOnData = () => {
+    switch(mMeasure) {
+      case "total":
+        text = "Banana is good!";
+        break;
+      case "Orange":
+        text = "I am not a fan of orange.";
+        break;
+      case "Apple":
+        text = "How you like them apples?";
+        break;
+      default:
+        text = "I have never heard of that fruit...";
+    }
   }
 
   async getMessagesWithAID() {
@@ -220,7 +276,6 @@ export class Player extends React.Component {
       this.setState({
         username: updatedUsername
       });
-      //console.log("Props From TimeOut" + JSON.stringify(this.props));
     }, 3000);
   }
 
@@ -274,13 +329,18 @@ export class Player extends React.Component {
   }
 
   renderVideo() {
+    const { totalCost } = this.state;
+    const { currencySymbol } = this.state;
+    const { totalBitrate } = this.state;
+    const { totalDataUsage } = this.state
+
+
     const rstp_link = this.props.link;
     const progressBarWidth = width * 0.84;
     const iconWidth = width * 0.08;
     const unfilledColorHex = "#000";
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
-
 
     return (
       <View>
@@ -336,6 +396,7 @@ export class Player extends React.Component {
                     top: 0,
                     left: 0
                   }}
+                  text="Wassup"
                   showsText={true}
                   color={filledColorHex}
                   borderWidth={1}
@@ -348,13 +409,12 @@ export class Player extends React.Component {
                 <Text
                   style={{
                     color: "#fff",
-
+                    paddingLeft: 4,
                     alignItems: "center",
                     justifyContent: "center",
                     alignContent: "center"
-                  }}
-                >
-                  {" "}
+                  }}>
+                  {currencySymbol} {totalCost} { totalBitrate } KB/S { totalDataUsage } MB
                 </Text>
               </View>
             </TouchableHighlight>
@@ -382,8 +442,6 @@ export class Player extends React.Component {
   };
 
   async _play1() {
-    // TODO reopen player
-    // console.log(this._player);
     await this._player.close();
     await this._player.applyConfig({
       connectionUrl: rstp_link,
@@ -401,7 +459,9 @@ export class Player extends React.Component {
   }
 
   render() {
-    const { totalRate } = this.state
+    const { totalCost } = this.state;
+
+    console.log("Total Cost:  " + this.state.totalCost);
 
     if (this.props == "undefined") {
       return <View />;
@@ -429,7 +489,6 @@ export class Player extends React.Component {
           <ScrollView>
             <View>
               <View style={styles.messagesContainer}>
-              <Text>{ totalRate }</Text>
                 <Messages />
               </View>
               <View>
@@ -500,13 +559,11 @@ export class Player extends React.Component {
 
 const mapStateToProps = ({ routes, apiReducer: { channel, chats } }) => ({
   routes: routes,
-  //token: token,
   channel: channel,
   chats: chats
 });
 
 const mapDispatchToProps = {
-  //videoObject: fetchVideoObject
   loadChannelChats: fetchChannelChats,
   postMessage: sendMessage,
   switchStream: switchQuality
