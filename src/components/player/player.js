@@ -43,6 +43,8 @@ export class Player extends React.Component {
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
     this.increaseQuality = this.increaseQuality.bind(this);
+    //this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
+
 
     this.state = {
       newMessage: "",
@@ -55,8 +57,10 @@ export class Player extends React.Component {
       totalRate: 0,
       totalCost: 0,
       curremncySymbol: "",
-      totalBitrate:0,
-      totalDataUsage:0
+      totalBitrate: 0,
+      totalDataUsage: 0,
+      progressText: "",
+      step: 0
     };
   }
 
@@ -79,8 +83,22 @@ export class Player extends React.Component {
     this.cost * seconds;
   }
 
-  clickProgressBar() {
-    console.log("Progress Bar Clicked");
+  clickProgressBar = ()  => {
+  
+    this.setState({
+      step: this.state.step + 1
+    });
+
+    if( this.state.step === 2){
+      this.setState({
+        step: 0
+      });  
+    }
+
+
+    this.updateProgressBarOnData();
+
+    console.log("Update Bar")
   }
 
   async decreaseQuality() {
@@ -156,6 +174,8 @@ export class Player extends React.Component {
     });
     this.setState({ id: channel.id });
 
+    
+
     timeout = () => {
       var intRate = totalBitrate * rate;
       var intTotalBitrate = parseFloat(totalBitrate);
@@ -191,7 +211,7 @@ export class Player extends React.Component {
           this.setState({
             totalCost: num,
             totalDataUsage: parseFloat(totalBitrate).toFixed(2),
-            totalBitrate: rand*1000
+            totalBitrate: rand * 1000
           });
 
           timeout();
@@ -206,7 +226,7 @@ export class Player extends React.Component {
   }
 
   updateProgressBarOnWifi = () => {
-    switch(mMeasure) {
+    switch (mMeasure) {
       case "total":
         text = "Banana is good!";
         break;
@@ -219,23 +239,30 @@ export class Player extends React.Component {
       default:
         text = "I have never heard of that fruit...";
     }
-  }
+  };
 
   updateProgressBarOnData = () => {
-    switch(mMeasure) {
-      case "total":
-        text = "Banana is good!";
-        break;
-      case "Orange":
-        text = "I am not a fan of orange.";
-        break;
-      case "Apple":
-        text = "How you like them apples?";
-        break;
-      default:
-        text = "I have never heard of that fruit...";
-    }
-  }
+    console.log("CRARARARARA")
+    
+    if (this.state.step === 0){
+      this.setState({
+        progressText: this.state.totalBitrate + "KB/S"
+      });
+
+      console.log(this.state.progressText + " _____State of Progress Text Aftyer Firsr________")
+    } else if( this.state.step === 1) {
+      this.setState({
+        progressText: this.state.currencySymbol + this.state.totalDataUsage
+      });
+
+    } else if (this.state.step ===2 ) {
+      this.setState({
+        progressText: this.state.totalDataUsage + "MB"
+      });
+
+    } 
+   
+  };
 
   async getMessagesWithAID() {
     let AID = await AsyncStorage.getItem("aid");
@@ -332,8 +359,7 @@ export class Player extends React.Component {
     const { totalCost } = this.state;
     const { currencySymbol } = this.state;
     const { totalBitrate } = this.state;
-    const { totalDataUsage } = this.state
-
+    const { totalDataUsage } = this.state;
 
     const rstp_link = this.props.link;
     const progressBarWidth = width * 0.84;
@@ -396,16 +422,26 @@ export class Player extends React.Component {
                     top: 0,
                     left: 0
                   }}
-                  text="Wassup"
                   showsText={true}
                   color={filledColorHex}
                   borderWidth={1}
                   unfilledColor={unfilledColorHex}
-                  progress={this.state.progress}
+                  //progress={this.state.progress}
                   indeterminate={this.state.indeterminate}
                   width={progressBarWidth}
                   height={iconWidth}
                 />
+{/*                 <Text
+                  style={{
+                    color: "#fff",
+                    paddingLeft: 4,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  {currencySymbol} {totalCost}
+                </Text>
                 <Text
                   style={{
                     color: "#fff",
@@ -413,9 +449,22 @@ export class Player extends React.Component {
                     alignItems: "center",
                     justifyContent: "center",
                     alignContent: "center"
-                  }}>
-                  {currencySymbol} {totalCost} { totalBitrate } KB/S { totalDataUsage } MB
+                  }}
+                >
+                  {totalBitrate} KB/S
                 </Text>
+                <Text
+                  style={{
+                    color: "#fff",
+                    paddingLeft: 4,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    alignContent: "center"
+                  }}
+                >
+                  {totalDataUsage} MB
+                </Text> */}
+                {this.renderProgressBarText()}
               </View>
             </TouchableHighlight>
           </View>
@@ -423,8 +472,7 @@ export class Player extends React.Component {
             <View
               style={{
                 width: iconWidth
-              }}
-            >
+              }} >
               <Symbol
                 name="chevron-double-right"
                 size={iconWidth}
@@ -432,6 +480,53 @@ export class Player extends React.Component {
               />
             </View>
           </TouchableHighlight>
+        </View>
+      </View>
+    );
+  }
+
+
+  renderProgressBarText() {
+    const { totalCost } = this.state;
+    const { currencySymbol } = this.state;
+    const { totalBitrate } = this.state;
+    const { totalDataUsage } = this.state;
+
+    const { progressText } = this.state;
+    console.log(this.state.progressText)
+
+    const rstp_link = this.props.link;
+    const progressBarWidth = width * 0.84;
+    const iconWidth = width * 0.08;
+    const unfilledColorHex = "#000";
+    const filledColorHex = "#0F516C";
+    const iconPosition = width * (2 * 0.08 + width * 0.5);
+
+  
+    
+
+    return (
+      <View>
+        <View style={styles.progressBarContainer}>
+          <View
+            style={{
+              width: progressBarWidth,
+              position: "relative"
+            }}>  
+              <View
+                style={{
+                  height:iconWidth
+                }}>
+                <Text
+                  style={{
+                    color: '#fff',
+                    fontSize:14,
+                    fontWeight: 'bold'
+                  }}>
+                  {progressText} 
+                </Text>
+              </View>
+          </View>
         </View>
       </View>
     );
