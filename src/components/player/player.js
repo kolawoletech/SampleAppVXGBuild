@@ -163,9 +163,9 @@ export class Player extends React.Component {
     this.animate();
     this.getCurrencySymbol();
     const channel = this.props.channel;
-    const selectedStream = this.props.quality
+    const selectedStream = this.props.quality;
 
-    console.log( "Selected     jjfjfjhfjfjfj: " + selectedStream)
+    console.log("Selected     jjfjfjhfjfjfj: " + selectedStream);
 
     await AsyncStorage.getItem("costPerMB").then(costPerMB => {
       this.setState({
@@ -193,17 +193,13 @@ export class Player extends React.Component {
           // Do Something Here
           // Then recall the parent function to
           // create a recursive loop.
-          const quality = this.props.qualityData
-          if ( quality === "MEDIUM"){
- 
+          const quality = this.props.qualityData;
+          if (quality === "MEDIUM") {
             var midRange = [0.14, 0.16, 0.19, 0.22, 0.28, 0.34, 0.4];
-
-          } else if (quality === "LOW"){
-            var midRange = [0.026, 0.030, 0.034, 0.038, 0.046, 0.054, 0.064];
-
-
-          } else if (quality === "HIGH"){
-            var midRange = [0.500, 0.750, 1, 1.250];
+          } else if (quality === "LOW") {
+            var midRange = [0.026, 0.03, 0.034, 0.038, 0.046, 0.054, 0.064];
+          } else if (quality === "HIGH") {
+            var midRange = [0.5, 0.75, 1, 1.25];
           }
           //var myArray = [5, 19, 4];
 
@@ -366,14 +362,16 @@ export class Player extends React.Component {
     const { totalDataUsage } = this.state;
 
     const rstp_link = this.props.link;
-    const selectedStream = this.props.quality
+    const selectedStream = this.props.quality;
     const progressBarWidth = width * 0.84;
     const iconWidth = width * 0.08;
     const unfilledColorHex = "#000";
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
 
-    console.log("Thes selected Stream is: ------------ " + JSON.stringify(this.props))
+    console.log(
+      "Thes selected Stream is: ------------ " + JSON.stringify(this.props)
+    );
 
     return (
       <View>
@@ -390,8 +388,7 @@ export class Player extends React.Component {
             <View
               style={{
                 width: iconWidth
-              }}
-            >
+              }}>
               <Symbol
                 name="chevron-double-left"
                 size={iconWidth}
@@ -404,24 +401,16 @@ export class Player extends React.Component {
             style={{
               width: progressBarWidth,
               position: "relative"
-            }}
-          >
-            <Symbol
-              style={{
-                position: "absolute",
-
-                zIndex: 1000,
-                alignContent: "center",
-                alignItems: "center",
-                justifyContent: "center",
-                left: iconPosition
-              }}
-              name="gesture-tap"
-              size={iconWidth}
-              color="white"
-            />
+            }}>
             <TouchableHighlight onPress={this.clickProgressBar}>
               <View>
+              <Symbol
+                style={{
+                  position: 'absolute',
+                  left: progressBarWidth/2.15
+                }} 
+                name="gesture-tap" size={iconWidth} color="white" />
+
                 <Progress.Bar
                   style={{
                     position: "absolute",
@@ -437,7 +426,7 @@ export class Player extends React.Component {
                   indeterminate={this.state.indeterminate}
                   width={progressBarWidth}
                   height={iconWidth}
-                />
+                />     
                 {this.state.step === 0 && (
                   <Text
                     style={{
@@ -446,8 +435,7 @@ export class Player extends React.Component {
                       alignItems: "center",
                       justifyContent: "center",
                       alignContent: "center"
-                    }}
-                  >
+                    }} >
                     {totalBitrate} KB/S
                   </Text>
                 )}
@@ -461,7 +449,6 @@ export class Player extends React.Component {
                       alignContent: "center"
                     }}
                   >
-                    {" "}
                     {currencySymbol} {totalCost}
                   </Text>
                 )}
@@ -475,7 +462,6 @@ export class Player extends React.Component {
                       alignContent: "center"
                     }}
                   >
-                    {" "}
                     {totalDataUsage} MB
                   </Text>
                 )}
@@ -501,13 +487,9 @@ export class Player extends React.Component {
   }
 
   renderProgressBarText() {
-
-
     const hjh = this.state.progressText;
 
-    
     const progressBarWidth = width * 0.84;
-
 
     return (
       <View>
@@ -516,14 +498,16 @@ export class Player extends React.Component {
             style={{
               width: progressBarWidth,
               position: "relative"
-            }}>
+            }}
+          >
             <View>
               <Text
                 style={{
                   color: "#fff",
                   fontSize: 14,
                   fontWeight: "bold"
-                }}>
+                }}
+              >
                 {hjh}
               </Text>
             </View>
@@ -557,13 +541,11 @@ export class Player extends React.Component {
   render() {
     const { totalCost } = this.state;
 
-
     console.log("Total Cost:  " + JSON.stringify(this.props.qualityData));
 
     if (this.props == "undefined") {
       return <View />;
     } else {
-      //const { list } = this.props;
 
       return (
         <View style={styles.container}>
