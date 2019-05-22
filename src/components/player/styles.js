@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     width: "100%",
-    height: 250
+    height: "100%"
   },
   progress: {
     margin: 10

@@ -39,11 +39,14 @@ export class Player extends React.Component {
 
   constructor() {
     super();
+    this.onLayout = this.onLayout.bind(this);
+
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
     this.increaseQuality = this.increaseQuality.bind(this);
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
+    //this.isPortrait = this.isPortrait.bind(this);
 
     this.state = {
       newMessage: "",
@@ -59,57 +62,31 @@ export class Player extends React.Component {
       totalBitrate: 0,
       totalDataUsage: 0,
       progressText: "",
-      step: 0
+      step: 0,
+      orientation: ""
     };
+
+    const isPortrait = () => {
+      const dim = Dimensions.get("screen");
+      return dim.height >= dim.width;
+    };
+
+    Dimensions.addEventListener("change", () => {
+      this.setState({
+        orientation: isPortrait() ? "portrait" : "landscape"
+      });
+
+      //this.forceUpdate()
+    });
+
+    console.log("SATWTWTWT: " + this.state.orientation);
   }
 
-  animate = () => {
-    const  one  = this.state;
-    console.log("This is ths statse: ij-----"  + JSON.stringify(one))
-    let progress = 0;
-    this.setState({ progress });
-    setTimeout(() => {
-      this.setState({ indeterminate: false });
-      setInterval(() => {
-        progress += Math.random() / 5;
-        if (progress > 1) {
-          progress = 1;
-        }
-        this.setState({ progress });
-      }, 500);
-    }, 1500);
-  }
-
-  animateWithArgs() {
-    const  one  = this.state;
-    console.log("This is ths statse: ij-----"  + JSON.stringify(one))
-    let progress = 0;
-    this.setState({ progress });
-    setTimeout(() => {
-      this.setState({ indeterminate: false });
-      setInterval(() => {
-        progress += Math.random() / 5;
-        if (progress > 1) {
-          progress = 1;
-        }
-        this.setState({ progress });
-      }, 500);
-    }, 1500);
-  }
-
-  animateBitRate() {
-    let progress = 0;
-    this.setState({ progress });
-    setTimeout(() => {
-      this.setState({ indeterminate: false });
-      setInterval(() => {
-        progress += this.state.totalRate / 5;
-        if (progress > 1) {
-          progress = 1;
-        }
-        this.setState({ progress });
-      }, 500);
-    }, 1500);
+  onLayout(e) {
+    this.setState({
+      width: Dimensions.get("window").width,
+      height: Dimensions.get("window").height
+    });
   }
 
   costCounter(seconds) {
@@ -128,8 +105,6 @@ export class Player extends React.Component {
     }
 
     this.updateProgressBarOnData();
-
-    console.log("Update Bar");
   };
 
   async decreaseQuality() {
@@ -153,8 +128,6 @@ export class Player extends React.Component {
       aid: "aid=" + AID
     };
 
-    console.log(AID);
-
     this.props.switchStream(channelID, down);
   }
 
@@ -163,7 +136,6 @@ export class Player extends React.Component {
       const value = await AsyncStorage.getItem("username");
       if (value !== null) {
         // We have data!!
-        console.log(value);
 
         return value;
       }
@@ -185,21 +157,30 @@ export class Player extends React.Component {
     try {
       const currencySymbol = await AsyncStorage.getItem("currencySymbol");
       this.setState({ currencySymbol: currencySymbol });
-
-      console.log("This is this curremncySymbol" + this.state.currencySymbol);
     } catch (error) {
       // Manage error handling
     }
   }
 
+  getOrientation = async () => {
+    if (Dimensions.get("window").width < Dimensions.get("window").height) {
+      this.setState({ orientation: "portrait" });
+    } else {
+      this.setState({ orientation: "landscape" });
+    }
+
+    console.log("SCREEN ORIENTATION: " + this.state.orientation);
+  };
   async componentDidMount() {
     this.loadUsername();
     //this.animate();
+    await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
-    const selectedStream = this.props.quality;
 
-    console.log("Selected     jjfjfjhfjfjfj: " + selectedStream);
+    Dimensions.addEventListener("change", () => {
+      this.getOrientation();
+    });
 
     await AsyncStorage.getItem("costPerMB").then(costPerMB => {
       this.setState({
@@ -218,10 +199,6 @@ export class Player extends React.Component {
       const rate = this.state.rate;
       const totalRate = this.state.totalRate;
 
-      console.log(
-        parseInt(rate * totalBitrate, 10) + "  " + this.state.totalCost
-      );
-
       setTimeout(
         function() {
           // Do Something Here
@@ -238,22 +215,19 @@ export class Player extends React.Component {
           //var myArray = [5, 19, 4];
 
           var rand = midRange[Math.floor(Math.random() * midRange.length)];
-          var maxRangeValue = Math.max.apply(Math, midRange) 
-          console.log("Triggered Balded:  " + parseFloat(maxRangeValue) )
-          var maxRangeValuePercentage = (parseFloat(rand)/  parseFloat(maxRangeValue) -0.1)
-          console.log("Max Percentage:  " + maxRangeValuePercentage)
+          var maxRangeValue = Math.max.apply(Math, midRange);
+          var maxRangeValuePercentage =
+            parseFloat(rand) / parseFloat(maxRangeValue) - 0.1;
 
           totalBitrate += rand;
           var num = parseFloat(totalBitrate * rate).toFixed(2);
 
-          console.log("TRhis is Total" + num);
-          
           this.setState({
             totalCost: num,
             totalDataUsage: parseFloat(totalBitrate).toFixed(2),
             totalBitrate: rand * 1000,
             indeterminate: false,
-            progress : maxRangeValuePercentage
+            progress: maxRangeValuePercentage
           });
 
           timeout();
@@ -284,8 +258,6 @@ export class Player extends React.Component {
   };
 
   updateProgressBarOnData() {
-    console.log("CRARARARARA");
-
     if (this.state.step === 0) {
       setTimeout(() => {
         this.setState({
@@ -310,7 +282,6 @@ export class Player extends React.Component {
     const channel = this.props.channel;
     setTimeout(() => {
       this.props.loadChannelChats(channel.id, AID);
-      //console.log("Props From TimeOut" + JSON.stringify(this.props));
     }, 3000);
   }
 
@@ -329,11 +300,7 @@ export class Player extends React.Component {
   }
 
   sendInput(inputText) {
-    console.log("sendInput (DialogInput#1):s " + inputText);
-
-    AsyncStorage.setItem("username", inputText).then(token => {
-      console.log(token);
-    });
+    AsyncStorage.setItem("username", inputText).then(token => {});
     this.setState({
       isDialogVisible: false
     });
@@ -353,8 +320,6 @@ export class Player extends React.Component {
   };
 
   async sendChat() {
-    console.log("Sending: " + JSON.stringify(this.state.newMessage));
-    console.log("Send To API");
     let AID = await AsyncStorage.getItem("aid");
 
     var content = this.state.newMessage;
@@ -370,7 +335,6 @@ export class Player extends React.Component {
         body: content
       };
 
-      console.log("Returned Username: " + username);
       const channel = this.props.channel;
 
       this.props.postMessage(channel.id, opts, AID);
@@ -408,147 +372,136 @@ export class Player extends React.Component {
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
 
-
     return (
       <View>
-        <VXGMobileSDK
-          style={styles.player}
-          ref={this._assignPlayer}
-          config={{
-            connectionUrl: rstp_link,
-            autoplay: true
-          }}
-        />
-        <View style={styles.progressBarContainer}>
-          <TouchableHighlight onPress={this.decreaseQuality}>
+        {this.state.orientation === "landscape" ? (
+          <VXGMobileSDK
+            style={styles.player}
+            ref={this._assignPlayer}
+            config={{
+              connectionUrl: rstp_link,
+              autoplay: true
+            }}
+          />
+        ) : null}
+        {this.state.orientation === "portrait" ||
+        this.state.orientation === "" ? (
+          <VXGMobileSDK
+            style={orientation.player}
+            ref={this._assignPlayer}
+            config={{
+              connectionUrl: rstp_link,
+              autoplay: true
+            }}
+          />
+        ) : null}
+        {this.state.orientation === "portrait" ? (
+          <View style={styles.progressBarContainer}>
+            <TouchableHighlight onPress={this.decreaseQuality}>
+              <View
+                style={{
+                  width: iconWidth
+                }}
+              >
+                <Symbol
+                  name="chevron-double-left"
+                  size={iconWidth}
+                  color="white"
+                />
+              </View>
+            </TouchableHighlight>
+
             <View
               style={{
-                width: iconWidth
-              }}>
-              <Symbol
-                name="chevron-double-left"
-                size={iconWidth}
-                color="white"
-              />
+                width: progressBarWidth,
+                position: "relative"
+              }}
+            >
+              <TouchableHighlight onPress={this.clickProgressBar}>
+                <View>
+                  <Symbol
+                    style={{
+                      position: "absolute",
+                      left: progressBarWidth / 2.15
+                    }}
+                    name="gesture-tap"
+                    size={iconWidth}
+                    color="white"
+                  />
+
+                  <Progress.Bar
+                    style={{
+                      position: "absolute",
+                      zIndex: -1,
+                      top: 0,
+                      left: 0
+                    }}
+                    showsText={true}
+                    color={filledColorHex}
+                    borderWidth={1}
+                    unfilledColor={unfilledColorHex}
+                    progress={this.state.progress}
+                    indeterminate={this.state.indeterminate}
+                    width={progressBarWidth}
+                    height={iconWidth}
+                  />
+                  {this.state.step === 0 && (
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 4,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      {totalBitrate} KB/S
+                    </Text>
+                  )}
+                  {this.state.step === 1 && (
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 4,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      {currencySymbol} {totalCost}
+                    </Text>
+                  )}
+                  {this.state.step === 2 && (
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 4,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}
+                    >
+                      {totalDataUsage} MB
+                    </Text>
+                  )}
+                </View>
+              </TouchableHighlight>
             </View>
-          </TouchableHighlight>
-
-          <View
-            style={{
-              width: progressBarWidth,
-              position: "relative"
-            }}>
-            <TouchableHighlight onPress={this.clickProgressBar}>
-              <View>
-              <Symbol
+            <TouchableHighlight onPress={this.increaseQuality}>
+              <View
                 style={{
-                  position: 'absolute',
-                  left: progressBarWidth/2.15
-                }} 
-                name="gesture-tap" size={iconWidth} color="white" />
-
-                <Progress.Bar
-                  style={{
-                    position: "absolute",
-                    zIndex: -1,
-                    top: 0,
-                    left: 0
-                  }}
-                  showsText={true}
-                  color={filledColorHex}
-                  borderWidth={1}
-                  unfilledColor={unfilledColorHex}
-                  progress={this.state.progress}
-                  indeterminate={this.state.indeterminate}
-                  width={progressBarWidth}
-                  height={iconWidth}
-                />     
-                {this.state.step === 0 && (
-                  <Text
-                    style={{
-                      color: "#fff",
-                      paddingLeft: 4,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }} >
-                    {totalBitrate} KB/S
-                  </Text>
-                )}
-                {this.state.step === 1 && (
-                  <Text
-                    style={{
-                      color: "#fff",
-                      paddingLeft: 4,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }}
-                  >
-                    {currencySymbol} {totalCost}
-                  </Text>
-                )}
-                {this.state.step === 2 && (
-                  <Text
-                    style={{
-                      color: "#fff",
-                      paddingLeft: 4,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      alignContent: "center"
-                    }}
-                  >
-                    {totalDataUsage} MB
-                  </Text>
-                )}
+                  width: iconWidth
+                }}
+              >
+                <Symbol
+                  name="chevron-double-right"
+                  size={iconWidth}
+                  color="white"
+                />
               </View>
             </TouchableHighlight>
           </View>
-          <TouchableHighlight onPress={this.increaseQuality}>
-            <View
-              style={{
-                width: iconWidth
-              }}
-            >
-              <Symbol
-                name="chevron-double-right"
-                size={iconWidth}
-                color="white"
-              />
-            </View>
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-
-  renderProgressBarText() {
-    const hjh = this.state.progressText;
-
-    const progressBarWidth = width * 0.84;
-
-    return (
-      <View>
-        <View style={styles.progressBarContainer}>
-          <View
-            style={{
-              width: progressBarWidth,
-              position: "relative"
-            }}
-          >
-            <View>
-              <Text
-                style={{
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: "bold"
-                }}
-              >
-                {hjh}
-              </Text>
-            </View>
-          </View>
-        </View>
+        ) : null}
       </View>
     );
   }
@@ -577,91 +530,94 @@ export class Player extends React.Component {
   render() {
     const { totalCost } = this.state;
 
-    console.log("Total Cost:  " + JSON.stringify(this.props.qualityData));
-
     if (this.props == "undefined") {
       return <View />;
     } else {
-
       return (
         <View style={styles.container}>
           <View>{this.renderVideo()}</View>
-
-          <TouchableHighlight onPress={this._onBack}>
-            <View style={styles.buttonText}>
-              <Icon name="close" size={42} color="white" />
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "bold"
-                }}>
-                Close
-              </Text>
-            </View>
-          </TouchableHighlight>
-
-          <ScrollView>
-            <View>
-              <View style={styles.messagesContainer}>
-                <Messages />
+          {this.state.orientation === "portrait" ? (
+            <TouchableHighlight onPress={this._onBack}>
+              <View style={styles.buttonText}>
+                <Icon name="close" size={42} color="white" />
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontWeight: "bold"
+                  }}
+                >
+                  Close
+                </Text>
               </View>
+            </TouchableHighlight>
+          ) : null}
+          {this.state.orientation === "portrait" ? (
+            <ScrollView>
               <View>
-                <DialogInput
-                  isDialogVisible={this.state.isDialogVisible}
-                  title={"Set Username"}
-                  submitInput={inputText => {
-                    this.sendInput(inputText);
+                <View style={styles.messagesContainer}>
+                  <Messages />
+                </View>
+                <View>
+                  <DialogInput
+                    isDialogVisible={this.state.isDialogVisible}
+                    title={"Set Username"}
+                    submitInput={inputText => {
+                      this.sendInput(inputText);
+                    }}
+                    closeDialog={() => {
+                      this.showDialog(false);
+                    }}
+                  />
+                </View>
+              </View>
+            </ScrollView>
+          ) : null}
+          {this.state.orientation === "portrait" ? (
+            <View style={styles.passwordContainer}>
+              <View style={{ width: "100%", flexDirection: "row" }}>
+                <TouchableHighlight
+                  style={{
+                    width: "90%"
                   }}
-                  closeDialog={() => {
-                    this.showDialog(false);
+                  onPress={this.checkIfAnon}
+                >
+                  <View>
+                    <TextInput
+                      style={styles.newInput}
+                      value={this.state.newMessage}
+                      onSubmitEditing={this.sendChat}
+                      placeholder="Type your message here ..."
+                      value={this.state.newMessage}
+                      //onSubmitEditing={this.sendChat}
+                      ref="newMessage"
+                      //onFocus={this.inputFocused.bind(this, "newMessage")}
+                      onBlur={() => {
+                        //this.refs.scrollView.scrollTo(0, 0);
+                      }}
+                      onChangeText={newMessage => this.setState({ newMessage })}
+                    />
+                  </View>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  style={{
+                    width: "10%"
                   }}
-                />
+                  onPress={this.sendChat}
+                >
+                  <View>
+                    <Icon
+                      name="send"
+                      size={22}
+                      color="white"
+                      style={{
+                        top: 20
+                      }}
+                    />
+                  </View>
+                </TouchableHighlight>
               </View>
             </View>
-          </ScrollView>
-          <View style={styles.passwordContainer}>
-            <View style={{ width: "100%", flexDirection: "row" }}>
-              <TouchableHighlight
-                style={{
-                  width: "90%"
-                }}
-                onPress={this.checkIfAnon}>
-                <View>
-                  <TextInput
-                    style={styles.newInput}
-                    value={this.state.newMessage}
-                    onSubmitEditing={this.sendChat}
-                    placeholder="Type your message here ..."
-                    value={this.state.newMessage}
-                    //onSubmitEditing={this.sendChat}
-                    ref="newMessage"
-                    //onFocus={this.inputFocused.bind(this, "newMessage")}
-                    onBlur={() => {
-                      //this.refs.scrollView.scrollTo(0, 0);
-                    }}
-                    onChangeText={newMessage => this.setState({ newMessage })}
-                  />
-                </View>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={{
-                  width: "10%"
-                }}
-                onPress={this.sendChat}
-              >
-                <View>
-                  <Icon
-                    name="send"
-                    size={22}
-                    color="white"
-                    style={{
-                      top: 20
-                    }}
-                  />
-                </View>
-              </TouchableHighlight>
-            </View>
-          </View>
+          ) : null}
         </View>
       );
     }
@@ -684,3 +640,18 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Player);
+
+const orientation = StyleSheet.create({
+  container: {
+    padding: 30,
+    marginTop: 65,
+    alignItems: "stretch"
+  },
+  player: {
+    paddingTop: 20,
+    borderWidth: 1,
+    borderColor: "black",
+    width: "100%",
+    height: 250
+  }
+});
