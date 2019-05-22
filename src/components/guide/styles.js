@@ -8,12 +8,6 @@ export const styles = StyleSheet.create({
     paddingVertical: 50,
     justifyContent: 'space-around',
   },
-  item: {
- 
-    borderRadius: 9 ,
-    margin: 5,
-
-  },
   container: {
     flex: 1,
 

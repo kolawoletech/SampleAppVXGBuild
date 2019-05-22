@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button, Image, ImageBackground } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, FlatList, Button, Image, ImageBackground,TouchableWithoutFeedback , TouchableHighlight} from 'react-native';
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { LoadingIndicator } from '../loadingIndicator/loadingIndicator';
@@ -87,14 +87,13 @@ export class GuideItems extends React.Component {
         const start= moment(data.item.start_date_time).format("h:mm");
         return (
             <View>
-                <TouchableOpacity style={styles.item} key={data.item.start_date_time} >
+                <TouchableHighlight style={styles.item} key={data.item.start_date_time} >
                     <LinearGradient
                         colors={['#0F516C', '#76B6C4']}
                         style={{
                             borderRadius: 3,
                         }}
-                        start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-                        >
+                        start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
 
                         <View
                             style={{
@@ -104,23 +103,23 @@ export class GuideItems extends React.Component {
 
                             }}>
                             <View
-                            style={{
-                                width: '30%',
-                               
+                                style={{
+                                    width: '30%',
+                                
 
-                            }}>
-                             
+                                }}>
                                <Text
-                               style={{
-                                fontWeight: 'bold',
-                                fontStyle: 'italic',
-                                fontSize: 12,
-                                color: 'white',
-                            
-                                top:'50%'
+                                    style={{
+                                        fontWeight: 'bold',
+                                        fontStyle: 'italic',
+                                        fontSize: 12,
+                                        color: 'white',
+                                    
+                                        top:'50%'
 
-                            }}
-                               > {start}-{end}</Text>
+                                    }}>
+                                    {start}-{end}
+                                </Text>
 
                             </View>
                             <View
@@ -153,7 +152,7 @@ export class GuideItems extends React.Component {
 
                     </LinearGradient>
 
-                </TouchableOpacity>
+                </TouchableHighlight>
             </View>
         );
     }
