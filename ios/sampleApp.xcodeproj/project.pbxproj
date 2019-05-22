@@ -1771,7 +1771,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = za.co.khholdings.nilemedia.ios;
 				PRODUCT_NAME = "Nile Media";
 				PROVISIONING_PROFILE_SPECIFIER = "Nile Media";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1811,7 +1811,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = za.co.khholdings.nilemedia.ios;
 				PRODUCT_NAME = "Nile Media";
 				PROVISIONING_PROFILE_SPECIFIER = "Nile Media";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
