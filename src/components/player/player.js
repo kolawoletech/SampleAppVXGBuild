@@ -43,8 +43,7 @@ export class Player extends React.Component {
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
     this.increaseQuality = this.increaseQuality.bind(this);
-    //this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
-
+    this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
 
     this.state = {
       newMessage: "",
@@ -83,23 +82,21 @@ export class Player extends React.Component {
     this.cost * seconds;
   }
 
-  clickProgressBar = ()  => {
-  
+  clickProgressBar = () => {
     this.setState({
       step: this.state.step + 1
     });
 
-    if( this.state.step === 2){
+    if (this.state.step === 2) {
       this.setState({
         step: 0
-      });  
+      });
     }
-
 
     this.updateProgressBarOnData();
 
-    console.log("Update Bar")
-  }
+    console.log("Update Bar");
+  };
 
   async decreaseQuality() {
     var channelID = this.state.id;
@@ -166,6 +163,9 @@ export class Player extends React.Component {
     this.animate();
     this.getCurrencySymbol();
     const channel = this.props.channel;
+    const selectedStream = this.props.quality
+
+    console.log( "Selected     jjfjfjhfjfjfj: " + selectedStream)
 
     await AsyncStorage.getItem("costPerMB").then(costPerMB => {
       this.setState({
@@ -173,8 +173,6 @@ export class Player extends React.Component {
       });
     });
     this.setState({ id: channel.id });
-
-    
 
     timeout = () => {
       var intRate = totalBitrate * rate;
@@ -195,11 +193,19 @@ export class Player extends React.Component {
           // Do Something Here
           // Then recall the parent function to
           // create a recursive loop.
+          const quality = this.props.qualityData
+          if ( quality === "MEDIUM"){
+ 
+            var midRange = [0.14, 0.16, 0.19, 0.22, 0.28, 0.34, 0.4];
 
-          var myArray = [5, 19, 4];
-          var lowRange = [26, 30, 34, 38, 46, 54, 64];
-          var midRange = [0.14, 0.16, 0.19, 0.22, 0.28, 0.34, 0.4];
-          var HighRange = [500, 750, 1000, 1250];
+          } else if (quality === "LOW"){
+            var midRange = [0.026, 0.030, 0.034, 0.038, 0.046, 0.054, 0.064];
+
+
+          } else if (quality === "HIGH"){
+            var midRange = [0.500, 0.750, 1, 1.250];
+          }
+          //var myArray = [5, 19, 4];
 
           var rand = midRange[Math.floor(Math.random() * midRange.length)];
 
@@ -241,28 +247,26 @@ export class Player extends React.Component {
     }
   };
 
-  updateProgressBarOnData = () => {
-    console.log("CRARARARARA")
-    
-    if (this.state.step === 0){
-      this.setState({
-        progressText: this.state.totalBitrate + "KB/S"
-      });
+  updateProgressBarOnData() {
+    console.log("CRARARARARA");
 
-      console.log(this.state.progressText + " _____State of Progress Text Aftyer Firsr________")
-    } else if( this.state.step === 1) {
+    if (this.state.step === 0) {
+      setTimeout(() => {
+        this.setState({
+          progressText: this.state.totalBitrate
+        });
+      }, 1000);
+      //while(this.state.step === 0)
+    } else if (this.state.step === 1) {
       this.setState({
         progressText: this.state.currencySymbol + this.state.totalDataUsage
       });
-
-    } else if (this.state.step ===2 ) {
+    } else if (this.state.step === 2) {
       this.setState({
         progressText: this.state.totalDataUsage + "MB"
       });
-
-    } 
-   
-  };
+    }
+  }
 
   async getMessagesWithAID() {
     let AID = await AsyncStorage.getItem("aid");
@@ -362,11 +366,14 @@ export class Player extends React.Component {
     const { totalDataUsage } = this.state;
 
     const rstp_link = this.props.link;
+    const selectedStream = this.props.quality
     const progressBarWidth = width * 0.84;
     const iconWidth = width * 0.08;
     const unfilledColorHex = "#000";
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
+
+    console.log("Thes selected Stream is: ------------ " + JSON.stringify(this.props))
 
     return (
       <View>
@@ -426,45 +433,52 @@ export class Player extends React.Component {
                   color={filledColorHex}
                   borderWidth={1}
                   unfilledColor={unfilledColorHex}
-                  //progress={this.state.progress}
+                  progress={this.state.progress}
                   indeterminate={this.state.indeterminate}
                   width={progressBarWidth}
                   height={iconWidth}
                 />
-{/*                 <Text
-                  style={{
-                    color: "#fff",
-                    paddingLeft: 4,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignContent: "center"
-                  }}
-                >
-                  {currencySymbol} {totalCost}
-                </Text>
-                <Text
-                  style={{
-                    color: "#fff",
-                    paddingLeft: 4,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignContent: "center"
-                  }}
-                >
-                  {totalBitrate} KB/S
-                </Text>
-                <Text
-                  style={{
-                    color: "#fff",
-                    paddingLeft: 4,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignContent: "center"
-                  }}
-                >
-                  {totalDataUsage} MB
-                </Text> */}
-                {this.renderProgressBarText()}
+                {this.state.step === 0 && (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      paddingLeft: 4,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    {totalBitrate} KB/S
+                  </Text>
+                )}
+                {this.state.step === 1 && (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      paddingLeft: 4,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    {" "}
+                    {currencySymbol} {totalCost}
+                  </Text>
+                )}
+                {this.state.step === 2 && (
+                  <Text
+                    style={{
+                      color: "#fff",
+                      paddingLeft: 4,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      alignContent: "center"
+                    }}
+                  >
+                    {" "}
+                    {totalDataUsage} MB
+                  </Text>
+                )}
               </View>
             </TouchableHighlight>
           </View>
@@ -472,7 +486,8 @@ export class Player extends React.Component {
             <View
               style={{
                 width: iconWidth
-              }} >
+              }}
+            >
               <Symbol
                 name="chevron-double-right"
                 size={iconWidth}
@@ -485,25 +500,14 @@ export class Player extends React.Component {
     );
   }
 
-
   renderProgressBarText() {
-    const { totalCost } = this.state;
-    const { currencySymbol } = this.state;
-    const { totalBitrate } = this.state;
-    const { totalDataUsage } = this.state;
 
-    const { progressText } = this.state;
-    console.log(this.state.progressText)
 
-    const rstp_link = this.props.link;
-    const progressBarWidth = width * 0.84;
-    const iconWidth = width * 0.08;
-    const unfilledColorHex = "#000";
-    const filledColorHex = "#0F516C";
-    const iconPosition = width * (2 * 0.08 + width * 0.5);
+    const hjh = this.state.progressText;
 
-  
     
+    const progressBarWidth = width * 0.84;
+
 
     return (
       <View>
@@ -512,20 +516,17 @@ export class Player extends React.Component {
             style={{
               width: progressBarWidth,
               position: "relative"
-            }}>  
-              <View
+            }}>
+            <View>
+              <Text
                 style={{
-                  height:iconWidth
+                  color: "#fff",
+                  fontSize: 14,
+                  fontWeight: "bold"
                 }}>
-                <Text
-                  style={{
-                    color: '#fff',
-                    fontSize:14,
-                    fontWeight: 'bold'
-                  }}>
-                  {progressText} 
-                </Text>
-              </View>
+                {hjh}
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -556,7 +557,8 @@ export class Player extends React.Component {
   render() {
     const { totalCost } = this.state;
 
-    console.log("Total Cost:  " + this.state.totalCost);
+
+    console.log("Total Cost:  " + JSON.stringify(this.props.qualityData));
 
     if (this.props == "undefined") {
       return <View />;
@@ -574,8 +576,7 @@ export class Player extends React.Component {
                 style={{
                   fontSize: 18,
                   fontWeight: "bold"
-                }}
-              >
+                }}>
                 Close
               </Text>
             </View>
@@ -590,8 +591,6 @@ export class Player extends React.Component {
                 <DialogInput
                   isDialogVisible={this.state.isDialogVisible}
                   title={"Set Username"}
-                  //message={"Message for DialogInput #1"}
-
                   submitInput={inputText => {
                     this.sendInput(inputText);
                   }}
@@ -608,8 +607,7 @@ export class Player extends React.Component {
                 style={{
                   width: "90%"
                 }}
-                onPress={this.checkIfAnon}
-              >
+                onPress={this.checkIfAnon}>
                 <View>
                   <TextInput
                     style={styles.newInput}

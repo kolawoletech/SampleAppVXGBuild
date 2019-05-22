@@ -126,8 +126,7 @@ export class CatalogueItems extends React.Component {
         <TouchableOpacity
           style={styles.item}
           key={data.item.programme_id}
-          onPress={() => Actions.program({ programData: data.item })}
-        >
+          onPress={() => Actions.program({ programData: data.item })}>
           <Card>
             <CardImage
               source={{

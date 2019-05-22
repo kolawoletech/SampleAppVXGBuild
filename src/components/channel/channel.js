@@ -24,8 +24,9 @@ export class Channel extends React.Component {
         this.autoQualityClick = this.autoQualityClick.bind(this); 
     }
 
-    onFetchRSTPLink = (channelID, profileID, AID) => {
-        this.props.fetchRstpLink(channelID, profileID, AID)
+    onFetchRSTPLink = (channelID, profileID, AID, quality) => {
+        this.props.fetchRstpLink(channelID, profileID, AID, quality)
+
     };
 
     async getChannelImageWithAID(){
@@ -37,7 +38,6 @@ export class Channel extends React.Component {
     }
 
     autoQualityClick (){
-        console.log("Button Auto Quality Played")
         const {
             quality: qualityList
         } = this.props.channelData;
@@ -106,9 +106,10 @@ export class Channel extends React.Component {
                                 />
                             </TouchableHighlight>
                             
-                            <View style={{
-                                paddingBottom: 20
-                            }}>
+                            <View 
+                                style={{
+                                    paddingBottom: 20
+                                }}>
                                 <Text style={styles.text}>Auto Quality</Text>
                             </View>
                         </View>

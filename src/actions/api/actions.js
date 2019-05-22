@@ -608,7 +608,7 @@ console.log("Program Links:  " + aid)
   // .catch(err => console.log("An error occured", err))
 };
 
-export const fetchChannelRSTPLinks = (id, profile_id, aid) => dispatch => {
+export const fetchChannelRSTPLinks = (id, profile_id, aid, quality) => dispatch => {
   dispatch(apiUserRegistering());
   console.log("OnPressItem: " +  aid )
   const options = {
@@ -633,20 +633,17 @@ export const fetchChannelRSTPLinks = (id, profile_id, aid) => dispatch => {
         })
       };
 
-      const program_url =
-        "https://nile.rtst.co.za/api/artist/6/channels/" +
-        id +
-        "/uri/" +
-        profile_id +
-        "/";
+      const program_url = "https://nile.rtst.co.za/api/artist/6/channels/"+id +"/uri/"+profile_id +"/";
 
       fetch(program_url, programs_options)
         .then(uri => uri.json())
         .then(uri => {
           let link = uri["data"];
-
+          console.log("You picked: " + quality)
           dispatch(channelRstpLinkLoaded(link));
-          Actions.player({ link });
+          //dispatch(streamLoadedType(quality))
+
+          Actions.player({ link ,qualityData:  quality });
         });
     });
 };
@@ -689,7 +686,7 @@ export const playHighRSTPStream = (id, profile_id) => dispatch => {
           let link = uri["data"];
 
           dispatch(channelRstpLinkLoaded(link));
-          Actions.player({ link });
+          Actions.player({ link, qualityData : "HIGH"});
           console.log(link);
         });
     });
@@ -890,6 +887,11 @@ const programUriLinkObjectCreated = () => ({
 const channelRstpLinkLoaded = link => ({
   type: types.CHANNEL_RSTP_LINK_LOADED,
   link
+});
+
+const streamLoadedType = quality => ({
+  type: types.STREAM_LOADED_TYPE,
+  quality
 });
 
 const messagesLoaded = chatMessages => ({

@@ -161,17 +161,17 @@ const apiReducer = (state = initialState, action) => {
           loaded: true,
           chats: action.chatMessages
         };
-     /*  case types.SIGNUP_SUCCESS:
+      case types.STREAM_LOADED_TYPE:
         return {
           ...state,
           restoring: false,
           loading: false,
-          user: action.user,
+          quality: action.quality,
           error: null,
           logged: null,
           registered: true
         };
-      case types.SESSION_ERROR:
+      /* case types.SESSION_ERROR:
         return {
           ...state,
           restoring: false,
