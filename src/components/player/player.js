@@ -63,13 +63,47 @@ export class Player extends React.Component {
     };
   }
 
-  animate() {
+  animate = () => {
+    const  one  = this.state;
+    console.log("This is ths statse: ij-----"  + JSON.stringify(one))
     let progress = 0;
     this.setState({ progress });
     setTimeout(() => {
       this.setState({ indeterminate: false });
       setInterval(() => {
         progress += Math.random() / 5;
+        if (progress > 1) {
+          progress = 1;
+        }
+        this.setState({ progress });
+      }, 500);
+    }, 1500);
+  }
+
+  animateWithArgs() {
+    const  one  = this.state;
+    console.log("This is ths statse: ij-----"  + JSON.stringify(one))
+    let progress = 0;
+    this.setState({ progress });
+    setTimeout(() => {
+      this.setState({ indeterminate: false });
+      setInterval(() => {
+        progress += Math.random() / 5;
+        if (progress > 1) {
+          progress = 1;
+        }
+        this.setState({ progress });
+      }, 500);
+    }, 1500);
+  }
+
+  animateBitRate() {
+    let progress = 0;
+    this.setState({ progress });
+    setTimeout(() => {
+      this.setState({ indeterminate: false });
+      setInterval(() => {
+        progress += this.state.totalRate / 5;
         if (progress > 1) {
           progress = 1;
         }
@@ -160,7 +194,7 @@ export class Player extends React.Component {
 
   async componentDidMount() {
     this.loadUsername();
-    this.animate();
+    //this.animate();
     this.getCurrencySymbol();
     const channel = this.props.channel;
     const selectedStream = this.props.quality;
@@ -204,16 +238,22 @@ export class Player extends React.Component {
           //var myArray = [5, 19, 4];
 
           var rand = midRange[Math.floor(Math.random() * midRange.length)];
+          var maxRangeValue = Math.max.apply(Math, midRange) 
+          console.log("Triggered Balded:  " + parseFloat(maxRangeValue) )
+          var maxRangeValuePercentage = (parseFloat(rand)/  parseFloat(maxRangeValue) -0.1)
+          console.log("Max Percentage:  " + maxRangeValuePercentage)
 
           totalBitrate += rand;
           var num = parseFloat(totalBitrate * rate).toFixed(2);
 
           console.log("TRhis is Total" + num);
-
+          
           this.setState({
             totalCost: num,
             totalDataUsage: parseFloat(totalBitrate).toFixed(2),
-            totalBitrate: rand * 1000
+            totalBitrate: rand * 1000,
+            indeterminate: false,
+            progress : maxRangeValuePercentage
           });
 
           timeout();
@@ -362,16 +402,12 @@ export class Player extends React.Component {
     const { totalDataUsage } = this.state;
 
     const rstp_link = this.props.link;
-    const selectedStream = this.props.quality;
     const progressBarWidth = width * 0.84;
     const iconWidth = width * 0.08;
     const unfilledColorHex = "#000";
     const filledColorHex = "#0F516C";
     const iconPosition = width * (2 * 0.08 + width * 0.5);
 
-    console.log(
-      "Thes selected Stream is: ------------ " + JSON.stringify(this.props)
-    );
 
     return (
       <View>

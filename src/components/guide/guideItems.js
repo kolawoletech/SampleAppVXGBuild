@@ -25,7 +25,6 @@ export class GuideItems extends React.Component {
     }
 
     componentWillMount() {
-        //Actions.refresh({ key: 'drawer', open: false });
     }
 
     async  componentDidUpdate(prevProps) {
@@ -41,7 +40,6 @@ export class GuideItems extends React.Component {
             })
         }
     }
-
 
     async _getImage(id) {
         let AID = await AsyncStorage.getItem("aid");
@@ -80,128 +78,118 @@ export class GuideItems extends React.Component {
 
                 return { id, img }
             })
-
-    }
-    renderItem = (data) => {
-        const end = moment(data.item.end_date_time).format("h:mm a");
-        const start= moment(data.item.start_date_time).format("h:mm");
-        return (
-            <View>
-                <TouchableHighlight style={styles.item} key={data.item.start_date_time} >
-                    <LinearGradient
-                        colors={['#0F516C', '#76B6C4']}
-                        style={{
-                            borderRadius: 3,
-                        }}
-                        start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                padding: 7,
-                                borderRadius: 3,
-
-                            }}>
-                            <View
-                                style={{
-                                    width: '30%',
-                                
-
-                                }}>
-                               <Text
-                                    style={{
-                                        fontWeight: 'bold',
-                                        fontStyle: 'italic',
-                                        fontSize: 12,
-                                        color: 'white',
-                                    
-                                        top:'50%'
-
-                                    }}>
-                                    {start}-{end}
-                                </Text>
-
-                            </View>
-                            <View
-                                style={{
-                                    padding: 7,
-                                    width: '70%',
-
-                                }}>
-                                <Text
-                                
-                                    style={styles.programTitle}
-                                    color='white'
-                                >{data.item.name}</Text>
-                                <Text
-                                    
-                                    style={styles.programDescription}
-                                    color='white'
-                                ></Text>
-
-                                <Text
-                                  
-                                    style={styles.programDescription}
-                                    color='white'
-                                >{data.item.description}</Text>
-
-                            </View>
-
-                        </View>
+        }
 
 
-                    </LinearGradient>
-
-                </TouchableHighlight>
-            </View>
-        );
-    }
-
-    FlatListItemSeparator = () => {
-        return (
-            <View style={{
-                height: .5,
-                width: "100%",
-                backgroundColor: "rgba(0,0,0,0.5)",
-            }}
-            />
-        );
-    }
-    render() {
-        if (this.props == "undefined") {
-            return (
-                <TouchableOpacity>
-                    <LoadingIndicator />
-                </TouchableOpacity>
-            );
-        } else if(this.props.list != null){
-            const { list } = this.props;
-            console.log(list + "  Empty "+ this.props.list )
+        renderItem = (data) => {
+            const end = moment(data.item.end_date_time).format("h:mm a");
+            const start= moment(data.item.start_date_time).format("h:mm");
             return (
                 <View>
-                {this.state.images.length === 0 && <FlatList
-                    data={list}
-                    renderItem={item => this.renderItem(item)}
-                    keyExtractor={item => item.start_date_time.toString()}
+                    <TouchableHighlight style={styles.item} key={data.item.start_date_time} >
+                        <LinearGradient
+                            colors={['#0F516C', '#76B6C4']}
+                            style={{
+                                borderRadius: 3,
+                            }}
+                            start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
 
-                />}
-                {this.state.images.length > 0 &&
-                    <FlatList
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    padding: 7,
+                                    borderRadius: 3,
+
+                                }}>
+                                <View
+                                    style={{
+                                        width: '30%',
+                                    
+
+                                    }}>
+                                <Text
+                                        style={{
+                                            fontWeight: 'bold',
+                                            fontStyle: 'italic',
+                                            fontSize: 12,
+                                            color: 'white',
+                                        
+                                            top:'50%'
+
+                                        }}>
+                                        {start}-{end}
+                                    </Text>
+
+                                </View>
+                                <View
+                                    style={{
+                                        padding: 7,
+                                        width: '70%',
+
+                                    }}>
+                                    <Text
+                                    
+                                        style={styles.programTitle}
+                                        color='white'>{data.item.name}
+                                    </Text>
+
+                                    <Text
+                                        style={styles.programDescription}
+                                        color='white'>{data.item.description}
+                                    </Text>
+                                </View>
+                            </View>
+                        </LinearGradient>
+                    </TouchableHighlight>
+                </View>
+            );
+        }
+
+        FlatListItemSeparator = () => {
+            return (
+                <View style={{
+                    height: .5,
+                    width: "100%",
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                }}
+                />
+            );
+        }
+        render() {
+            if (this.props == "undefined") {
+                return (
+                    <TouchableOpacity>
+                        <LoadingIndicator />
+                    </TouchableOpacity>
+                );
+            } else if(this.props.list != null){
+                const { list } = this.props;
+                console.log(list + "  Empty "+ this.props.list )
+                return (
+                    <View>
+                    {this.state.images.length === 0 && <FlatList
                         data={list}
                         renderItem={item => this.renderItem(item)}
                         keyExtractor={item => item.start_date_time.toString()}
-                        
+
                     />}
-            </View>
-            );
-           
-             
-        } else {
-            return(
-                <View>
-                    <Text>Nothing is scheduled Yet</Text>
+                    {this.state.images.length > 0 &&
+                        <FlatList
+                            data={list}
+                            renderItem={item => this.renderItem(item)}
+                            keyExtractor={item => item.start_date_time.toString()}
+                            
+                        />}
                 </View>
-               )
+                );
+            
+                
+            } else {
+                return(
+                    <View>
+                        <Text>Nothing is scheduled Yet</Text>
+                    </View>
+                )
+            }
         }
-    }
 }
