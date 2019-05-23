@@ -70,6 +70,7 @@ export default class Tabs extends React.Component {
             />
             <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
           </TouchableOpacity>
+    
 
         </View>
 

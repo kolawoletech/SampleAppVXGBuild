@@ -75,11 +75,8 @@ export class Player extends React.Component {
       this.setState({
         orientation: isPortrait() ? "portrait" : "landscape"
       });
-
-      //this.forceUpdate()
     });
 
-    console.log("SATWTWTWT: " + this.state.orientation);
   }
 
   onLayout(e) {
@@ -135,12 +132,9 @@ export class Player extends React.Component {
     try {
       const value = await AsyncStorage.getItem("username");
       if (value !== null) {
-        // We have data!!
-
         return value;
       }
     } catch (error) {
-      // Error retrieving data
     }
   };
 

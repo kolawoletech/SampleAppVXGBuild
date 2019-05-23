@@ -105,12 +105,7 @@ export class Settings extends Component {
     } else {
       console.log("SOmething is off")
     }
-/*     let value = await AsyncStorage.getItem("wifiBoolValue");
-    var boolValue = value == "true" || value == "false";
 
-    this.setState({
-      isChecked: boolValue
-    }); */
   };
 
   _setDownloadOverWifiOnly = async () => {

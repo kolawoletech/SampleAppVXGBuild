@@ -414,7 +414,8 @@ export const fetchChannelChats = (id, AID) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages/";
 
       fetch(messages_url, programs_options, { cache: "no-cache" })
-        .then(chats => chats.json())
+      .then(chats => chats.json())
+
         .then(chats => {
           let chatStream = chats["data"];
           console.log(
@@ -486,8 +487,8 @@ export const fetchProgramURILinks = (id, profile_id, aid) => dispatch => {
                 if (result === "true" && data.type !== "wifi") {
                   console.log(result + "" + data.type);
                   Alert.alert(
-                    "Download Stopped",
-                    "Uncheck  - Downloads over Wi-Fi - Only in Setting"
+                    "No WIFI COnnection",
+                    "[If you wish to download over your mobile network then the WI-FI only settings in the settings menu must be switched off]"
                   );
                 } else {
                   this.createDirectory();
@@ -743,25 +744,24 @@ export const fetchCatalogue = aid => dispatch => {
     });
 };
 
-export const fetchChatStream = aid => dispatch => {
+export const fetchChatStream = (aid) => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid=" + aid,
+    body: "aid="+aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
 
-  console.log(" USING AUD: " + aid);
+  console.log(" USING AUD: " + aid)
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
     .then(token_data => token_data.json())
     .then(token_data => {
       dispatch(apiUserRegistered(token_data["data"]));
-
       const programs_options = {
         method: "GET",
 
@@ -773,14 +773,15 @@ export const fetchChatStream = aid => dispatch => {
       const messages_url =
         "https://nile.rtst.co.za/api/artist/6/channels/28/messages/";
 
-      fetch(messages_url, programs_options, { cache: "no-cache" })
+      fetch(messages_url, programs_options)
         .then(chats => chats.json())
         .then(chats => {
           let chatStream = chats["data"];
           dispatch(messagesLoaded(chatStream));
+          console.log("Fetching")
         })
         .catch(err => {
-          console.log(err);
+          console.log(err + " : You have hit your limit for today");
         });
     })
     .catch(err => console.log("An error occured", err));

@@ -11,7 +11,8 @@ import { MessageItems } from './messageItems';
 import { AsyncStorage } from 'react-native';
 
 
- 
+var data = require('./data.json');
+
 class Messages extends Component {
 
   async componentDidMount() {
