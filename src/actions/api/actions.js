@@ -5,24 +5,15 @@ import { Actions } from "react-native-router-flux";
 const axios = require("axios");
 import { AsyncStorage } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import { conditionalExpression } from "@babel/types";
 
 AsyncStorage.getItem("aid").then(AID => {
   const appID = AID;
 });
 
-
-export const newRegisterUser = (aid) => dispatch => {
-
-  //dispatch(apiUserRegistering());
-
-  
-
-
-
+export const newRegisterUser = aid => dispatch => {
   const options = {
     method: "POST",
-    body: "aid="+ aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -52,17 +43,10 @@ export const newRegisterUser = (aid) => dispatch => {
           dispatch(channelsLoaded(chans));
         });
     });
-
-  //.catch(err => console.log("An error occured", err))
 };
 
-
 export const registerUser = () => dispatch => {
-
   dispatch(apiUserRegistering());
-
-
-
 
   const options = {
     method: "POST",
@@ -128,8 +112,7 @@ export const switchQuality = (id, action) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/switch";
 
       var config = {
-        headers: { Authorization: "Bearer " + token_data["data"] },
-        
+        headers: { Authorization: "Bearer " + token_data["data"] }
       };
 
       axios
@@ -187,7 +170,7 @@ export const sendMessage = (id, opts, aid) => dispatch => {
 
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -209,8 +192,7 @@ export const sendMessage = (id, opts, aid) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages";
 
       var config = {
-        headers: { Authorization: "Bearer " + token_data["data"] },
-    
+        headers: { Authorization: "Bearer " + token_data["data"] }
       };
 
       axios
@@ -228,11 +210,11 @@ export const sendMessage = (id, opts, aid) => dispatch => {
 
 export const fetchChannelObject = (id, aid) => dispatch => {
   dispatch(apiUserRegistering());
-  console.log("New Cganeel Aobject " + aid )
+  console.log("New Cganeel Aobject " + aid);
 
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -273,12 +255,12 @@ export const fetchChannelObject = (id, aid) => dispatch => {
 
 export const fetchProgramImage = (id, aid) => dispatch => {
   dispatch(apiUserRegistering());
- 
+
   console.log("Getting AID");
 
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -316,10 +298,10 @@ export const fetchProgramImage = (id, aid) => dispatch => {
 export const fetchChannelImage = (id, aid) => dispatch => {
   dispatch(apiUserRegistering());
 
-  console.log("Using AID")
+  console.log("Using AID");
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -404,21 +386,22 @@ export const fetchChannelChats = (id, AID) => dispatch => {
 
   const options = {
     method: "POST",
-    body: "aid="+AID,
+    body: "aid=" + AID,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
 
-  console.log(AID + " : + +++ USING AID");
-
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+
+  console.log(" USING AUD: " + AID);
+
   fetch(url, options)
     .then(token_data => token_data.json())
     .then(token_data => {
       dispatch(apiUserRegistered(token_data["data"]));
-      //console.log("This is TOKEN from STORE "+ token_data["data"]);
-      const channels_options = {
+
+      const programs_options = {
         method: "GET",
 
         headers: new Headers({
@@ -427,28 +410,32 @@ export const fetchChannelChats = (id, AID) => dispatch => {
         })
       };
 
-      const channel_url =
+      const messages_url =
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages/";
 
-      fetch(channel_url, channels_options)
-        //.then(chatlist => chatlist.json())
-        .then(chatlist => {
-          //console.log(chat)
-          let chats = chatlist["data"];
-          //console.log("WE AT HERE: " + JSON.stringify(chatlist))
-          dispatch(messagesLoaded(chats));
+      fetch(messages_url, programs_options, { cache: "no-cache" })
+        .then(chats => chats.json())
+        .then(chats => {
+          let chatStream = chats["data"];
+          console.log(
+            "WE AT HERE GETTING MESSAGES: " + JSON.stringify(chatStream)
+          );
+
+          dispatch(messagesLoaded(chatStream));
+        })
+        .catch(err => {
+          console.log(err);
         });
     })
-
     .catch(err => console.log("An error occured", err));
 };
 
-export const fetchProgramURILinks =  (id, profile_id, aid ) => dispatch => {
+export const fetchProgramURILinks = (id, profile_id, aid) => dispatch => {
   dispatch(apiUserRegistering());
-console.log("Program Links:  " + aid) 
+  console.log("Program Links:  " + aid);
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -491,32 +478,22 @@ console.log("Program Links:  " + aid)
             NetInfo.getConnectionInfo().then(data => {
               console.log("Connection type", data.type);
 
-
               console.log("Connection effective type", data.effectiveType);
-       
 
-              AsyncStorage.getItem("wifiBoolValue").then((result) => {
-                console.log("Log the result here : " + result)
+              AsyncStorage.getItem("wifiBoolValue").then(result => {
+                console.log("Log the result here : " + result);
 
-                if (result === 'true' &&  data.type !== 'wifi' ){
-                  console.log( result + "" +  data.type )
-                    Alert.alert(
-                      'Download Stopped',
-                      'Uncheck  - Downloads over Wi-Fi - Only in Setting'
-                    )
+                if (result === "true" && data.type !== "wifi") {
+                  console.log(result + "" + data.type);
+                  Alert.alert(
+                    "Download Stopped",
+                    "Uncheck  - Downloads over Wi-Fi - Only in Setting"
+                  );
                 } else {
                   this.createDirectory();
                 }
-              })
-             
-             
-
-              
+              });
             });
-
-       
-
-            
 
             const destPath =
               RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
@@ -527,66 +504,59 @@ console.log("Program Links:  " + aid)
               toFile: destPath
             };
 
-            const FILE_LOCATION = RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+            const FILE_LOCATION =
+              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
 
-            RNFS.exists(FILE_LOCATION).then((exists) =>{
-              console.log(exists)
-              if (exists){
-                console.log("File Already Exist")
+            RNFS.exists(FILE_LOCATION).then(exists => {
+              console.log(exists);
+              if (exists) {
+                console.log("File Already Exist");
                 Alert.alert(
-                  'Program Already Exists In Playlist',
-                  'Overwrite?',
+                  "Program Already Exists In Playlist",
+                  "Overwrite?",
                   [
                     {
-                      text: 'Yes',
-                      onPress: () => {this.continueDownload(url)} ,
-                      style: 'ok',
+                      text: "Yes",
+                      onPress: () => {
+                        this.continueDownload(url);
+                      },
+                      style: "ok"
                     },
                     {
-                      text: 'No', 
-                      onPress: () => console.log('Cancel Pressed'),
-                      style: 'cancel'
-                    },
+                      text: "No",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "cancel"
+                    }
                   ],
-                  {cancelable: false},
-                )   
+                  { cancelable: false }
+                );
               } else {
-                
                 RNFS.downloadFile(option).promise.then(res => {
                   console.log("res -----------------------------> ", res);
                 });
 
-                Alert.alert(
-                  'Download Started',
-                  'Check Playlist When Done'
-                )
+                Alert.alert("Download Started", "Check Playlist When Done");
               }
-            })
-   
-            
+            });
           };
-          
-          continueDownload = (url) => {
-          console.log(url)
+
+          continueDownload = url => {
+            console.log(url);
             const destPath =
-            RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
 
             let option = {
               fromUrl: url,
               toFile: destPath
             };
 
-            console.log('continuing download')
+            console.log("continuing download");
             RNFS.downloadFile(option).promise.then(res => {
               console.log("res -----------------------------> ", res);
             });
 
-
-            Alert.alert(
-              'Download Started',
-              'Check Playlist When Done'
-            )
-          }
+            Alert.alert("Download Started", "Check Playlist When Done");
+          };
 
           createDirectory = () => {
             console.log(" Created Folder and Download Running");
@@ -608,12 +578,17 @@ console.log("Program Links:  " + aid)
   // .catch(err => console.log("An error occured", err))
 };
 
-export const fetchChannelRSTPLinks = (id, profile_id, aid, quality) => dispatch => {
+export const fetchChannelRSTPLinks = (
+  id,
+  profile_id,
+  aid,
+  quality
+) => dispatch => {
   dispatch(apiUserRegistering());
-  console.log("OnPressItem: " +  aid )
+  console.log("OnPressItem: " + aid);
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -633,17 +608,22 @@ export const fetchChannelRSTPLinks = (id, profile_id, aid, quality) => dispatch 
         })
       };
 
-      const program_url = "https://nile.rtst.co.za/api/artist/6/channels/"+id +"/uri/"+profile_id +"/";
+      const program_url =
+        "https://nile.rtst.co.za/api/artist/6/channels/" +
+        id +
+        "/uri/" +
+        profile_id +
+        "/";
 
       fetch(program_url, programs_options)
         .then(uri => uri.json())
         .then(uri => {
           let link = uri["data"];
-          console.log("You picked: " + quality)
+          console.log("You picked: " + quality);
           dispatch(channelRstpLinkLoaded(link));
           //dispatch(streamLoadedType(quality))
 
-          Actions.player({ link ,qualityData:  quality });
+          Actions.player({ link, qualityData: quality });
         });
     });
 };
@@ -686,7 +666,7 @@ export const playHighRSTPStream = (id, profile_id) => dispatch => {
           let link = uri["data"];
 
           dispatch(channelRstpLinkLoaded(link));
-          Actions.player({ link, qualityData : "HIGH"});
+          Actions.player({ link, qualityData: "HIGH" });
           console.log(link);
         });
     });
@@ -728,12 +708,12 @@ export const fetchMediaItemMetadata = id => dispatch => {
     });
 };
 
-export const fetchCatalogue = ( aid ) => dispatch => {
+export const fetchCatalogue = aid => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
@@ -763,18 +743,18 @@ export const fetchCatalogue = ( aid ) => dispatch => {
     });
 };
 
-export const fetchChatStream = (aid) => dispatch => {
+export const fetchChatStream = aid => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
     method: "POST",
-    body: "aid="+aid,
+    body: "aid=" + aid,
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
 
-  console.log(" USING AUD: " + aid)
+  console.log(" USING AUD: " + aid);
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
@@ -800,7 +780,7 @@ export const fetchChatStream = (aid) => dispatch => {
           dispatch(messagesLoaded(chatStream));
         })
         .catch(err => {
-          console.log(err + " : You have hit your limit for today");
+          console.log(err);
         });
     })
     .catch(err => console.log("An error occured", err));

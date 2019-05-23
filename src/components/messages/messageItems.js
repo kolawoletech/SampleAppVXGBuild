@@ -30,59 +30,42 @@ export class MessageItems extends React.Component {
   componentDidMount() {}
 
   componentWillMount() {
-    //Actions.refresh({ key: 'drawer', open: false });
   }
 
 
 
 
   renderItem = data => {
-    const end = moment(data.item.end_date_time).format("h:mm a");
-    const start = moment(data.item.start_date_time).format("h:mm");
+ 
     const time = moment(data.item.time, "YYYY-MM-DDTHH:mm:ss.SSS[Z]").fromNow();
     return (
       <View
         style={{
           backgroundColor: "#007f85",
-          
           marginTop: 2,
           marginBottom: 2
-        }}
-      >
-        {/* <TouchableOpacity style={styles.item} key={data.item.programme_id} onPress={() => Actions.program({ programData: data.item })}> */}
+        }}>
         <TouchableOpacity key={data.item._id}>
-          {/*              <LinearGradient colors={['#00c4cc', '#00c4cc']}
-                        style={{
-                            borderRadius: 3,
-                        }}
-                        start={[0.0, 0.5]}
-                        end={[1.0, 0.5]}
-                        locations={[0.0, 1.0]}
-                    > */}
-
           <View
             style={{
               flexDirection: "row",
               padding: 7,
               borderRadius: 3,
               backgroundColor: "#007f85"
-            }}
-          >
+            }}>
             <View
               style={{
                 flexDirection: "row",
                 width: "100%",
                 color: "white"
-              }}
-            >
+              }}>
               <Text>{data.item.from}. </Text>
               <Text
                 style={{
                   flexDirection: "row",
                   width: "100%",
                   color: "white"
-                }}
-              >
+                }}>
                 {time}
               </Text>
             </View>
@@ -91,14 +74,12 @@ export class MessageItems extends React.Component {
             style={{
               flexDirection: "row",
               width: "100%"
-            }}
-          >
+            }}>
             <Text style={styles.programDescription} color="white">
               {data.item.body}
             </Text>
           </View>
 
-          {/* </LinearGradient> */}
         </TouchableOpacity>
       </View>
     );

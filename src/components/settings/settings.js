@@ -222,16 +222,14 @@ export class Settings extends Component {
         <View
           style={{
             height: 45
-          }}
-        >
+          }}>
           <Text style={styles.title}>Version</Text>
           <Text style={styles.entry}>1.0.10</Text>
         </View>
         <View
           style={{
             height: 45
-          }}
-        >
+          }}>
           <Text style={styles.title}>Username</Text>
           <Text style={styles.entry}>{username}</Text>
         </View>
@@ -240,8 +238,7 @@ export class Settings extends Component {
             style={{
               height: 45,
               flexDirection: "row"
-            }}
-          >
+            }}>
             <Text style={styles.title}>Download over Wi-Fi only</Text>
             <CheckBox
               style={{ flex: 1 }}

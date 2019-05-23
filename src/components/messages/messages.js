@@ -10,25 +10,19 @@ import { MessageItems } from './messageItems';
 //import { LinearGradient } from 'expo';
 import { AsyncStorage } from 'react-native';
 
-var data = require('./data.json');
-
 
  
 class Messages extends Component {
 
   async componentDidMount() {
-    //this.props.loadChats();
     await this.getMessagesWithAID();
     console.log("Loaded MESSAGES" + JSON.stringify(this.props));
   }
 
   async getMessagesWithAID(){
     let AID = await AsyncStorage.getItem("aid");
-    //this.props.registerWithAID(AID)
     const channel = this.props.channel;
-
     this.props.loadChats(AID);
-
   }
 
 
@@ -51,23 +45,12 @@ class Messages extends Component {
       chats: chatsData
     } = this.props;
 
- 
-
-    //console.log(JSON.stringify(this.props))
-    
 
     return (
-/*       <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-        style={{ height: '100%' }}> */
         <View
           style={{ height: '100%' , backgroundColor: '#0F516C'}}>
           <MessageItems list={chatsData} />
          </View>
-
-      /* </LinearGradient> */
-
-
-
     );
   }
 }

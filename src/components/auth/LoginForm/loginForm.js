@@ -18,13 +18,22 @@ import LinearGradient from 'react-native-linear-gradient';
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
 class LoginFormComponent extends Component {
-  componentDidMount() {
+  async componentDidMount() {
     this.props.restore();
     console.log(JSON.stringify(this.props))
-    this.props.registerAID();
+    
+    this.checkUserAID()
 
     
 
+  }
+
+  async checkUserAID(){
+    if (AsyncStorage.getItem('aid') !==null ){
+      console.log("This is not a new user")
+    } else{
+      this.props.registerAID(); 
+    }
   }
 
   componentDidUpdate(prevProps) {

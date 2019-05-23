@@ -172,6 +172,7 @@ export class Player extends React.Component {
     console.log("SCREEN ORIENTATION: " + this.state.orientation);
   };
   async componentDidMount() {
+
     this.loadUsername();
     //this.animate();
     await this.getOrientation();
@@ -237,8 +238,7 @@ export class Player extends React.Component {
     };
 
     timeout();
-    //this.props.loadChannelChats(channel.id);
-    await this.getMessagesWithAID();
+
   }
 
   updateProgressBarOnWifi = () => {
@@ -276,13 +276,17 @@ export class Player extends React.Component {
     }
   }
 
+  componentWillMount(){
+    this.getMessagesWithAID();
+  }
+
   async getMessagesWithAID() {
     let AID = await AsyncStorage.getItem("aid");
-    //this.props.registerWithAID(AID)
     const channel = this.props.channel;
     setTimeout(() => {
       this.props.loadChannelChats(channel.id, AID);
-    }, 3000);
+      console.log("Getting Messages")
+    }, 100);
   }
 
   _onBack = () => {
@@ -544,8 +548,7 @@ export class Player extends React.Component {
                   style={{
                     fontSize: 18,
                     fontWeight: "bold"
-                  }}
-                >
+                  }}>
                   Close
                 </Text>
               </View>

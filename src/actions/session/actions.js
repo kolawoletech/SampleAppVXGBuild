@@ -98,20 +98,28 @@ export const apiRegisterUser = () => dispatch => {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
+
   const url = "https://nile.rtst.co.za/api/artist/6/users";
   fetch(url, options)
     .then( aid => aid.json())
     .then(aid => {
       dispatch(APISessionRegister);
-      console.log("This is your userId" + aid["data"]);
+      console.log("This is your new user AId" + aid["data"]);
       const userAID = aid["data"];
+
+
       AsyncStorage.setItem('aid', userAID ).then(() =>{
-        //Actions.catalogue();
-        console.log("NO")
+        console.log("Setting AID and Saving Locally")
       })
+      const token_url = "https://nile.rtst.co.za/api/artist/6/users";
 
-
-
+      fetch(token_url)
+      .then( token=> token.json() )
+      .then( token =>{
+        AsyncStorage.setItem('tokenID', token ).then(() =>{
+          console.log("Setting Token ID and Saving Locally")
+        })
+      }).catch(err => console.log( err, "Token Not Set"));
     });
 };
 
