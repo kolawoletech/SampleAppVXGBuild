@@ -25,6 +25,7 @@ import {
 import { SettingsScreen } from "react-native-settings-screen";
 import { AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { ConnectableObservable } from "rx";
 
 export class Settings extends Component {
   state = {
@@ -94,15 +95,28 @@ export class Settings extends Component {
     let value = await AsyncStorage.getItem("wifiBoolValue");
     var boolValue = value == "true" || value == "false";
 
+    console.log("RUNING  _getDownloadOverWifiOnly")
+    if (value != null ){
+      console.log("Getting Value and Updating check box")
+
+      this.setState({
+        isChecked: boolValue
+      });
+    } else {
+      console.log("SOmething is off")
+    }
+/*     let value = await AsyncStorage.getItem("wifiBoolValue");
+    var boolValue = value == "true" || value == "false";
+
     this.setState({
       isChecked: boolValue
-    });
+    }); */
   };
 
   _setDownloadOverWifiOnly = async () => {
     try {
       this.setState({
-        isChecked: this.state.isChecked
+        isChecked: !this.state.isChecked
       });
       
       var status = this.state.isChecked;
@@ -114,7 +128,7 @@ export class Settings extends Component {
         }
       );
     } catch (error) {
-      console.log(err);
+      console.log(error);
     }
   };
 
@@ -152,7 +166,7 @@ export class Settings extends Component {
       return userId;
     };
 
-    this._getDownloadOverWifiOnly();
+    await this._getDownloadOverWifiOnly();
 
     this.loadUsername();
 

@@ -69,7 +69,7 @@ class Catalogue extends Component {
 
     let value = await AsyncStorage.getItem("wifiBoolValue");
 
-    if (value != null) {
+    if (value !== null) {
       // do nothing
       console.log("Option Already Set: " + JSON.parse(value));
     } else {

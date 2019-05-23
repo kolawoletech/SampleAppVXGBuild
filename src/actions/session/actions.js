@@ -2,6 +2,8 @@ import firebaseService from "../../enviroments/firebase";
 import * as types from "./actionsTypes";
 import { AsyncStorage } from 'react-native';
 import { Actions } from "react-native-router-flux";
+import moment from "moment";
+import "moment-timezone";
 
 export const restoreSession = () => dispatch => {
   dispatch(sessionLoading());
@@ -119,6 +121,12 @@ export const apiRegisterUser = () => dispatch => {
         AsyncStorage.setItem('tokenID', token ).then(() =>{
           console.log("Setting Token ID and Saving Locally")
         })
+
+        var CurrentDate = moment().format()
+        AsyncStorage.setItem('tokenLastSaved', CurrentDate ).then(() =>{
+          console.log("Setting Token ID and Saving Locally");
+        })
+
       }).catch(err => console.log( err, "Token Not Set"));
     });
 };
