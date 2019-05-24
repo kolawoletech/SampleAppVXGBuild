@@ -8,7 +8,7 @@ import { LoadingIndicator } from '../../../components/loadingIndicator/loadingIn
 import { styles } from '../BasicForm/styles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Actions } from 'react-native-router-flux';
-import { loginUser, restoreSession, loginAnonymously, apiRegisterUser } from '../../../actions/session/actions';
+import { loginUser, restoreSession, loginAnonymously, apiRegisterUser, setSessionToken} from '../../../actions/session/actions';
 const PRIVACY_POLICY = require('../../../../assets/html/privacy-policy.html');
 import { AsyncStorage } from "react-native";
 
@@ -22,18 +22,35 @@ class LoginFormComponent extends Component {
     this.props.restore();
     console.log(JSON.stringify(this.props))
     
-    //await this.checkUserAID()
+    
 
     await this.checkUserAID()
+    await this.getNewToken()
 
+  }
+
+
+  async getNewToken(){
+    var aid =  await AsyncStorage.getItem('aid');
+    console.log("Needed AID To Set Session TokenID" + aid)
+    try {
+      console.log("Setting Session Token");
+      await this.props.setToken(aid);   
+      let value = await AsyncStorage.getItem('sessionTokenID');
+      console.log("This is the session Token: " + value)
+    } catch (error) {
+      console.log("UNexpected error occured")
+    }
   }
 
   async checkUserAID(){
     
     try {
        let value = await AsyncStorage.getItem('aid');
+
+
        if (value !== null){
-        console.log("This is not a new user")
+        
        }
        else {
         console.log("This is a new user")
@@ -135,7 +152,8 @@ const mapDispatchToProps = {
   login: loginUser,
   loginAnon: loginAnonymously,
   restore: restoreSession,
-  registerAID: apiRegisterUser
+  registerAID: apiRegisterUser,
+  setToken: setSessionToken
 };
 
 export default connect(

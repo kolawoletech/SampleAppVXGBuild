@@ -251,8 +251,7 @@ export class Settings extends Component {
               flexDirection: "row"
             }}>
             <Text style={styles.title}>Download over Wi-Fi only</Text>
-            <CheckBox
-              
+            <CheckBox  
               title="Click Here"
               isChecked={this.state.isChecked} //Get State From Props
               leftText={" "}

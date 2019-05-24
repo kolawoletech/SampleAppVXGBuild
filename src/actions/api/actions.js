@@ -720,6 +720,8 @@ export const fetchCatalogue = aid => dispatch => {
     }
   };
 
+  console.log("Getting Catalogue" + aid)
+
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
     .then(token_data => token_data.json())

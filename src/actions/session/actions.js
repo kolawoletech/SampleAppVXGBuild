@@ -90,6 +90,33 @@ export const logoutUser = () => dispatch => {
 };
 
 // Start Of Export Section for API Session
+export const setSessionToken = (aid) => dispatch => {
+  dispatch(APISessionLoading);
+
+  const options = {
+    method: "POST",
+    body: "aid="+aid,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  };
+  console.log("Session Starting")
+
+  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+
+  fetch(url, options)
+    .then(token_data => token_data.json())
+    .then(token_data => {
+      //dispatch(apiUserRegistered(token_data["data"]));
+     
+      console.log("THis is the Token For this Session : " +  token_data["data"])
+
+      var tokenID =  token_data["data"]
+      AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
+        console.log("Setting TokenID Session and Saving Locally: " +  tokenID)
+      })
+    });
+};
 
 export const apiRegisterUser = () => dispatch => {
   dispatch(APISessionLoading);
@@ -125,6 +152,10 @@ export const apiRegisterUser = () => dispatch => {
         var CurrentDate = moment().format()
         AsyncStorage.setItem('tokenLastSaved', CurrentDate ).then(() =>{
           console.log("Setting Token ID and Saving Locally");
+        })
+
+        AsyncStorage.getItem('tokenLastSaved').then(CurrentDate =>{
+          console.log("This is the current Token", CurrentDate);
         })
 
       }).catch(err => console.log( err, "Token Not Set"));
