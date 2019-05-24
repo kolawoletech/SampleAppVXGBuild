@@ -67,9 +67,9 @@ class Catalogue extends Component {
 
   async setDefaultCurrency() {
     try {
-      let value = await AsyncStorage.getItem("username");
+      let value = await AsyncStorage.getItem("currencySymbol");
       if (value != null) {
-        console.log("Currency Already Set");
+        console.log("Currency Already Set as " + value);
       } else {
         const userId = "R";
         AsyncStorage.setItem("currencySymbol", userId).then(token => {

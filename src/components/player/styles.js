@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 40,
+
     alignItems: "stretch",
     backgroundColor: "#76B6C4"
   },

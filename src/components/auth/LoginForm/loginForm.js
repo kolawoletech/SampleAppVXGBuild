@@ -22,17 +22,25 @@ class LoginFormComponent extends Component {
     this.props.restore();
     console.log(JSON.stringify(this.props))
     
-    this.checkUserAID()
+    //await this.checkUserAID()
 
-    
+    await this.checkUserAID()
 
   }
 
   async checkUserAID(){
-    if (AsyncStorage.getItem('aid') !==null ){
-      console.log("This is not a new user")
-    } else{
-      this.props.registerAID(); 
+    
+    try {
+       let value = await AsyncStorage.getItem('aid');
+       if (value !== null){
+        console.log("This is not a new user")
+       }
+       else {
+        console.log("This is a new user")
+        await this.props.registerAID(); 
+      }
+    } catch (error) {
+
     }
   }
 

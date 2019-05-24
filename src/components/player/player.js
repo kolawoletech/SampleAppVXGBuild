@@ -619,8 +619,7 @@ export class Player extends React.Component {
                   style={{
                     width: "90%"
                   }}
-                  onPress={this.checkIfAnon}
-                >
+                  onPress={this.checkIfAnon}>
                   <View>
                     <TextInput
                       style={styles.newInput}
@@ -642,8 +641,7 @@ export class Player extends React.Component {
                   style={{
                     width: "10%"
                   }}
-                  onPress={this.sendChat}
-                >
+                  onPress={this.sendChat}>
                   <View>
                     <Icon
                       name="send"

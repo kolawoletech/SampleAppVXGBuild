@@ -232,7 +232,7 @@ export class Settings extends Component {
             height: 45
           }}>
           <Text style={styles.title}>Version</Text>
-          <Text style={styles.entry}>1.0.10</Text>
+          <Text style={styles.entry}>1.0.12</Text>
         </View>
         <View
           style={{
@@ -241,7 +241,10 @@ export class Settings extends Component {
           <Text style={styles.title}>Username</Text>
           <Text style={styles.entry}>{username}</Text>
         </View>
-        <View>
+        <View
+          style={{
+            flex: 1
+          }}>
           <View
             style={{
               height: 45,
@@ -249,7 +252,7 @@ export class Settings extends Component {
             }}>
             <Text style={styles.title}>Download over Wi-Fi only</Text>
             <CheckBox
-              style={{ flex: 1 }}
+              
               title="Click Here"
               isChecked={this.state.isChecked} //Get State From Props
               leftText={" "}
