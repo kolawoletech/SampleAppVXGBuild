@@ -60,6 +60,8 @@ class Channels extends Component {
     }
   }
 
+
+
   async componentWillMount() {
     await this.getChannelsWithAID()
     const { channels: data } = this.props;

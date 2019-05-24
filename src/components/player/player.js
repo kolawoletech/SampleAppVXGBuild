@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import DialogInput from "react-native-dialog-input";
+import NetInfo from "@react-native-community/netinfo";
 
 import {
   View,
@@ -39,6 +40,8 @@ export class Player extends React.Component {
 
   constructor() {
     super();
+
+
     this.onLayout = this.onLayout.bind(this);
 
     this._onBack = this._onBack.bind(this);
@@ -46,7 +49,6 @@ export class Player extends React.Component {
     this.decreaseQuality = this.decreaseQuality.bind(this);
     this.increaseQuality = this.increaseQuality.bind(this);
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
-    //this.isPortrait = this.isPortrait.bind(this);
 
     this.state = {
       newMessage: "",
@@ -63,7 +65,8 @@ export class Player extends React.Component {
       totalDataUsage: 0,
       progressText: "",
       step: 0,
-      orientation: ""
+      orientation: "",
+      connectionType: ""
     };
 
     const isPortrait = () => {
@@ -166,6 +169,23 @@ export class Player extends React.Component {
     console.log("SCREEN ORIENTATION: " + this.state.orientation);
   };
   async componentDidMount() {
+    NetInfo.getConnectionInfo().then(data => {
+      console.log("Connection type", data.type);
+
+      console.log("Connection effective type", data.effectiveType);
+
+      if (data.type !== "wifi") {
+        console.log( "No WIFI Connection " + data.type);
+
+      }
+
+      this.setState({
+        connectionType: data.type
+      })
+
+      console.log("This sis the connection Type" + this.state.connectionType)
+    });
+
 
     this.loadUsername();
     //this.animate();
@@ -201,11 +221,11 @@ export class Player extends React.Component {
           // create a recursive loop.
           const quality = this.props.qualityData;
           if (quality === "MEDIUM") {
-            var midRange = [0.14, 0.16, 0.19, 0.22, 0.28, 0.34, 0.4];
+            var midRange = [0.452, 0.469, 0.472, 0.484, 0.483, 0.480, 0.472,0.47,0.469,0.482,0.465,0.317];
           } else if (quality === "LOW") {
-            var midRange = [0.026, 0.03, 0.034, 0.038, 0.046, 0.054, 0.064];
+            var midRange = [0.0552, 0.0693, 0.0673, 0.0749, 0.088, 0.0876, 0.0925,0.0776,0.071,0.0753, 0.0816, 0.0893];
           } else if (quality === "HIGH") {
-            var midRange = [0.5, 0.75, 1, 1.25];
+            var midRange = [0.904, 0.83, 1.1, 1.12,0.95, 0.948, 0.942,0.957,0.939,0.904,0.889,0.860,0.833];
           }
           //var myArray = [5, 19, 4];
 
@@ -252,14 +272,19 @@ export class Player extends React.Component {
   };
 
   updateProgressBarOnData() {
-    if (this.state.step === 0) {
+    if (this.state.step === 0 ) {
       setTimeout(() => {
         this.setState({
           progressText: this.state.totalBitrate
         });
       }, 1000);
-      //while(this.state.step === 0)
-    } else if (this.state.step === 1) {
+    } else if (this.state.step === 1 || this.state.connectionType === "wifi") {
+      this.setState({
+        progressText: this.state.totalDataUsage + "MB"
+      });
+
+      console.log("Buggel on WIFI")
+    }  else if (this.state.step === 1 && this.state.connectionType !== "wifi") {
       this.setState({
         progressText: this.state.currencySymbol + this.state.totalDataUsage
       });
@@ -399,8 +424,7 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}
-              >
+                }}>
                 <Symbol
                   name="chevron-double-left"
                   size={iconWidth}
@@ -408,13 +432,12 @@ export class Player extends React.Component {
                 />
               </View>
             </TouchableHighlight>
-
             <View
               style={{
                 width: progressBarWidth,
                 position: "relative"
-              }}
-            >
+              }}>
+
               <TouchableHighlight onPress={this.clickProgressBar}>
                 <View>
                   <Symbol
@@ -451,12 +474,11 @@ export class Player extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         alignContent: "center"
-                      }}
-                    >
+                      }}>
                       {totalBitrate} KB/S
                     </Text>
                   )}
-                  {this.state.step === 1 && (
+                  {this.state.step === 1 && this.state.connectionType ==="wifi" && (
                     <Text
                       style={{
                         color: "#fff",
@@ -464,12 +486,23 @@ export class Player extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         alignContent: "center"
-                      }}
-                    >
+                      }}>
+                      {totalDataUsage} MB
+                    </Text>
+                  )}
+                  {this.state.step === 1 && this.state.connectionType !=="wifi" && (
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 4,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}>
                       {currencySymbol} {totalCost}
                     </Text>
                   )}
-                  {this.state.step === 2 && (
+                  {this.state.step === 2 && this.state.connectionType !=="wifi" && (
                     <Text
                       style={{
                         color: "#fff",
@@ -477,8 +510,19 @@ export class Player extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         alignContent: "center"
-                      }}
-                    >
+                      }} >
+                      {totalDataUsage} MB
+                    </Text>
+                  )}
+                  {this.state.step === 2 && this.state.connectionType === "wifi" && (
+                    <Text
+                      style={{
+                        color: "#fff",
+                        paddingLeft: 4,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        alignContent: "center"
+                      }}>
                       {totalDataUsage} MB
                     </Text>
                   )}
@@ -489,8 +533,7 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}
-              >
+                }}>
                 <Symbol
                   name="chevron-double-right"
                   size={iconWidth}

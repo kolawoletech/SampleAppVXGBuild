@@ -487,7 +487,7 @@ export const fetchProgramURILinks = (id, profile_id, aid) => dispatch => {
                 if (result === "true" && data.type !== "wifi") {
                   console.log(result + "" + data.type);
                   Alert.alert(
-                    "No WIFI COnnection",
+                    "No WIFI Connection",
                     "[If you wish to download over your mobile network then the WI-FI only settings in the settings menu must be switched off]"
                   );
                 } else {

@@ -77,9 +77,8 @@ export class Settings extends Component {
     try {
       await AsyncStorage.setItem("currencySymbol", currencySymbol);
     } catch (error) {
-      // Error saving data
-    }
 
+    }
     Actions.settings();
   };
 
@@ -292,8 +291,7 @@ export class Settings extends Component {
             <View
               style={{
                 height: 45
-              }}
-            >
+              }}>
               <Text style={styles.title}>Data Cost (per MB)</Text>
               <Text style={styles.entry}>{costPerMB}</Text>
             </View>
@@ -304,10 +302,13 @@ export class Settings extends Component {
               isDialogVisible={this.state.isDataCostDialogVisible}
               title={"Data cost(per MB)"}
               //message={"Message for DialogInput #1"}
-
+              keyboardType='numeric'
+              hintInput ={"Enter A Number"}
               submitInput={inputText => {
                 this.setDataCostPerMB(inputText);
               }}
+              textInputProps={{autoCorrect:false, keyboardType : 'numeric'}}
+
               closeDialog={() => {
                 this.showDialog(false);
               }}
@@ -318,7 +319,8 @@ export class Settings extends Component {
               isDialogVisible={this.state.isCurrencyDialogVisible}
               title={"Set Currency Symbol"}
               //message={"Message for DialogInput #1"}
-
+              textInputProps={{autoCorrect:false, keyboardType : 'default'}}
+              hintInput ={"Enter A Symbol"}
               submitInput={inputText => {
                 this.setCurrencySymbol(inputText);
               }}

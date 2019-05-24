@@ -49,6 +49,7 @@ class Catalogue extends Component {
   async componentDidMount() {
     await this.getCatalogueWithAID();
     await this.setDefaultWiFiOption();
+    await this.setDefaultCurrency()
   }
 
   onLayout(e) {
@@ -64,6 +65,21 @@ class Catalogue extends Component {
     this.props.loadCatalogue(AID);
   }
 
+  async setDefaultCurrency() {
+    try {
+      let value = await AsyncStorage.getItem("username");
+      if (value != null) {
+        console.log("Currency Already Set");
+      } else {
+        const userId = "R";
+        AsyncStorage.setItem("currencySymbol", userId).then(token => {
+          console.log(token);
+        });
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  }
   async setDefaultWiFiOption() {
     let context = this;
 
