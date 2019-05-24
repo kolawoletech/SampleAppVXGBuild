@@ -10,38 +10,25 @@ AsyncStorage.getItem("aid").then(AID => {
   const appID = AID;
 });
 
-export const newRegisterUser = aid => dispatch => {
-  const options = {
-    method: "POST",
-    body: "aid=" + aid,
-    headers: {
+export const newRegisterUser = (aid, tokenID) => dispatch => {
+  const channel_url = "https://nile.rtst.co.za/api/artist/6/channels";
+
+  const channels_options = {
+    method: "GET",
+
+    headers: new Headers({
+      Authorization: "Bearer " + tokenID,
       "Content-Type": "application/x-www-form-urlencoded"
-    }
+    })
   };
 
+  fetch(channel_url, channels_options)
+    .then(channels => channels.json())
+    .then(channels => {
+      let chans = channels["data"];
+      console.log(" New Channel Implementstion ~Gor Herter");
 
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-  fetch(url, options)
-    .then(token_data => token_data.json())
-    .then(token_data => {
-      dispatch(apiUserRegistered(token_data["data"]));
-      const channels_options = {
-        method: "GET",
-
-        headers: new Headers({
-          Authorization: "Bearer " + token_data["data"],
-          "Content-Type": "application/x-www-form-urlencoded"
-        })
-      };
-      const channel_url = "https://nile.rtst.co.za/api/artist/6/channels";
-
-      fetch(channel_url, channels_options)
-        .then(channels => channels.json())
-        .then(channels => {
-          let chans = channels["data"];
-
-          dispatch(channelsLoaded(chans));
-        });
+      dispatch(channelsLoaded(chans));
     });
 };
 
@@ -208,91 +195,52 @@ export const sendMessage = (id, opts, aid) => dispatch => {
   //.catch(err => console.log("An error occured", err))
 };
 
-export const fetchChannelObject = (id, aid) => dispatch => {
+export const fetchChannelObject = (id, aid, tokenID) => dispatch => {
   dispatch(apiUserRegistering());
-  console.log("New Cganeel Aobject " + aid);
 
-  const options = {
-    method: "POST",
-    body: "aid=" + aid,
-    headers: {
+  const channel_url =
+    "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/";
+
+  const channels_options = {
+    method: "GET",
+
+    headers: new Headers({
+      Authorization: "Bearer " + tokenID,
       "Content-Type": "application/x-www-form-urlencoded"
-    }
+    })
   };
 
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-  fetch(url, options)
-    .then(token_data => token_data.json())
-    .then(token_data => {
-      dispatch(apiUserRegistered(token_data["data"]));
-      //console.log("This is TOKEN from STORE "+ token_data["data"]);
-      const channels_options = {
-        method: "GET",
-
-        headers: new Headers({
-          Authorization: "Bearer " + token_data["data"],
-          "Content-Type": "application/x-www-form-urlencoded"
-        })
-      };
-
-      //dispatch(channelLoading(id))
-      //console.log("ID USED IN STORE IS "  + id)
-      const channel_url =
-        "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/";
-
-      fetch(channel_url, channels_options)
-        .then(channel => channel.json())
-        .then(channel => {
-          let chan = channel["data"];
-          //console.log(chan);
-          dispatch(channelLoaded(chan));
-          //dispatch(programUriLinkObjectCreated(chan))
-        });
+  fetch(channel_url, channels_options)
+    .then(channel => channel.json())
+    .then(channel => {
+      let chan = channel["data"];
+      dispatch(channelLoaded(chan));
     });
-
-  //.catch(err => console.log("An error occured", err))
 };
 
-export const fetchProgramImage = (id, aid) => dispatch => {
+export const fetchProgramImage = (id, aid, token) => dispatch => {
   dispatch(apiUserRegistering());
 
-  console.log("Getting AID");
+  dispatch(apiUserRegistered(token));
+  console.log("This is TOKEN from STORE " + token);
+  const channels_options = {
+    method: "GET",
 
-  const options = {
-    method: "POST",
-    body: "aid=" + aid,
-    headers: {
+    headers: new Headers({
+      Authorization: "Bearer " + token,
       "Content-Type": "application/x-www-form-urlencoded"
-    }
+    })
   };
 
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-  fetch(url, options)
-    .then(token_data => token_data.json())
-    .then(token_data => {
-      dispatch(apiUserRegistered(token_data["data"]));
-      //console.log("This is TOKEN from STORE "+ token_data["data"]);
-      const channels_options = {
-        method: "GET",
+  const channel_url =
+    "https://nile.rtst.co.za/api/artist/6/programs/" + id + "/" + "icon/";
 
-        headers: new Headers({
-          Authorization: "Bearer " + token_data["data"],
-          "Content-Type": "application/x-www-form-urlencoded"
-        })
-      };
-
-      const channel_url =
-        "https://nile.rtst.co.za/api/artist/6/programs/" + id + "/" + "icon/";
-
-      fetch(channel_url, channels_options)
-        .then(icon => icon.json())
-        .then(icon => {
-          let img = icon["data"];
-          dispatch(imageLoaded(img));
-        });
+  fetch(channel_url, channels_options)
+    .then(icon => icon.json())
+    .then(icon => {
+      let img = icon["data"];
+      dispatch(imageLoaded(img));
     });
-
-  //.catch(err => console.log("An error occured", err))
 };
 
 export const fetchChannelImage = (id, aid) => dispatch => {
@@ -414,7 +362,7 @@ export const fetchChannelChats = (id, AID) => dispatch => {
         "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages/";
 
       fetch(messages_url, programs_options, { cache: "no-cache" })
-      .then(chats => chats.json())
+        .then(chats => chats.json())
 
         .then(chats => {
           let chatStream = chats["data"];
@@ -431,152 +379,144 @@ export const fetchChannelChats = (id, AID) => dispatch => {
     .catch(err => console.log("An error occured", err));
 };
 
-export const fetchProgramURILinks = (id, profile_id, aid) => dispatch => {
+export const fetchProgramURILinks = (
+  id,
+  profile_id,
+  aid,
+  tokenID
+) => dispatch => {
   dispatch(apiUserRegistering());
   console.log("Program Links:  " + aid);
-  const options = {
-    method: "POST",
-    body: "aid=" + aid,
-    headers: {
+  dispatch(apiUserRegistered(tokenID));
+  //console.log("This is TOKEN from STORE "+ token_data["data"]);
+  const programs_options = {
+    method: "GET",
+
+    headers: new Headers({
+      Authorization: "Bearer " + tokenID,
       "Content-Type": "application/x-www-form-urlencoded"
-    }
+    })
   };
 
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-  fetch(url, options)
-    .then(token_data => token_data.json())
-    .then(token_data => {
-      dispatch(apiUserRegistered(token_data["data"]));
-      //console.log("This is TOKEN from STORE "+ token_data["data"]);
-      const programs_options = {
-        method: "GET",
+  //dispatch(channelLoading(id))
+  //console.log("ID USED IN STORE IS "  + id)
+  const program_url =
+    "https://nile.rtst.co.za/api/artist/6/programs/" +
+    id +
+    "/uri/" +
+    profile_id +
+    "/";
 
-        headers: new Headers({
-          Authorization: "Bearer " + token_data["data"],
-          "Content-Type": "application/x-www-form-urlencoded"
-        })
-      };
+  fetch(program_url, programs_options)
+    .then(uri => uri.json())
+    .then(uri => {
+      let link = uri["data"];
 
-      //dispatch(channelLoading(id))
-      //console.log("ID USED IN STORE IS "  + id)
-      const program_url =
-        "https://nile.rtst.co.za/api/artist/6/programs/" +
-        id +
-        "/uri/" +
-        profile_id +
-        "/";
+      dispatch(programUriLinkLoaded(link));
 
-      fetch(program_url, programs_options)
-        .then(uri => uri.json())
-        .then(uri => {
-          let link = uri["data"];
+      downloadVideo = async (name, url) => {
+        console.log(url);
 
-          dispatch(programUriLinkLoaded(link));
+        NetInfo.getConnectionInfo().then(data => {
+          console.log("Connection type", data.type);
 
-          downloadVideo = async (name, url) => {
-            console.log(url);
+          console.log("Connection effective type", data.effectiveType);
 
-            NetInfo.getConnectionInfo().then(data => {
-              console.log("Connection type", data.type);
+          AsyncStorage.getItem("wifiBoolValue").then(result => {
+            console.log("Log the result here : " + result);
 
-              console.log("Connection effective type", data.effectiveType);
+            if (result === "true" && data.type !== "wifi") {
+              console.log(result + "" + data.type);
+              Alert.alert(
+                "No WIFI Connection",
+                "[If you wish to download over your mobile network then the WI-FI only settings in the settings menu must be switched off]"
+              );
+            } else {
+              this.createDirectory();
+            }
+          });
+        });
 
-              AsyncStorage.getItem("wifiBoolValue").then(result => {
-                console.log("Log the result here : " + result);
+        const destPath =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
 
-                if (result === "true" && data.type !== "wifi") {
-                  console.log(result + "" + data.type);
-                  Alert.alert(
-                    "No WIFI Connection",
-                    "[If you wish to download over your mobile network then the WI-FI only settings in the settings menu must be switched off]"
-                  );
-                } else {
-                  this.createDirectory();
+        console.log("Here I am");
+        let option = {
+          fromUrl: url,
+          toFile: destPath
+        };
+
+        const FILE_LOCATION =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+
+        RNFS.exists(FILE_LOCATION).then(exists => {
+          console.log(exists);
+          if (exists) {
+            console.log("File Already Exist");
+            Alert.alert(
+              "Program Already Exists In Playlist",
+              "Overwrite?",
+              [
+                {
+                  text: "Yes",
+                  onPress: () => {
+                    this.continueDownload(url);
+                  },
+                  style: "ok"
+                },
+                {
+                  text: "No",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
                 }
-              });
-            });
-
-            const destPath =
-              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
-
-            console.log("Here I am");
-            let option = {
-              fromUrl: url,
-              toFile: destPath
-            };
-
-            const FILE_LOCATION =
-              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
-
-            RNFS.exists(FILE_LOCATION).then(exists => {
-              console.log(exists);
-              if (exists) {
-                console.log("File Already Exist");
-                Alert.alert(
-                  "Program Already Exists In Playlist",
-                  "Overwrite?",
-                  [
-                    {
-                      text: "Yes",
-                      onPress: () => {
-                        this.continueDownload(url);
-                      },
-                      style: "ok"
-                    },
-                    {
-                      text: "No",
-                      onPress: () => console.log("Cancel Pressed"),
-                      style: "cancel"
-                    }
-                  ],
-                  { cancelable: false }
-                );
-              } else {
-                RNFS.downloadFile(option).promise.then(res => {
-                  console.log("res -----------------------------> ", res);
-                });
-
-                Alert.alert("Download Started", "Check Playlist When Done");
-              }
-            });
-          };
-
-          continueDownload = url => {
-            console.log(url);
-            const destPath =
-              RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
-
-            let option = {
-              fromUrl: url,
-              toFile: destPath
-            };
-
-            console.log("continuing download");
+              ],
+              { cancelable: false }
+            );
+          } else {
             RNFS.downloadFile(option).promise.then(res => {
               console.log("res -----------------------------> ", res);
             });
 
             Alert.alert("Download Started", "Check Playlist When Done");
-          };
-
-          createDirectory = () => {
-            console.log(" Created Folder and Download Running");
-
-            key = {
-              NSURLIsExcludedFromBackupKey: true
-            };
-
-            const VIDE0_FOLDER =
-              RNFS.DocumentDirectoryPath + "/NileMediaVideos/";
-
-            RNFS.mkdir(RNFS.DocumentDirectoryPath + "/NileMediaVideos/", key);
-          };
-
-          this.downloadVideo(id, link);
+          }
         });
+      };
+
+      continueDownload = url => {
+        console.log(url);
+        const destPath =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+
+        let option = {
+          fromUrl: url,
+          toFile: destPath
+        };
+
+        console.log("continuing download");
+        RNFS.downloadFile(option).promise.then(res => {
+          console.log("res -----------------------------> ", res);
+        });
+
+        Alert.alert("Download Started", "Check Playlist When Done");
+      };
+
+      createDirectory = () => {
+        console.log(" Created Folder and Download Running");
+
+        key = {
+          NSURLIsExcludedFromBackupKey: true
+        };
+
+        const VIDE0_FOLDER = RNFS.DocumentDirectoryPath + "/NileMediaVideos/";
+
+        RNFS.mkdir(RNFS.DocumentDirectoryPath + "/NileMediaVideos/", key);
+      };
+
+      this.downloadVideo(id, link);
     });
 
   // .catch(err => console.log("An error occured", err))
+  //TODO Play High Still has channelID
 };
 
 export const fetchChannelRSTPLinks = (
@@ -629,7 +569,7 @@ export const fetchChannelRSTPLinks = (
     });
 };
 
-export const playHighRSTPStream = (id, profile_id) => dispatch => {
+export const playHighRSTPStream = (id, profile_id ) => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
@@ -709,7 +649,29 @@ export const fetchMediaItemMetadata = id => dispatch => {
     });
 };
 
-export const fetchCatalogue = aid => dispatch => {
+export const fetchCatalogue = (aid, tokenID) => dispatch => {
+  dispatch(apiUserRegistering());
+
+  //dispatch(apiUserRegistered(tokenID));
+
+  const programs_options = {
+    method: "GET",
+    headers: new Headers({
+      Authorization: "Bearer " + tokenID,
+      "Content-Type": "application/x-www-form-urlencoded"
+    })
+  };
+  const programs_url = "https://nile.rtst.co.za/api/artist/6/programs";
+  console.log("This is the present token " + tokenID);
+  fetch(programs_url, programs_options)
+    .then(programs => programs.json())
+    .then(programs => {
+      let progs = programs["data"];
+      dispatch(catalogueLoaded(progs));
+    });
+};
+
+export const fetchChatStream = aid => dispatch => {
   dispatch(apiUserRegistering());
 
   const options = {
@@ -720,44 +682,7 @@ export const fetchCatalogue = aid => dispatch => {
     }
   };
 
-  console.log("Getting Catalogue" + aid)
-
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-  fetch(url, options)
-    .then(token_data => token_data.json())
-    .then(token_data => {
-      dispatch(apiUserRegistered(token_data["data"]));
-
-      const programs_options = {
-        method: "GET",
-        headers: new Headers({
-          Authorization: "Bearer " + token_data["data"],
-          "Content-Type": "application/x-www-form-urlencoded"
-        })
-      };
-      const programs_url = "https://nile.rtst.co.za/api/artist/6/programs";
-
-      fetch(programs_url, programs_options)
-        .then(programs => programs.json())
-        .then(programs => {
-          let progs = programs["data"];
-          dispatch(catalogueLoaded(progs));
-        });
-    });
-};
-
-export const fetchChatStream = (aid) => dispatch => {
-  dispatch(apiUserRegistering());
-
-  const options = {
-    method: "POST",
-    body: "aid="+aid,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  };
-
-  console.log(" USING AUD: " + aid)
+  console.log(" USING AUD: " + aid);
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
@@ -780,7 +705,7 @@ export const fetchChatStream = (aid) => dispatch => {
         .then(chats => {
           let chatStream = chats["data"];
           dispatch(messagesLoaded(chatStream));
-          console.log("Fetching")
+          console.log("Fetching");
         })
         .catch(err => {
           console.log(err + " : You have hit your limit for today");

@@ -168,20 +168,19 @@ export class Player extends React.Component {
 
     console.log("SCREEN ORIENTATION: " + this.state.orientation);
   };
+  
+
+
   async componentDidMount() {
     NetInfo.getConnectionInfo().then(data => {
       console.log("Connection type", data.type);
 
       console.log("Connection effective type", data.effectiveType);
 
-      if (data.type !== "wifi") {
         console.log( "No WIFI Connection " + data.type);
-
-      }
-
-      this.setState({
-        connectionType: data.type
-      })
+        this.setState({
+          connectionType: data.type
+        })
 
       console.log("This sis the connection Type" + this.state.connectionType)
     });
@@ -192,6 +191,7 @@ export class Player extends React.Component {
     await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
+    console.log("This isn the chjannel Props" + JSON.stringify(channel))
 
     Dimensions.addEventListener("change", () => {
       this.getOrientation();
@@ -305,7 +305,7 @@ export class Player extends React.Component {
     setTimeout(() => {
       this.props.loadChannelChats(channel.id, AID);
       console.log("Getting Messages")
-    }, 100);
+    }, 1000);
   }
 
   _onBack = () => {

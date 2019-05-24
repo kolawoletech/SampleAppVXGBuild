@@ -47,9 +47,10 @@ export class Channel extends React.Component {
     this.props.imageURI(channel.id, AID);
   }
 
-  autoQualityClick() {
+   autoQualityClick() {
     const { quality: qualityList } = this.props.channelData;
     const channel = this.props.channelData;
+    //let AID = await AsyncStorage.getItem("aid");
 
     let result = qualityList.map(({ profile_id }) => profile_id);
     const max = Math.max(...result);
@@ -59,9 +60,11 @@ export class Channel extends React.Component {
 
   async getChannelWithAID() {
     let AID = await AsyncStorage.getItem("aid");
+    let TOKENID = await AsyncStorage.getItem("tokenID");
+
 
     const channel = this.props.channelData;
-    this.props.channelObject(channel.id, AID);
+    //this.props.channelObject(channel.id, AID, TOKENID);
   }
   render() {
     const { quality: qualityList, id: channelID } = this.props.channelData;
@@ -90,8 +93,7 @@ export class Channel extends React.Component {
                 alignItems: "center",
                 backgroundColor: "#76B6C4",
                 opacity: 0.6
-              }}
-            >
+              }}>
               <Image
                 resizeMode="contain"
                 style={{
@@ -109,8 +111,7 @@ export class Channel extends React.Component {
                   flex: 1,
                   backgroundColor: "rgba(0, 0, 0, 0)",
                   alignItems: "center"
-                }}
-              >
+                }}>
                 <Text
                   style={{
                     color: "#0F516C",
@@ -120,20 +121,19 @@ export class Channel extends React.Component {
                     fontSize: 21,
                     fontWeight: "bold",
                     left: 10
-                  }}
-                >
+                  }}>
                   {list.name}
                 </Text>
               </View>
+              {qualityList.length !== 0 ? (
               <TouchableHighlight onPress={this.autoQualityClick}>
                 <Icon name="play-circle-outline" color="white" size={102} />
               </TouchableHighlight>
-
+              ) : null}
               <View
                 style={{
                   paddingBottom: 20
-                }}
-              >
+                }}>
                 <Text style={styles.text}>Auto Quality</Text>
               </View>
             </View>
@@ -141,8 +141,7 @@ export class Channel extends React.Component {
             <View style={styles.guide}>
               <View>
                 <TouchableHighlight
-                  onPress={() => Actions.guide({ channelID: list.id })}
-                >
+                  onPress={() => Actions.guide({ channelID: list.id })}>
                   <Icon
                     name="playlist-play"
                     size={22}
@@ -208,8 +207,7 @@ export class Channel extends React.Component {
               style={{
                 textAlign: "center",
                 color: "#fff"
-              }}
-            >
+              }} >
               Choose your own Quality Vs Mobile Data Cost
             </Text>
             <View style={styles.pills}>
@@ -233,8 +231,7 @@ export class Channel extends React.Component {
                 style={{
                   color: "#fff",
                   paddingTop: 6
-                }}
-              >
+                }}>
                 <Text
                   style={{
                     fontWeight: "bold",
@@ -257,8 +254,7 @@ export class Channel extends React.Component {
             <View
               style={{
                 display: "flex"
-              }}
-            >
+              }}>
               <Text
                 style={{
                   textAlign: "center",

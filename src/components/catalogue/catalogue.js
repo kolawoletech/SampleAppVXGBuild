@@ -46,10 +46,11 @@ class Catalogue extends Component {
     });
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     await this.getCatalogueWithAID();
     await this.setDefaultWiFiOption();
     await this.setDefaultCurrency()
+    await this.setDefaultRate() 
   }
 
   onLayout(e) {
@@ -62,7 +63,10 @@ class Catalogue extends Component {
 
   async getCatalogueWithAID() {
     let AID = await AsyncStorage.getItem("aid");
-    this.props.loadCatalogue(AID);
+    let TOKENID = await AsyncStorage.getItem("sessionTokenID");
+    console.log("Mounted token  " + TOKENID)
+
+    this.props.loadCatalogue(AID, TOKENID);
   }
 
   async setDefaultCurrency() {
@@ -80,6 +84,24 @@ class Catalogue extends Component {
       console.log(err);
     }
   }
+
+
+  async setDefaultRate() {
+    try {
+      let value = await AsyncStorage.getItem("costPerMB");
+      if (value != null) {
+        console.log("costPerMB Already Set as " + value);
+      } else {
+        const defaultCostPerMB = "0";
+        AsyncStorage.setItem("costPerMB", defaultCostPerMB).then(token => {
+          console.log(token);
+        });
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  }
+  
   async setDefaultWiFiOption() {
     let context = this;
 

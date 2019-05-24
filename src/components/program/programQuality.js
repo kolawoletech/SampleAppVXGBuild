@@ -17,7 +17,8 @@ export class ProgramQuality extends React.Component {
         super(props)
 
         this.state = {
-            aid : ""
+            aid : "",
+            token:""
         }
     }
 
@@ -34,7 +35,16 @@ export class ProgramQuality extends React.Component {
             })
         });
 
-        console.log("Loadedf Chiledldj: =>" + this.state.aid)
+        await AsyncStorage.getItem("sessionTokenID").then((token) => {
+            console.log(token)
+            this.setState({
+                token: token
+            })
+        });
+
+        
+
+        console.log("Loadedf Chiledldj: =>" + this.state.aid, this.state.token)
 
 
     }
@@ -51,7 +61,7 @@ export class ProgramQuality extends React.Component {
 
         return (
 
-            <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id, this.state.aid)} key={qualityList.profile_id} >
+            <TouchableOpacity onPress={() => onPressItem(pid, qualityList.profile_id, this.state.aid, this.state.token)} key={qualityList.profile_id} >
 
                 {
                     <View>

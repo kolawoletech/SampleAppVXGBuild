@@ -47,15 +47,9 @@ export class Program extends React.Component {
     }
 
 
-    onFetchLink = (programmeID, profileID, AID ) => {
-        this.props.fetchLink(programmeID, profileID, AID );
+    onFetchLink = (programmeID, profileID, AID, TOKENID) => {
+        this.props.fetchLink(programmeID, profileID, AID, TOKENID );
         console.log("Working Fix")
-  /*      
-        this.refs.toast.show('Download Started, [Check Playlist when done]', 5000, () => {
-            
-        }); */
-
-
     }
 
 
@@ -66,7 +60,6 @@ export class Program extends React.Component {
 
     downloadVideo = (name, url) => {
 
-        //RNFS.mkdir('NileMedia');
         console.log(url)
         this.createDirectory();
 
@@ -120,9 +113,11 @@ export class Program extends React.Component {
 
     async getProgramImageWithAID(){
         let AID = await AsyncStorage.getItem("aid");
+        let TOKENID = await AsyncStorage.getItem("sessionTokenID");
+
         const program = this.props.programData;
 
-        this.props.imageURI(program.programme_id, AID);
+        this.props.imageURI(program.programme_id, AID, TOKENID);
 
     }
 

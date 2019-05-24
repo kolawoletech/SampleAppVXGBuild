@@ -136,16 +136,25 @@ export const apiRegisterUser = () => dispatch => {
       console.log("This is your new user AId" + aid["data"]);
       const userAID = aid["data"];
 
+      const options = {
+        method: "POST",
+        body: "aid=" + userAID,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      };
 
       AsyncStorage.setItem('aid', userAID ).then(() =>{
         console.log("Setting AID and Saving Locally")
       })
-      const token_url = "https://nile.rtst.co.za/api/artist/6/users";
+      const token_url = "https://nile.rtst.co.za/api/artist/6/tokens";
 
-      fetch(token_url)
+      fetch(token_url, options )
       .then( token=> token.json() )
       .then( token =>{
-        AsyncStorage.setItem('tokenID', token ).then(() =>{
+        var tokenID =  token["data"]
+
+        AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
           console.log("Setting Token ID and Saving Locally")
         })
 

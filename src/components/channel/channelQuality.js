@@ -93,20 +93,32 @@ export class ChannelQuality extends React.Component {
         </TouchableOpacity>
       );
     } else {
-      const { qual } = this.props;
 
-      return (
-        <View>
-          {this.state.images.length === 0 && (
-            <View>
+      if ( this.props.qual.length == 0){
+        return (
+          <View>
+           <Text style={styles.warningText}>Channels is Offine</Text>
+          </View>
+        );
+      } else {
+        const { qual } = this.props;
+        console.log("This is Qual" +  JSON.stringify(qual))
+        return (
+          <View>
+            {this.state.images.length === 0 && (
+              <View>
+                <View style={styles.buttons}>{qual.map(this.renderItem)}</View>
+              </View>
+            )}
+            {this.state.images.length > 0 && (
               <View style={styles.buttons}>{qual.map(this.renderItem)}</View>
-            </View>
-          )}
-          {this.state.images.length > 0 && (
-            <View style={styles.buttons}>{qual.map(this.renderItem)}</View>
-          )}
-        </View>
-      );
+            )}
+          </View>
+        );
+      }
+     
+
+      
     }
   }
 }

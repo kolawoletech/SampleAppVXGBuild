@@ -89,8 +89,9 @@ class Channels extends Component {
 
 
   async getChannelsWithAID(){
+    let TOKENID = await AsyncStorage.getItem("sessionTokenID");
     let AID = await AsyncStorage.getItem("aid");
-    this.props.registerWithAID(AID)
+    this.props.registerWithAID(AID, TOKENID)
   }
 
  

@@ -19,13 +19,15 @@ const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
 class LoginFormComponent extends Component {
   async componentDidMount() {
-    this.props.restore();
+    await this.props.restore();
+    await this.checkUserAID()
+    await this.getNewToken()
+    
     console.log(JSON.stringify(this.props))
     
     
 
-    await this.checkUserAID()
-    await this.getNewToken()
+
 
   }
 
@@ -44,13 +46,13 @@ class LoginFormComponent extends Component {
   }
 
   async checkUserAID(){
-    
+   
     try {
        let value = await AsyncStorage.getItem('aid');
 
 
        if (value !== null){
-        
+        console.log("This is a not a new user")
        }
        else {
         console.log("This is a new user")

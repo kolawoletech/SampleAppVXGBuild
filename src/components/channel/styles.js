@@ -49,6 +49,16 @@ export const styles = StyleSheet.create({
 
     
   },
+  
+  warningText: {
+    color: 'red',
+    fontSize: 18,
+    textAlign: 'center',
+    alignItems:'center',
+    paddingLeft: 4,
+
+    
+  },
   buttons: {
     flexDirection: 'row',
     color: '#fff'
