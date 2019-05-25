@@ -153,19 +153,15 @@ export const apiRegisterUser = () => dispatch => {
       .then( token=> token.json() )
       .then( token =>{
         var tokenID =  token["data"]
+        
+        setTimeout(() => {
+          AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
+            console.log("Setting Token ID and Saving Locally")
+          })
+        }, 1000);
+     
 
-        AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
-          console.log("Setting Token ID and Saving Locally")
-        })
 
-        var CurrentDate = moment().format()
-        AsyncStorage.setItem('tokenLastSaved', CurrentDate ).then(() =>{
-          console.log("Setting Token ID and Saving Locally");
-        })
-
-        AsyncStorage.getItem('tokenLastSaved').then(CurrentDate =>{
-          console.log("This is the current Token", CurrentDate);
-        })
 
       }).catch(err => console.log( err, "Token Not Set"));
     });

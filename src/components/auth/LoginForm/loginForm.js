@@ -13,15 +13,18 @@ const PRIVACY_POLICY = require('../../../../assets/html/privacy-policy.html');
 import { AsyncStorage } from "react-native";
 
 import LinearGradient from 'react-native-linear-gradient';
-//import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
 class LoginFormComponent extends Component {
-  async componentDidMount() {
+  async componentWillMount() {
     await this.props.restore();
-    await this.checkUserAID()
-    await this.getNewToken()
+    await this.checkUserAID().then(async ()=>{
+     
+
+
+    })
+    
     
     console.log(JSON.stringify(this.props))
     
@@ -29,6 +32,13 @@ class LoginFormComponent extends Component {
 
 
 
+  }
+
+  async componentDidMount(){
+    setTimeout(async () => {
+      await this.getNewToken()
+      Actions.catalogue()
+    }, 5000);
   }
 
 
@@ -62,6 +72,9 @@ class LoginFormComponent extends Component {
 
     }
   }
+
+
+  component
 
   componentDidUpdate(prevProps) {
     const { error, logged , loginAnonymously} = this.props;
