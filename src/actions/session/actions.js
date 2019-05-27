@@ -109,7 +109,6 @@ export const setSessionToken = (aid) => dispatch => {
 
       var tokenID =  token_data["data"]
       AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
-        console.log("Setting TokenID Session and Saving Locally: " +  tokenID)
       })
     });
 };

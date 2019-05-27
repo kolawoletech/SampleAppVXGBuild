@@ -102,7 +102,6 @@ export class ChannelQuality extends React.Component {
         );
       } else {
         const { qual } = this.props;
-        console.log("This is Qual" +  JSON.stringify(qual))
         return (
           <View>
             {this.state.images.length === 0 && (

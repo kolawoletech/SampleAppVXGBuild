@@ -36,11 +36,15 @@ export class MediaItems extends React.Component {
     };
   }
 
-  async componentWillMount() {}
+  async componentWillMount() {
+   
+
+  }
 
   async getDetails() {
     const pathPromises = this.props.list.map(item => {
       var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+      console.log(VIDEO_FOLDER)
 
       return this._getPaths(VIDEO_FOLDER + item._id + ".mp4", item._id);
     });
@@ -50,10 +54,6 @@ export class MediaItems extends React.Component {
       path: pathResults
     });
 
-    console.log("These aere rtuemws Secons" + this.state.path);
-    setTimeout(() => {
-      console.log("These aere rtuemws Secons" + JSON.stringify(pathResults));
-    }, 1000);
     //console.log("NOW RUNIING")
 
     //console.log(this.state.path)
@@ -162,10 +162,9 @@ export class MediaItems extends React.Component {
       .then(stats => {
         let size = stats.size;
         let creationTime = stats.ctime;
-
         let path = stats.path;
 
-        console.log(id, size, creationTime, path);
+      
 
         return { id, size, creationTime, path };
       })
@@ -178,16 +177,13 @@ export class MediaItems extends React.Component {
     const { onPressItem } = this.props;
     const { _onPressDelete } = this.props;
 
-    console.log(
-      "These are the `metaData details" + JSON.stringify(this.state.path)
-    );
+  
 
     return (
       <TouchableOpacity
         onPress={() => onPressItem(data.item.uri)}
         style={styles.item}
-        key={data.item.name}
-      >
+        key={data.item.name}>
         <LinearGradient
           colors={["#0F516C", "#76B6C4"]}
           style={{
@@ -325,8 +321,6 @@ export class MediaItems extends React.Component {
   };
   render() {
     const { list } = this.props;
-
-    "These are the `metaData details" + JSON.stringify(this.state.path);
 
     return (
       <ScrollView>

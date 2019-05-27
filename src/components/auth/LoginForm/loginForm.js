@@ -34,7 +34,6 @@ class LoginFormComponent extends Component {
 
   async getNewToken(){
     var aid =  await AsyncStorage.getItem('aid');
-    console.log("Needed AID To Set Session TokenID" + aid)
     try {
       await this.props.setToken(aid);   
       let value = await AsyncStorage.getItem('sessionTokenID');

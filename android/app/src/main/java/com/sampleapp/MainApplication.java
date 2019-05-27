@@ -3,6 +3,7 @@ package com.sampleapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.mybigday.rnmediameta.RNMediaMetaPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.rnfs.RNFSPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNMediaMetaPackage(),
             new NetInfoPackage(),
             new RNFetchBlobPackage(),
             new RNFSPackage(),

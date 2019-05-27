@@ -661,7 +661,6 @@ export const fetchCatalogue = (aid, tokenID) => dispatch => {
     })
   };
   const programs_url = "https://nile.rtst.co.za/api/artist/6/programs";
-  console.log("This is the present token " + tokenID);
   fetch(programs_url, programs_options)
     .then(programs => programs.json())
     .then(programs => {

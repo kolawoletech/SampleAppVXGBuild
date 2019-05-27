@@ -26,25 +26,16 @@ let {width, height} = Dimensions.get('window')
 export class CatalogueItems extends React.Component {
   constructor(props) {
     super(props);
-    console.log(
-      "THESE ARE THE PROPS IN CONSTRUCT~OR" +
-        JSON.stringify(this.props.orientation)
-    );
+
     this.state = {
       showTheThing: false,
       images: [],
       facedown: this.props.orientation
     };
-
-
   }
 
   componentDidMount() {
-    //console.log(this.props)
-    console.log(
-      "THESE ARE THE PROPS THAT DID MOUNT" +
-        JSON.stringify(this.props.orientation)
-    );
+
   }
 
 
