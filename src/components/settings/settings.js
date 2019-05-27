@@ -33,7 +33,8 @@ export class Settings extends Component {
     username: "anonymous",
     costPerMB: "",
     currencySymbol: "",
-    bufferValue: ""
+    bufferValue: "",
+    indicatorLimit:""
   };
 
   openDataCostDialog = () => {
@@ -45,6 +46,12 @@ export class Settings extends Component {
   openCurrencySymbolDialog = () => {
     this.setState({
       isCurrencyDialogVisible: true
+    });
+  };
+
+  openIndicatorLimitDialog = () => {
+    this.setState({
+      isIndicatorLimitDialogVisible: true
     });
   };
 
@@ -97,6 +104,21 @@ export class Settings extends Component {
 
     try {
       await AsyncStorage.setItem("bufferValue", bufferValue);
+    } catch (error) {
+
+    }
+    Actions.settings();
+  };
+
+
+  setIndicatorLimit = async (indicatorLimit) => {
+    console.log(indicatorLimit);
+    this.setState({
+      isIndicatorLimitDialogVisible: false
+    });
+
+    try {
+      await AsyncStorage.setItem("indicatorLimit", indicatorLimit);
     } catch (error) {
 
     }
@@ -189,6 +211,8 @@ export class Settings extends Component {
 
     this.loadCostPerMB()
 
+    await this.loadIndicatorLimit()
+
     await this.loadBufferSize()
   }
 
@@ -211,6 +235,19 @@ export class Settings extends Component {
         this.setState({ currencySymbol:"Not Set" });
       }
       this.setState({ currencySymbol: currencySymbol });
+    } catch (error) {
+      // Manage error handling
+    }
+  }
+
+  async loadIndicatorLimit() {
+    try {
+      const indicatorLimit = await AsyncStorage.getItem("indicatorLimit");
+
+      if (indicatorLimit == null) {
+        this.setState({ indicatorLimit:"Not Set" });
+      }
+      this.setState({ indicatorLimit: indicatorLimit });
     } catch (error) {
       // Manage error handling
     }
@@ -250,6 +287,7 @@ export class Settings extends Component {
       isDataCostDialogVisible: false,
       isCurrencyDialogVisible: false,
       isBufferDialogVisible: false,
+      isIndicatorLimitDialogVisible: false,
     };
   }
 
@@ -261,7 +299,7 @@ export class Settings extends Component {
   }
 
   render() {
-    const { username, currencySymbol, costPerMB, bufferValue } = this.state;
+    const { username, currencySymbol, costPerMB, bufferValue, indicatorLimit} = this.state;
     return (
       <View style={styles.container}>
         <View
@@ -269,7 +307,7 @@ export class Settings extends Component {
             height: 45
           }}>
           <Text style={styles.title}>Version</Text>
-          <Text style={styles.entry}>1.0.14</Text>
+          <Text style={styles.entry}>1.0.15</Text>
         </View>
         <View
           style={{
@@ -344,6 +382,16 @@ export class Settings extends Component {
 
             </View>
           </TouchableHighlight>
+          <TouchableHighlight onPress={this.openIndicatorLimitDialog}>
+            <View
+              style={{
+                height: 45
+              }}>
+              <Text style={styles.title}>Indicator Limit (MB)</Text>
+              <Text style={styles.entry}>{indicatorLimit}</Text>
+
+            </View>
+          </TouchableHighlight>
           <View>
             <DialogInput
               isDialogVisible={this.state.isDataCostDialogVisible}
@@ -385,6 +433,21 @@ export class Settings extends Component {
               hintInput ={"Enter A Buffer Value"}
               submitInput={inputText => {
                 this.setBufferValue(inputText);
+              }}
+              closeDialog={() => {
+                this.showDialog(false);
+              }}
+            />
+          </View>
+          <View>
+            <DialogInput
+              isDialogVisible={this.state.isIndicatorLimitDialogVisible}
+              title={"Set Indicator Limit"}
+              //message={"Message for DialogInput #1"}
+              textInputProps={{autoCorrect:false, keyboardType : 'numeric'}}
+              hintInput ={"Set Indicator Limit"}
+              submitInput={inputText => {
+                this.setIndicatorLimit(inputText);
               }}
               closeDialog={() => {
                 this.showDialog(false);

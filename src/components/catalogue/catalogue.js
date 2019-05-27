@@ -46,17 +46,19 @@ class Catalogue extends Component {
     });
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     
     await this.setDefaultWiFiOption();
     await this.setDefaultCurrency()
     await this.setDefaultRate() 
     //await this.getCatalogueWithAID();
+
   }
 
   async componentWillMount() {
     await this.setDefaultBufferOption()
     await this.getCatalogueWithAID();
+    await this.setDefaultIndicatorLimit()
   }
 
   onLayout(e) {
@@ -118,6 +120,24 @@ class Catalogue extends Component {
       const bufferOption = "2000";
 
       AsyncStorage.setItem("bufferValue", bufferOption).then(value => {
+        console.log(value);
+      });
+    }
+  }
+
+
+  async setDefaultIndicatorLimit() {
+    let context = this;
+
+    let value = await AsyncStorage.getItem("indicatorLimit");
+
+    if (value !== null) {
+      // do nothing
+      console.log("Option Already Set: " + value);
+    } else {
+      const indicatorLimit = "2000";
+
+      AsyncStorage.setItem("indicatorLimit", indicatorLimit).then(value => {
         console.log(value);
       });
     }

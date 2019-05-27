@@ -44,8 +44,6 @@ export class MediaItems extends React.Component {
   async getDetails() {
     const pathPromises = this.props.list.map(item => {
       var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-      console.log(VIDEO_FOLDER)
-
       return this._getPaths(VIDEO_FOLDER + item._id + ".mp4", item._id);
     });
     const pathResults = await Promise.all(pathPromises);
@@ -54,9 +52,6 @@ export class MediaItems extends React.Component {
       path: pathResults
     });
 
-    //console.log("NOW RUNIING")
-
-    //console.log(this.state.path)
   }
 
   async componentDidUpdate(prevProps) {

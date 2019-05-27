@@ -25,6 +25,8 @@ import * as Progress from "react-native-progress";
 const { width, height } = Dimensions.get("window");
 import { AsyncStorage } from "react-native";
 
+import CheckBox from "react-native-check-box";
+
 import Messages from "./../messages";
 var data = require("./data.json");
 var totalBitrate = 0;
@@ -51,6 +53,7 @@ export class Player extends React.Component {
       newMessage: "",
       isDialogVisible: false,
       progress: 0,
+      indicatorLevel: 0,
       indeterminate: true,
       cost: 5,
       timer: null,
@@ -64,7 +67,8 @@ export class Player extends React.Component {
       step: 0,
       orientation: "",
       connectionType: "",
-      bufferSize: 2000
+      bufferSize: 2000,
+      indicatorLimit: 200
     };
 
     const isPortrait = () => {
@@ -159,6 +163,17 @@ export class Player extends React.Component {
     }
   }
 
+  async loadIndicatorLimit() {
+    try {
+      const indicatorLimit = await AsyncStorage.getItem("indicatorLimit");
+      var integer = parseInt(indicatorLimit )
+      this.setState({ indicatorLimit : integer });
+
+    } catch (error) {
+      // Manage error handling
+    }
+  }
+
   async getCurrencySymbol() {
     try {
       const currencySymbol = await AsyncStorage.getItem("currencySymbol");
@@ -189,6 +204,7 @@ export class Player extends React.Component {
 
     this.loadUsername();
     await this.loadBufferSize()
+    await this.loadIndicatorLimit()
     //this.animate();
     await this.getOrientation();
     this.getCurrencySymbol();
@@ -241,12 +257,27 @@ export class Player extends React.Component {
           totalBitrate += rand;
           var num = parseFloat(totalBitrate * rate).toFixed(2);
 
+          var maxIndicatorValue = this.state.indicatorLimit
+          var totalDataUsage = this.state.totalDataUsage
+          var maxIndicatorLimitPercentage =
+          parseFloat(totalDataUsage) / parseFloat(maxIndicatorValue);
+
+          if (maxIndicatorLimitPercentage >= 1){
+            this.setState({
+              indicatorLevel: 1
+            })
+          } else{
+            this.setState({
+              indicatorLevel: maxIndicatorLimitPercentage
+            })
+          }
+
           this.setState({
             totalCost: num,
             totalDataUsage: parseFloat(totalBitrate).toFixed(2),
             totalBitrate: rand * 1000,
             indeterminate: false,
-            progress: maxRangeValuePercentage
+            progress: maxRangeValuePercentage,
           });
 
           timeout();
@@ -453,7 +484,7 @@ export class Player extends React.Component {
                     size={iconWidth}
                     color="white"
                   />
-
+                  {this.state.step !== 2 && (
                   <Progress.Bar
                     style={{
                       position: "absolute",
@@ -470,6 +501,27 @@ export class Player extends React.Component {
                     width={progressBarWidth}
                     height={iconWidth}
                   />
+
+                  )}
+
+                  {this.state.step === 2 && (
+                  <Progress.Bar
+                    style={{
+                      position: "absolute",
+                      zIndex: -1,
+                      top: 0,
+                      left: 0
+                    }}
+                    showsText={true}
+                    color={filledColorHex}
+                    borderWidth={1}
+                    unfilledColor={unfilledColorHex}
+                    progress={this.state.indicatorLevel}
+                    indeterminate={this.state.indeterminate}
+                    width={progressBarWidth}
+                    height={iconWidth}
+                  />
+                  )}
                   {this.state.step === 0 && (
                     <Text
                       style={{
@@ -601,6 +653,18 @@ export class Player extends React.Component {
             <ScrollView>
               <View>
                 <View style={styles.messagesContainer}>
+                {this.state.showOnce !== "0" && (
+                    <CheckBox
+                        style={{flex: 1, padding: 10}}
+                        onClick={()=>{
+                          this.setState({
+                              isChecked:!this.state.isChecked
+                          })
+                        }}
+                        isChecked={this.state.isChecked}
+                        leftText={"Don't Show Again"}
+                    />
+                  )}
                   <Messages />
                 </View>
                 <View>

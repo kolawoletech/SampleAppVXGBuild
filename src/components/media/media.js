@@ -84,9 +84,6 @@ export class Media extends Component {
   componentDidMount() {
     console.log("Current Statte" + JSON.stringify(this.state));
 
-    var VIDEO_FILE = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/21.mp4";
-    console.log(VIDEO_FILE)
-
   
   }
 
