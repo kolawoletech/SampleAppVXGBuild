@@ -26,7 +26,6 @@ export const newRegisterUser = (aid, tokenID) => dispatch => {
     .then(channels => channels.json())
     .then(channels => {
       let chans = channels["data"];
-      console.log(" New Channel Implementstion ~Gor Herter");
 
       dispatch(channelsLoaded(chans));
     });
@@ -652,7 +651,7 @@ export const fetchMediaItemMetadata = id => dispatch => {
 export const fetchCatalogue = (aid, tokenID) => dispatch => {
   dispatch(apiUserRegistering());
 
-  //dispatch(apiUserRegistered(tokenID));
+  dispatch(apiUserRegistered(tokenID));
 
   const programs_options = {
     method: "GET",

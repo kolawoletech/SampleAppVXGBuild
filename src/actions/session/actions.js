@@ -34,12 +34,10 @@ export const loginUser = (email, password) => dispatch => {
 
 export const loginAnonymously = () => dispatch => {
   dispatch(sessionLoading());
-  console.log("Buttoin Clicked");
   firebaseService
     .auth()
     .signInAnonymously()
     .then(user => {
-      console.log(user);
       dispatch(sessionSuccess(user));
     })
     .catch(error => {
@@ -100,7 +98,6 @@ export const setSessionToken = (aid) => dispatch => {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
-  console.log("Session Starting")
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
 
@@ -109,7 +106,6 @@ export const setSessionToken = (aid) => dispatch => {
     .then(token_data => {
       //dispatch(apiUserRegistered(token_data["data"]));
      
-      console.log("THis is the Token For this Session : " +  token_data["data"])
 
       var tokenID =  token_data["data"]
       AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
@@ -156,7 +152,6 @@ export const apiRegisterUser = () => dispatch => {
         
         setTimeout(() => {
           AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
-            console.log("Setting Token ID and Saving Locally")
           })
         }, 1000);
      

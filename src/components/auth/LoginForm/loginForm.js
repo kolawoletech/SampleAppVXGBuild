@@ -20,24 +20,14 @@ class LoginFormComponent extends Component {
   async componentWillMount() {
     await this.props.restore();
     await this.checkUserAID().then(async ()=>{
-     
-
-
     })
-    
-    
     console.log(JSON.stringify(this.props))
-    
-    
-
-
-
   }
 
   async componentDidMount(){
     setTimeout(async () => {
       await this.getNewToken()
-      Actions.catalogue()
+      //Actions.catalogue()
     }, 5000);
   }
 
@@ -46,20 +36,15 @@ class LoginFormComponent extends Component {
     var aid =  await AsyncStorage.getItem('aid');
     console.log("Needed AID To Set Session TokenID" + aid)
     try {
-      console.log("Setting Session Token");
       await this.props.setToken(aid);   
       let value = await AsyncStorage.getItem('sessionTokenID');
-      console.log("This is the session Token: " + value)
     } catch (error) {
-      console.log("UNexpected error occured")
     }
   }
 
   async checkUserAID(){
-   
     try {
        let value = await AsyncStorage.getItem('aid');
-
 
        if (value !== null){
         console.log("This is a not a new user")
@@ -69,12 +54,8 @@ class LoginFormComponent extends Component {
         await this.props.registerAID(); 
       }
     } catch (error) {
-
     }
   }
-
-
-  component
 
   componentDidUpdate(prevProps) {
     const { error, logged , loginAnonymously} = this.props;

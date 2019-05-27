@@ -47,10 +47,16 @@ class Catalogue extends Component {
   }
 
   async componentWillMount() {
-    await this.getCatalogueWithAID();
+    
     await this.setDefaultWiFiOption();
     await this.setDefaultCurrency()
     await this.setDefaultRate() 
+    //await this.getCatalogueWithAID();
+  }
+
+  async componentWillMount() {
+    await this.setDefaultBufferOption()
+    await this.getCatalogueWithAID();
   }
 
   onLayout(e) {
@@ -64,8 +70,6 @@ class Catalogue extends Component {
   async getCatalogueWithAID() {
     let AID = await AsyncStorage.getItem("aid");
     let TOKENID = await AsyncStorage.getItem("sessionTokenID");
-    console.log("Mounted token  " + TOKENID)
-
     this.props.loadCatalogue(AID, TOKENID);
   }
 
@@ -99,6 +103,23 @@ class Catalogue extends Component {
       }
     } catch (error) {
       console.log(err);
+    }
+  }
+
+  async setDefaultBufferOption() {
+    let context = this;
+
+    let value = await AsyncStorage.getItem("bufferValue");
+
+    if (value !== null) {
+      // do nothing
+      console.log("Option Already Set: " + value);
+    } else {
+      const bufferOption = "2000";
+
+      AsyncStorage.setItem("bufferValue", bufferOption).then(value => {
+        console.log(value);
+      });
     }
   }
   

@@ -32,7 +32,8 @@ export class Settings extends Component {
     refreshing: false,
     username: "anonymous",
     costPerMB: "",
-    currencySymbol: ""
+    currencySymbol: "",
+    bufferValue: ""
   };
 
   openDataCostDialog = () => {
@@ -44,6 +45,12 @@ export class Settings extends Component {
   openCurrencySymbolDialog = () => {
     this.setState({
       isCurrencyDialogVisible: true
+    });
+  };
+
+  openBufferValueDialog = () => {
+    this.setState({
+      isBufferDialogVisible: true
     });
   };
 
@@ -76,6 +83,20 @@ export class Settings extends Component {
 
     try {
       await AsyncStorage.setItem("currencySymbol", currencySymbol);
+    } catch (error) {
+
+    }
+    Actions.settings();
+  };
+
+  setBufferValue = async (bufferValue) => {
+    console.log(bufferValue);
+    this.setState({
+      isBufferDialogVisible: false
+    });
+
+    try {
+      await AsyncStorage.setItem("bufferValue", bufferValue);
     } catch (error) {
 
     }
@@ -167,6 +188,8 @@ export class Settings extends Component {
     this.loadCurrencySymbol();
 
     this.loadCostPerMB()
+
+    await this.loadBufferSize()
   }
 
   async loadUsername() {
@@ -178,15 +201,29 @@ export class Settings extends Component {
     }
   }
 
+
+
   async loadCurrencySymbol() {
     try {
       const currencySymbol = await AsyncStorage.getItem("currencySymbol");
 
       if (currencySymbol == null) {
         this.setState({ currencySymbol:"Not Set" });
-
       }
       this.setState({ currencySymbol: currencySymbol });
+    } catch (error) {
+      // Manage error handling
+    }
+  }
+
+  async loadBufferSize() {
+    try {
+      const bufferValue = await AsyncStorage.getItem("bufferValue");
+
+      if (bufferValue == null) {
+        this.setState({ bufferValue:"Not Set" });
+      }
+      this.setState({ bufferValue: bufferValue });
     } catch (error) {
       // Manage error handling
     }
@@ -202,7 +239,7 @@ export class Settings extends Component {
       }
       this.setState({ costPerMB: costPerMB });
     } catch (error) {
-      // Manage error handling
+      // Manage error handling 
     }
   }
 
@@ -212,7 +249,7 @@ export class Settings extends Component {
     this.state = {
       isDataCostDialogVisible: false,
       isCurrencyDialogVisible: false,
-      
+      isBufferDialogVisible: false,
     };
   }
 
@@ -224,7 +261,7 @@ export class Settings extends Component {
   }
 
   render() {
-    const { username, currencySymbol, costPerMB } = this.state;
+    const { username, currencySymbol, costPerMB, bufferValue } = this.state;
     return (
       <View style={styles.container}>
         <View
@@ -283,8 +320,7 @@ export class Settings extends Component {
             <View
               style={{
                 height: 45
-              }}
-            >
+              }}>
               <Text style={styles.title}>Currency Symbol</Text>
               <Text style={styles.entry}>{currencySymbol}</Text>
             </View>
@@ -298,7 +334,16 @@ export class Settings extends Component {
               <Text style={styles.entry}>{costPerMB}</Text>
             </View>
           </TouchableHighlight>
+          <TouchableHighlight onPress={this.openBufferValueDialog}>
+            <View
+              style={{
+                height: 45
+              }}>
+              <Text style={styles.title}>Buffer size (ms)</Text>
+              <Text style={styles.entry}>{bufferValue}</Text>
 
+            </View>
+          </TouchableHighlight>
           <View>
             <DialogInput
               isDialogVisible={this.state.isDataCostDialogVisible}
@@ -325,6 +370,21 @@ export class Settings extends Component {
               hintInput ={"Enter A Symbol"}
               submitInput={inputText => {
                 this.setCurrencySymbol(inputText);
+              }}
+              closeDialog={() => {
+                this.showDialog(false);
+              }}
+            />
+          </View>
+          <View>
+            <DialogInput
+              isDialogVisible={this.state.isBufferDialogVisible}
+              title={"Set Buffer Size"}
+              //message={"Message for DialogInput #1"}
+              textInputProps={{autoCorrect:false, keyboardType : 'numeric'}}
+              hintInput ={"Enter A Buffer Value"}
+              submitInput={inputText => {
+                this.setBufferValue(inputText);
               }}
               closeDialog={() => {
                 this.showDialog(false);

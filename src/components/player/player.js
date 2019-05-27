@@ -40,10 +40,7 @@ export class Player extends React.Component {
 
   constructor() {
     super();
-
-
     this.onLayout = this.onLayout.bind(this);
-
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
@@ -66,7 +63,8 @@ export class Player extends React.Component {
       progressText: "",
       step: 0,
       orientation: "",
-      connectionType: ""
+      connectionType: "",
+      bufferSize: 2000
     };
 
     const isPortrait = () => {
@@ -150,6 +148,17 @@ export class Player extends React.Component {
     }
   }
 
+  async loadBufferSize() {
+    try {
+      const bufferSize = await AsyncStorage.getItem("bufferValue");
+      var integer = parseInt( bufferSize)
+      this.setState({ bufferSize: integer });
+
+    } catch (error) {
+      // Manage error handling
+    }
+  }
+
   async getCurrencySymbol() {
     try {
       const currencySymbol = await AsyncStorage.getItem("currencySymbol");
@@ -166,32 +175,24 @@ export class Player extends React.Component {
       this.setState({ orientation: "landscape" });
     }
 
-    console.log("SCREEN ORIENTATION: " + this.state.orientation);
   };
   
 
 
   async componentDidMount() {
     NetInfo.getConnectionInfo().then(data => {
-      console.log("Connection type", data.type);
-
-      console.log("Connection effective type", data.effectiveType);
-
-        console.log( "No WIFI Connection " + data.type);
-        this.setState({
-          connectionType: data.type
-        })
-
-      console.log("This sis the connection Type" + this.state.connectionType)
+      this.setState({
+        connectionType: data.type
+      })
     });
 
 
     this.loadUsername();
+    await this.loadBufferSize()
     //this.animate();
     await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
-    console.log("This isn the chjannel Props" + JSON.stringify(channel))
 
     Dimensions.addEventListener("change", () => {
       this.getOrientation();
@@ -202,6 +203,9 @@ export class Player extends React.Component {
         rate: costPerMB
       });
     });
+
+    await this.loadBufferSize()
+
     this.setState({ id: channel.id });
 
     timeout = () => {
@@ -283,7 +287,6 @@ export class Player extends React.Component {
         progressText: this.state.totalDataUsage + "MB"
       });
 
-      console.log("Buggel on WIFI")
     }  else if (this.state.step === 1 && this.state.connectionType !== "wifi") {
       this.setState({
         progressText: this.state.currencySymbol + this.state.totalDataUsage
@@ -304,7 +307,6 @@ export class Player extends React.Component {
     const channel = this.props.channel;
     setTimeout(() => {
       this.props.loadChannelChats(channel.id, AID);
-      console.log("Getting Messages")
     }, 1000);
   }
 
@@ -387,6 +389,7 @@ export class Player extends React.Component {
     const { currencySymbol } = this.state;
     const { totalBitrate } = this.state;
     const { totalDataUsage } = this.state;
+    const { bufferSize } = this.state;
 
     const rstp_link = this.props.link;
     const progressBarWidth = width * 0.84;
@@ -409,6 +412,7 @@ export class Player extends React.Component {
         ) : null}
         {this.state.orientation === "portrait" ||
         this.state.orientation === "" ? (
+          
           <VXGMobileSDK
             style={orientation.player}
             ref={this._assignPlayer}
@@ -475,7 +479,7 @@ export class Player extends React.Component {
                         justifyContent: "center",
                         alignContent: "center"
                       }}>
-                      {totalBitrate} KB/S
+                      {totalBitrate} KB/S 
                     </Text>
                   )}
                   {this.state.step === 1 && this.state.connectionType ==="wifi" && (
@@ -552,6 +556,8 @@ export class Player extends React.Component {
   };
 
   async _play1() {
+
+    const  bufferValue = this.state.bufferSize
     await this._player.close();
     await this._player.applyConfig({
       connectionUrl: rstp_link,
@@ -560,8 +566,8 @@ export class Player extends React.Component {
       connectionNetworkProtocol: -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
       numberOfCPUCores: 0, // 0<= - autodetect, > 0 - will set manually
       synchroEnable: 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
-      connectionBufferingTime: 1000,
-      connectionDetectionTime: 1000,
+      connectionBufferingTime: bufferValue,
+      connectionDetectionTime: bufferValue,
       startPreroll: 300,
       aspectRatioMode: 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
     });
