@@ -47,6 +47,7 @@ export class Player extends React.Component {
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
     this.increaseQuality = this.increaseQuality.bind(this);
+    this.hideQualityWarningForever = this.hideQualityWarningForever.bind(this);
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
 
     this.state = {
@@ -68,7 +69,11 @@ export class Player extends React.Component {
       orientation: "",
       connectionType: "",
       bufferSize: 2000,
-      indicatorLimit: 200
+      indicatorLimit: 200,
+      showOnce: 0,
+      isChecked: false,
+      hideWarning: true,
+      checkWarningKey: ""
     };
 
     const isPortrait = () => {
@@ -81,7 +86,6 @@ export class Player extends React.Component {
         orientation: isPortrait() ? "portrait" : "landscape"
       });
     });
-
   }
 
   onLayout(e) {
@@ -130,6 +134,15 @@ export class Player extends React.Component {
       aid: "aid=" + AID
     };
 
+    let value = await AsyncStorage.getItem("hideWarning");
+    if (value !== null) {
+      console.log("Don't Show Warning");
+    } else {
+      this.setState({
+        hideWarning: true
+      });
+    }
+
     this.props.switchStream(channelID, down);
   }
 
@@ -139,8 +152,7 @@ export class Player extends React.Component {
       if (value !== null) {
         return value;
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   async loadUsername() {
@@ -155,9 +167,8 @@ export class Player extends React.Component {
   async loadBufferSize() {
     try {
       const bufferSize = await AsyncStorage.getItem("bufferValue");
-      var integer = parseInt( bufferSize)
+      var integer = parseInt(bufferSize);
       this.setState({ bufferSize: integer });
-
     } catch (error) {
       // Manage error handling
     }
@@ -166,9 +177,8 @@ export class Player extends React.Component {
   async loadIndicatorLimit() {
     try {
       const indicatorLimit = await AsyncStorage.getItem("indicatorLimit");
-      var integer = parseInt(indicatorLimit )
-      this.setState({ indicatorLimit : integer });
-
+      var integer = parseInt(indicatorLimit);
+      this.setState({ indicatorLimit: integer });
     } catch (error) {
       // Manage error handling
     }
@@ -189,22 +199,18 @@ export class Player extends React.Component {
     } else {
       this.setState({ orientation: "landscape" });
     }
-
   };
-  
-
 
   async componentDidMount() {
     NetInfo.getConnectionInfo().then(data => {
       this.setState({
         connectionType: data.type
-      })
+      });
     });
 
-
     this.loadUsername();
-    await this.loadBufferSize()
-    await this.loadIndicatorLimit()
+    await this.loadBufferSize();
+    await this.loadIndicatorLimit();
     //this.animate();
     await this.getOrientation();
     this.getCurrencySymbol();
@@ -220,12 +226,13 @@ export class Player extends React.Component {
       });
     });
 
-    await this.loadBufferSize()
+    await this.loadBufferSize();
 
     this.setState({ id: channel.id });
 
     timeout = () => {
       var intRate = totalBitrate * rate;
+      console.log("This is the Current Rate: " + this.state.rate)
       var intTotalBitrate = parseFloat(totalBitrate);
       var totalCost = parseInt(intTotalBitrate);
       var VVV = totalCost * rate;
@@ -241,11 +248,51 @@ export class Player extends React.Component {
           // create a recursive loop.
           const quality = this.props.qualityData;
           if (quality === "MEDIUM") {
-            var midRange = [0.452, 0.469, 0.472, 0.484, 0.483, 0.480, 0.472,0.47,0.469,0.482,0.465,0.317];
+            var midRange = [
+              0.452,
+              0.469,
+              0.472,
+              0.484,
+              0.483,
+              0.48,
+              0.472,
+              0.47,
+              0.469,
+              0.482,
+              0.465,
+              0.317
+            ];
           } else if (quality === "LOW") {
-            var midRange = [0.0552, 0.0693, 0.0673, 0.0749, 0.088, 0.0876, 0.0925,0.0776,0.071,0.0753, 0.0816, 0.0893];
+            var midRange = [
+              0.0552,
+              0.0693,
+              0.0673,
+              0.0749,
+              0.088,
+              0.0876,
+              0.0925,
+              0.0776,
+              0.071,
+              0.0753,
+              0.0816,
+              0.0893
+            ];
           } else if (quality === "HIGH") {
-            var midRange = [0.904, 0.83, 1.1, 1.12,0.95, 0.948, 0.942,0.957,0.939,0.904,0.889,0.860,0.833];
+            var midRange = [
+              0.904,
+              0.83,
+              1.1,
+              1.12,
+              0.95,
+              0.948,
+              0.942,
+              0.957,
+              0.939,
+              0.904,
+              0.889,
+              0.86,
+              0.833
+            ];
           }
           //var myArray = [5, 19, 4];
 
@@ -257,19 +304,19 @@ export class Player extends React.Component {
           totalBitrate += rand;
           var num = parseFloat(totalBitrate * rate).toFixed(2);
 
-          var maxIndicatorValue = this.state.indicatorLimit
-          var totalDataUsage = this.state.totalDataUsage
+          var maxIndicatorValue = this.state.indicatorLimit;
+          var totalDataUsage = this.state.totalDataUsage;
           var maxIndicatorLimitPercentage =
-          parseFloat(totalDataUsage) / parseFloat(maxIndicatorValue);
+            parseFloat(totalDataUsage) / parseFloat(maxIndicatorValue);
 
-          if (maxIndicatorLimitPercentage >= 1){
+          if (maxIndicatorLimitPercentage >= 1) {
             this.setState({
               indicatorLevel: 1
-            })
-          } else{
+            });
+          } else {
             this.setState({
               indicatorLevel: maxIndicatorLimitPercentage
-            })
+            });
           }
 
           this.setState({
@@ -277,7 +324,7 @@ export class Player extends React.Component {
             totalDataUsage: parseFloat(totalBitrate).toFixed(2),
             totalBitrate: rand * 1000,
             indeterminate: false,
-            progress: maxRangeValuePercentage,
+            progress: maxRangeValuePercentage
           });
 
           timeout();
@@ -287,7 +334,6 @@ export class Player extends React.Component {
     };
 
     timeout();
-
   }
 
   updateProgressBarOnWifi = () => {
@@ -307,7 +353,7 @@ export class Player extends React.Component {
   };
 
   updateProgressBarOnData() {
-    if (this.state.step === 0 ) {
+    if (this.state.step === 0) {
       setTimeout(() => {
         this.setState({
           progressText: this.state.totalBitrate
@@ -317,8 +363,7 @@ export class Player extends React.Component {
       this.setState({
         progressText: this.state.totalDataUsage + "MB"
       });
-
-    }  else if (this.state.step === 1 && this.state.connectionType !== "wifi") {
+    } else if (this.state.step === 1 && this.state.connectionType !== "wifi") {
       this.setState({
         progressText: this.state.currencySymbol + this.state.totalDataUsage
       });
@@ -329,8 +374,19 @@ export class Player extends React.Component {
     }
   }
 
-  componentWillMount(){
-    this.getMessagesWithAID();
+  async componentWillMount() {
+    await this.getMessagesWithAID();
+    await this.checkWarningPerferences();
+  }
+
+  async checkWarningPerferences() {
+    var value = await AsyncStorage.getItem("hideWarning");
+    console.log(value);
+    if (value != null) {
+      this.setState({
+        hideWarning: false
+      });
+    }
   }
 
   async getMessagesWithAID() {
@@ -373,6 +429,21 @@ export class Player extends React.Component {
     this.setState({
       isDialogVisible: false
     });
+  };
+
+  hideQualityWarningForever = () => {
+    console.log("Clicked Dismiss");
+    this.setState({
+      hideWarning: !this.state.hideWarning
+    });
+
+    if (this.state.isChecked === true) {
+      console.log("Don't Show Anymore");
+      AsyncStorage.setItem("hideWarning", "true");
+      //this.setSta
+    } else {
+      console.log("Still Show");
+    }
   };
 
   async sendChat() {
@@ -443,7 +514,6 @@ export class Player extends React.Component {
         ) : null}
         {this.state.orientation === "portrait" ||
         this.state.orientation === "" ? (
-          
           <VXGMobileSDK
             style={orientation.player}
             ref={this._assignPlayer}
@@ -459,7 +529,8 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}>
+                }}
+              >
                 <Symbol
                   name="chevron-double-left"
                   size={iconWidth}
@@ -471,8 +542,8 @@ export class Player extends React.Component {
               style={{
                 width: progressBarWidth,
                 position: "relative"
-              }}>
-
+              }}
+            >
               <TouchableHighlight onPress={this.clickProgressBar}>
                 <View>
                   <Symbol
@@ -485,42 +556,41 @@ export class Player extends React.Component {
                     color="white"
                   />
                   {this.state.step !== 2 && (
-                  <Progress.Bar
-                    style={{
-                      position: "absolute",
-                      zIndex: -1,
-                      top: 0,
-                      left: 0
-                    }}
-                    showsText={true}
-                    color={filledColorHex}
-                    borderWidth={1}
-                    unfilledColor={unfilledColorHex}
-                    progress={this.state.progress}
-                    indeterminate={this.state.indeterminate}
-                    width={progressBarWidth}
-                    height={iconWidth}
-                  />
-
+                    <Progress.Bar
+                      style={{
+                        position: "absolute",
+                        zIndex: -1,
+                        top: 0,
+                        left: 0
+                      }}
+                      showsText={true}
+                      color={filledColorHex}
+                      borderWidth={1}
+                      unfilledColor={unfilledColorHex}
+                      progress={this.state.progress}
+                      indeterminate={this.state.indeterminate}
+                      width={progressBarWidth}
+                      height={iconWidth}
+                    />
                   )}
 
                   {this.state.step === 2 && (
-                  <Progress.Bar
-                    style={{
-                      position: "absolute",
-                      zIndex: -1,
-                      top: 0,
-                      left: 0
-                    }}
-                    showsText={true}
-                    color={filledColorHex}
-                    borderWidth={1}
-                    unfilledColor={unfilledColorHex}
-                    progress={this.state.indicatorLevel}
-                    indeterminate={this.state.indeterminate}
-                    width={progressBarWidth}
-                    height={iconWidth}
-                  />
+                    <Progress.Bar
+                      style={{
+                        position: "absolute",
+                        zIndex: -1,
+                        top: 0,
+                        left: 0
+                      }}
+                      showsText={true}
+                      color={filledColorHex}
+                      borderWidth={1}
+                      unfilledColor={unfilledColorHex}
+                      progress={this.state.indicatorLevel}
+                      indeterminate={this.state.indeterminate}
+                      width={progressBarWidth}
+                      height={iconWidth}
+                    />
                   )}
                   {this.state.step === 0 && (
                     <Text
@@ -530,58 +600,66 @@ export class Player extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         alignContent: "center"
-                      }}>
-                      {totalBitrate} KB/S 
+                      }}
+                    >
+                      {totalBitrate} KB/S
                     </Text>
                   )}
-                  {this.state.step === 1 && this.state.connectionType ==="wifi" && (
-                    <Text
-                      style={{
-                        color: "#fff",
-                        paddingLeft: 4,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignContent: "center"
-                      }}>
-                      {totalDataUsage} MB
-                    </Text>
-                  )}
-                  {this.state.step === 1 && this.state.connectionType !=="wifi" && (
-                    <Text
-                      style={{
-                        color: "#fff",
-                        paddingLeft: 4,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignContent: "center"
-                      }}>
-                      {currencySymbol} {totalCost}
-                    </Text>
-                  )}
-                  {this.state.step === 2 && this.state.connectionType !=="wifi" && (
-                    <Text
-                      style={{
-                        color: "#fff",
-                        paddingLeft: 4,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignContent: "center"
-                      }} >
-                      {totalDataUsage} MB
-                    </Text>
-                  )}
-                  {this.state.step === 2 && this.state.connectionType === "wifi" && (
-                    <Text
-                      style={{
-                        color: "#fff",
-                        paddingLeft: 4,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        alignContent: "center"
-                      }}>
-                      {totalDataUsage} MB
-                    </Text>
-                  )}
+                  {this.state.step === 1 &&
+                    this.state.connectionType === "wifi" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}>
+                        {totalDataUsage} MB
+                      </Text>
+                    )}
+                  {this.state.step === 1 &&
+                    this.state.connectionType !== "wifi" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}
+                      >
+                        {currencySymbol} {totalCost}
+                      </Text>
+                    )}
+                  {this.state.step === 2 &&
+                    this.state.connectionType !== "wifi" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}
+                      >
+                        {totalDataUsage} MB
+                      </Text>
+                    )}
+                  {this.state.step === 2 &&
+                    this.state.connectionType === "wifi" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}
+                      >
+                        {totalDataUsage} MB
+                      </Text>
+                    )}
                 </View>
               </TouchableHighlight>
             </View>
@@ -589,7 +667,8 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}>
+                }}
+              >
                 <Symbol
                   name="chevron-double-right"
                   size={iconWidth}
@@ -608,8 +687,7 @@ export class Player extends React.Component {
   };
 
   async _play1() {
-
-    const  bufferValue = this.state.bufferSize
+    const bufferValue = this.state.bufferSize;
     await this._player.close();
     await this._player.applyConfig({
       connectionUrl: rstp_link,
@@ -643,7 +721,8 @@ export class Player extends React.Component {
                   style={{
                     fontSize: 18,
                     fontWeight: "bold"
-                  }}>
+                  }}
+                >
                   Close
                 </Text>
               </View>
@@ -653,17 +732,68 @@ export class Player extends React.Component {
             <ScrollView>
               <View>
                 <View style={styles.messagesContainer}>
-                {this.state.showOnce !== "0" && (
+                {this.state.rate  === 0 && this.state.step === 1 && (
+                  <View>
+                    <Text
+                      style={{
+                        paddingRight: 2,
+                        fontWeight: "bold",
+                        fontSize: 14,
+                        alignSelf: "center"
+                      }}>
+                      Set Data Cost(per MB) in Settings Page
+                    </Text>
                     <CheckBox
-                        style={{flex: 1, padding: 10}}
-                        onClick={()=>{
+                      style={{ flex: 1, padding: 10 }}
+                      onClick={() => {
+                        console.log("CCCCCC");
+                        this.setState({
+                          isChecked: !this.state.isChecked
+                        });
+                      }}
+                      isChecked={this.state.isChecked}
+                      leftText={"Don't Show Again"}
+                    />
+                  </View>
+                   )}
+                  {this.state.hideWarning !== false && (
+                    <View>
+                      <Text
+                        style={{
+                          paddingRight: 2,
+                          fontWeight: "bold",
+                          fontSize: 16,
+                          alignSelf: "center"
+                        }}>
+                        Higher quality may incur higher data costs
+                      </Text>
+                      <CheckBox
+                        style={{ flex: 1, padding: 10 }}
+                        onClick={() => {
+                          console.log("CCCCCC");
                           this.setState({
-                              isChecked:!this.state.isChecked
-                          })
+                            isChecked: !this.state.isChecked
+                          });
                         }}
                         isChecked={this.state.isChecked}
                         leftText={"Don't Show Again"}
-                    />
+                      />
+                      <TouchableHighlight
+                        onPress={this.hideQualityWarningForever}
+                      >
+                        <View>
+                          <Text
+                            style={{
+                              paddingRight: 2,
+                              fontSize: 16,
+                              alignSelf: "flex-end"
+                            }}
+                          >
+                            Dismiss
+                          </Text>
+                        </View>
+                      </TouchableHighlight>
+                    </View>
                   )}
                   <Messages />
                 </View>
@@ -689,7 +819,8 @@ export class Player extends React.Component {
                   style={{
                     width: "90%"
                   }}
-                  onPress={this.checkIfAnon}>
+                  onPress={this.checkIfAnon}
+                >
                   <View>
                     <TextInput
                       style={styles.newInput}
@@ -711,7 +842,8 @@ export class Player extends React.Component {
                   style={{
                     width: "10%"
                   }}
-                  onPress={this.sendChat}>
+                  onPress={this.sendChat}
+                >
                   <View>
                     <Icon
                       name="send"
