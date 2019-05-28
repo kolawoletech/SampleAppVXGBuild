@@ -27,7 +27,7 @@ class LoginFormComponent extends Component {
   async componentDidMount(){
     setTimeout(async () => {
       await this.getNewToken()
-      //Actions.catalogue()
+      Actions.catalogue()
     }, 5000);
   }
 

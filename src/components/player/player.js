@@ -49,6 +49,7 @@ export class Player extends React.Component {
     this.increaseQuality = this.increaseQuality.bind(this);
     this.hideQualityWarningForever = this.hideQualityWarningForever.bind(this);
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
+    this.hideCostWarningOnce = this.hideCostWarningOnce.bind(this)
 
     this.state = {
       newMessage: "",
@@ -72,8 +73,9 @@ export class Player extends React.Component {
       indicatorLimit: 200,
       showOnce: 0,
       isChecked: false,
-      hideWarning: true,
-      checkWarningKey: ""
+      hideWarning: false,
+      checkWarningKey: "",
+      hideCostWarning: true
     };
 
     const isPortrait = () => {
@@ -232,7 +234,7 @@ export class Player extends React.Component {
 
     timeout = () => {
       var intRate = totalBitrate * rate;
-      console.log("This is the Current Rate: " + this.state.rate)
+      console.log("This is the Current Rate: " + this.state.rate);
       var intTotalBitrate = parseFloat(totalBitrate);
       var totalCost = parseInt(intTotalBitrate);
       var VVV = totalCost * rate;
@@ -363,9 +365,15 @@ export class Player extends React.Component {
       this.setState({
         progressText: this.state.totalDataUsage + "MB"
       });
-    } else if (this.state.step === 1 && this.state.connectionType !== "wifi") {
+    }
+    else if (
+      this.state.step === 1 &&
+      this.state.connectionType !== "wifi" &&
+      this.state.rate == "0"
+    ) {
+      //let assume its data
       this.setState({
-        progressText: this.state.currencySymbol + this.state.totalDataUsage
+        progressText:this.state.currencySymbol + this.state.totalDataUsage
       });
     } else if (this.state.step === 2) {
       this.setState({
@@ -444,6 +452,14 @@ export class Player extends React.Component {
     } else {
       console.log("Still Show");
     }
+  };
+
+  hideCostWarningOnce = () => {
+    console.log("Clicked Dismiss");
+    this.setState({
+      hideCostWarning: !this.state.hideCostWarning
+    });
+
   };
 
   async sendChat() {
@@ -600,13 +616,40 @@ export class Player extends React.Component {
                         alignItems: "center",
                         justifyContent: "center",
                         alignContent: "center"
-                      }}
-                    >
+                      }}>
                       {totalBitrate} KB/S
                     </Text>
                   )}
                   {this.state.step === 1 &&
-                    this.state.connectionType === "wifi" && (
+                    this.state.connectionType === "wifi" &&
+                    (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}>
+                       {totalDataUsage} MB
+                      </Text>
+                    )}
+                  {this.state.step === 1 &&
+                    this.state.connectionType !== "wifi" &&
+                    this.state.rate === "0" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}>
+                        R -.--
+                      </Text>
+                    )}
+                  {this.state.step === 2 &&
+                    this.state.connectionType !== "wifi" && (
                       <Text
                         style={{
                           color: "#fff",
@@ -618,34 +661,6 @@ export class Player extends React.Component {
                         {totalDataUsage} MB
                       </Text>
                     )}
-                  {this.state.step === 1 &&
-                    this.state.connectionType !== "wifi" && (
-                      <Text
-                        style={{
-                          color: "#fff",
-                          paddingLeft: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          alignContent: "center"
-                        }}
-                      >
-                        {currencySymbol} {totalCost}
-                      </Text>
-                    )}
-                  {this.state.step === 2 &&
-                    this.state.connectionType !== "wifi" && (
-                      <Text
-                        style={{
-                          color: "#fff",
-                          paddingLeft: 4,
-                          alignItems: "center",
-                          justifyContent: "center",
-                          alignContent: "center"
-                        }}
-                      >
-                        {totalDataUsage} MB
-                      </Text>
-                    )}
                   {this.state.step === 2 &&
                     this.state.connectionType === "wifi" && (
                       <Text
@@ -655,8 +670,7 @@ export class Player extends React.Component {
                           alignItems: "center",
                           justifyContent: "center",
                           alignContent: "center"
-                        }}
-                      >
+                        }}>
                         {totalDataUsage} MB
                       </Text>
                     )}
@@ -732,30 +746,34 @@ export class Player extends React.Component {
             <ScrollView>
               <View>
                 <View style={styles.messagesContainer}>
-                {this.state.rate  === 0 && this.state.step === 1 && (
-                  <View>
-                    <Text
-                      style={{
-                        paddingRight: 2,
-                        fontWeight: "bold",
-                        fontSize: 14,
-                        alignSelf: "center"
-                      }}>
-                      Set Data Cost(per MB) in Settings Page
-                    </Text>
-                    <CheckBox
-                      style={{ flex: 1, padding: 10 }}
-                      onClick={() => {
-                        console.log("CCCCCC");
-                        this.setState({
-                          isChecked: !this.state.isChecked
-                        });
-                      }}
-                      isChecked={this.state.isChecked}
-                      leftText={"Don't Show Again"}
-                    />
-                  </View>
-                   )}
+                  {this.state.hideCostWarning==true && this.state.step === 1 &&
+                    this.state.connectionType === "!wifi" &&
+                    this.state.rate === "0" && (
+                      <View>
+                        <Text
+                          style={{
+                            paddingRight: 2,
+                            fontWeight: "bold",
+                            fontSize: 12,
+                            alignSelf: "center"
+                          }}>
+                          Set Data Cost(per MB) to show data cost
+                        </Text>
+                        <TouchableHighlight
+                          onPress={this.hideCostWarningOnce}>
+                          <View>
+                            <Text
+                              style={{
+                                paddingRight: 2,
+                                fontSize: 16,
+                                alignSelf: "flex-end"
+                              }}>
+                              Dismiss
+                            </Text>
+                          </View>
+                        </TouchableHighlight>
+                      </View>
+                    )}
                   {this.state.hideWarning !== false && (
                     <View>
                       <Text
@@ -764,7 +782,8 @@ export class Player extends React.Component {
                           fontWeight: "bold",
                           fontSize: 16,
                           alignSelf: "center"
-                        }}>
+                        }}
+                      >
                         Higher quality may incur higher data costs
                       </Text>
                       <CheckBox
