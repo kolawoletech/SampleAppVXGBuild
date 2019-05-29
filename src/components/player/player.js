@@ -28,7 +28,6 @@ import { AsyncStorage } from "react-native";
 import CheckBox from "react-native-check-box";
 
 import Messages from "./../messages";
-var data = require("./data.json");
 var totalBitrate = 0;
 import {
   fetchChannelChats,
@@ -139,10 +138,14 @@ export class Player extends React.Component {
     let value = await AsyncStorage.getItem("hideWarning");
     if (value !== null) {
       console.log("Don't Show Warning");
-    } else {
+    } else if (this.state.connectionType !=='wifi'){
+
       this.setState({
         hideWarning: true
       });
+    
+    } else {
+      console.log("Do Nothing")
     }
 
     this.props.switchStream(channelID, down);
@@ -217,6 +220,8 @@ export class Player extends React.Component {
     await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
+
+    console.log("This is ChannelDATA On Player: " +JSON.stringify(this.props.id))
 
     Dimensions.addEventListener("change", () => {
       this.getOrientation();
@@ -399,9 +404,11 @@ export class Player extends React.Component {
 
   async getMessagesWithAID() {
     let AID = await AsyncStorage.getItem("aid");
-    const channel = this.props.channel;
-    setTimeout(() => {
-      this.props.loadChannelChats(channel.id, AID);
+    let TOKENID = await AsyncStorage.getItem("sessionTokenID");
+
+    const id = this.props.id;
+    setTimeout(async () => {
+     await this.props.loadChannelChats(id, AID, TOKENID);
     }, 1000);
   }
 

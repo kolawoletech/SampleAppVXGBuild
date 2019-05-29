@@ -28,7 +28,7 @@ class LoginFormComponent extends Component {
     setTimeout(async () => {
       await this.getNewToken()
       Actions.catalogue()
-    }, 5000);
+    }, 2000);
   }
 
 

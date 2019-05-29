@@ -18,10 +18,9 @@ export default class Tabs extends React.Component {
   render() {
     return (
       <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
-        <View >
+        <View>
           <LinearGradient
-            colors={['#76B6C4', '#4E8FA2', '#0F516C']}
-          > 
+            colors={['#76B6C4', '#4E8FA2', '#0F516C']}> 
           <Text
             style={{
               paddingTop: 10,
@@ -72,6 +71,13 @@ export default class Tabs extends React.Component {
           </TouchableOpacity>
     
 
+          <TouchableOpacity >
+            <Icon name="settings" size={22} color="black"
+              style={{ position: 'absolute', top: 10, left: 50 }}
+            />
+            <Button color='black' title="Settings" onPress={() => { Actions.messages(); }}></Button>
+          </TouchableOpacity>
+    
         </View>
 
       </ScrollView>

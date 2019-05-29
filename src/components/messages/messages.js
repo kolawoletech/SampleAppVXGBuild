@@ -14,16 +14,25 @@ import { AsyncStorage } from 'react-native';
 var data = require('./data.json');
 
 class Messages extends Component {
-
+  constructor(props) {
+    super(props);
+    this.getMessagesWithAID();
+   // this.getMessagesWithAID = this.getMessagesWithAID.bind(this);
+    console.log("Constructor Working")
+  }
   async componentDidMount() {
-    await this.getMessagesWithAID();
     console.log("Loaded MESSAGES" + JSON.stringify(this.props));
   }
 
+  async componentWillMount(){
+   // this.getMessagesWithAID();
+
+  }
+
   async getMessagesWithAID(){
-    let AID = await AsyncStorage.getItem("aid");
-    const channel = this.props.channel;
-    this.props.loadChats(AID);
+    console.log("Trying to get Messages")
+    let TOKENID = await AsyncStorage.getItem("sessionTokenID");
+    this.props.loadChats( TOKENID );
   }
 
 
@@ -50,7 +59,7 @@ class Messages extends Component {
     return (
         <View
           style={{ height: '100%' , backgroundColor: '#0F516C'}}>
-          <MessageItems list={chatsData} />
+          <MessageItems list={data} />
          </View>
     );
   }

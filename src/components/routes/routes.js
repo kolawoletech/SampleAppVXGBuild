@@ -54,7 +54,7 @@ export default class Routes extends React.Component {
 
             contentComponent={TabsContainer}>
           <Stack key="root" >      
-              <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" initial={true}/>
+              <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" />
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
               <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
@@ -64,7 +64,7 @@ export default class Routes extends React.Component {
               <Scene key="program" component={ProgramContainer} title="Program" />
               <Scene key="guide" component={GuideContainer} title="Guide" />
               <Scene key="settings" component={SettingsContainer} title="Settings" />
-              <Scene key="messages" component={MessagesContainer} title="Messages" />
+              <Scene key="messages" component={MessagesContainer} title="Messages" initial={true}/>
               <Scene key="landing" component={LandingContainer} title="Landing" />
               <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
             </Stack>

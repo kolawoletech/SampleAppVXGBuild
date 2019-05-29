@@ -112,13 +112,25 @@ class Channels extends Component {
     const { channels: data } = this.props;
     const { orientation: rotated } = this.props;
 
-    return (
-      <LinearGradient
-        colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-        style={{ height: "100%" }}>
-        <ChannelItems list={data} onPressItem={this.onRemoveChannel} />
-      </LinearGradient>
-    );
+    console.log("~Condoifognfgklm" + JSON.stringify(this.props.channels))
+    if ( this.props.channels.data === 0 ||this.props.channels == null  ){
+      return (
+        <LinearGradient
+          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          style={{ height: "100%" }}>
+          <LoadingIndicator />
+        </LinearGradient>
+      );
+    } else {
+      return (
+        <LinearGradient
+          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          style={{ height: "100%" }}>
+          <ChannelItems list={data} onPressItem={this.onRemoveChannel} />
+        </LinearGradient>
+      );
+    }
+ 
   }
 }
 

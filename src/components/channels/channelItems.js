@@ -4,6 +4,7 @@ const { width, height } = Dimensions.get("window");
 import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from "react-native";
+import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -122,10 +123,10 @@ export class ChannelItems extends React.Component {
   render() {
     console.log("After Rendering " + JSON.stringify(this.props))
 
-    if (this.props == "undefined") {
+    if (this.props.list.length === 0) {
       return (
         <TouchableOpacity>
-          <Text>LOADING!</Text>
+          <LoadingIndicator />
         </TouchableOpacity>
       );
     } else {
