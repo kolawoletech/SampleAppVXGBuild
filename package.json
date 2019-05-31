@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@nelsonomuto/axios-request-timeout": "^1.0.4",
     "@react-native-community/netinfo": "^2.0.10",
     "axios": "^0.18.0",
+    "chai": "^4.2.0",
     "firebase": "^5.8.2",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -25,9 +27,11 @@
     "react-native-easy-grid": "^0.2.1",
     "react-native-easy-toast": "^1.2.0",
     "react-native-elements": "^1.1.0",
+    "react-native-fetch-polyfill": "^1.1.3",
     "react-native-fs": "^2.13.3",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-grid-component": "^1.1.0",
+    "react-native-keep-awake": "^4.0.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-linear-gradient": "^2.5.4",
     "react-native-material-cards": "^1.0.9",
@@ -52,7 +56,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "relative-date": "^1.1.3",
-    "rn-fetch-blob": "^0.10.15"
+    "rn-fetch-blob": "^0.10.15",
+    "tenacious-fetch": "^2.2.2"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",

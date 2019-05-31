@@ -16,7 +16,6 @@ var data = require('./data.json');
 class Messages extends Component {
   constructor(props) {
     super(props);
-    this.getMessagesWithAID();
    // this.getMessagesWithAID = this.getMessagesWithAID.bind(this);
     console.log("Constructor Working")
   }
@@ -25,14 +24,18 @@ class Messages extends Component {
   }
 
   async componentWillMount(){
-   // this.getMessagesWithAID();
+   
+   //setInterval(async() =>{
+   // await this.getMessagesWithAID();
+   //}, 3000)
 
   }
 
   async getMessagesWithAID(){
-    console.log("Trying to get Messages")
     let TOKENID = await AsyncStorage.getItem("sessionTokenID");
     this.props.loadChats( TOKENID );
+    console.log("Trying to get Messages " + TOKENID)
+
   }
 
 
@@ -59,7 +62,7 @@ class Messages extends Component {
     return (
         <View
           style={{ height: '100%' , backgroundColor: '#0F516C'}}>
-          <MessageItems list={data} />
+          <MessageItems list={chatsData} />
          </View>
     );
   }

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import DialogInput from "react-native-dialog-input";
 import NetInfo from "@react-native-community/netinfo";
+import KeepAwake from 'react-native-keep-awake';
+
 
 import {
   View,
@@ -49,6 +51,7 @@ export class Player extends React.Component {
     this.hideQualityWarningForever = this.hideQualityWarningForever.bind(this);
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
     this.hideCostWarningOnce = this.hideCostWarningOnce.bind(this)
+    this.getMessagesWithAID = this.getMessagesWithAID.bind(this);
 
     this.state = {
       newMessage: "",
@@ -169,6 +172,13 @@ export class Player extends React.Component {
     }
   }
 
+  changeKeepAwake(shouldBeAwake) {
+    if (shouldBeAwake) {
+      KeepAwake.activate();
+    } else {
+      KeepAwake.deactivate();
+    }
+  }
   async loadBufferSize() {
     try {
       const bufferSize = await AsyncStorage.getItem("bufferValue");
@@ -388,7 +398,10 @@ export class Player extends React.Component {
   }
 
   async componentWillMount() {
-    await this.getMessagesWithAID();
+    setInterval(async () => {
+      await this.getMessagesWithAID();
+
+    }, 1000);
     await this.checkWarningPerferences();
   }
 
@@ -407,9 +420,9 @@ export class Player extends React.Component {
     let TOKENID = await AsyncStorage.getItem("sessionTokenID");
 
     const id = this.props.id;
-    setTimeout(async () => {
+  
      await this.props.loadChannelChats(id, AID, TOKENID);
-    }, 1000);
+
   }
 
   _onBack = () => {
@@ -526,7 +539,8 @@ export class Player extends React.Component {
     return (
       <View>
         {this.state.orientation === "landscape" ? (
-          <VXGMobileSDK
+
+            <VXGMobileSDK
             style={styles.player}
             ref={this._assignPlayer}
             config={{
@@ -534,9 +548,12 @@ export class Player extends React.Component {
               autoplay: true
             }}
           />
+
+
         ) : null}
         {this.state.orientation === "portrait" ||
         this.state.orientation === "" ? (
+
           <VXGMobileSDK
             style={orientation.player}
             ref={this._assignPlayer}
@@ -545,6 +562,7 @@ export class Player extends React.Component {
               autoplay: true
             }}
           />
+
         ) : null}
         {this.state.orientation === "portrait" ? (
           <View style={styles.progressBarContainer}>
@@ -552,8 +570,7 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}
-              >
+                }}>
                 <Symbol
                   name="chevron-double-left"
                   size={iconWidth}
@@ -565,8 +582,7 @@ export class Player extends React.Component {
               style={{
                 width: progressBarWidth,
                 position: "relative"
-              }}
-            >
+              }}>
               <TouchableHighlight onPress={this.clickProgressBar}>
                 <View>
                   <Symbol
@@ -742,8 +758,7 @@ export class Player extends React.Component {
                   style={{
                     fontSize: 18,
                     fontWeight: "bold"
-                  }}
-                >
+                  }}>
                   Close
                 </Text>
               </View>
@@ -821,7 +836,7 @@ export class Player extends React.Component {
                       </TouchableHighlight>
                     </View>
                   )}
-                  <Messages />
+                 
                 </View>
                 <View>
                   <DialogInput
@@ -836,7 +851,9 @@ export class Player extends React.Component {
                   />
                 </View>
               </View>
+              <Messages />
             </ScrollView>
+            
           ) : null}
           {this.state.orientation === "portrait" ? (
             <View style={styles.passwordContainer}>

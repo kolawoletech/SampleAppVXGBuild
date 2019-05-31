@@ -5,6 +5,8 @@ import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import { AsyncStorage } from "react-native";
 import NetInfo from "@react-native-community/netinfo";
+import fetch from 'react-native-fetch-polyfill';
+var data = require('./data.json');
 
 AsyncStorage.getItem("aid").then(AID => {
   const appID = AID;
@@ -344,36 +346,42 @@ export const fetchChannelChats = (id, AID, TOKEN) => dispatch => {
   console.log(" USING AUD: " + AID, "Channel ID: " + id, "TOKEN ID" + TOKEN);
 
   const programs_options = {
-    method: "GET",
+    'method': "GET",
 
-    headers: new Headers({
-      Authorization: "Bearer " +  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhaWQiOiJjOTBiZjJiZS00NTliLTQ2YmQtOWFjNS0wNjkzZjA3ZDU0YWMiLCJ0YWdzIjpbXSwiaWF0IjoxNTU5MTIzMDk1LCJleHAiOjE1NTkyMDk0OTV9.JhbU5z_MUZXhDbHUIsiP5yVNy1uMqhEeINYW89kUWv8",
+    'headers':{
+      'Authorization': "Bearer " +  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhaWQiOiJjOTBiZjJiZS00NTliLTQ2YmQtOWFjNS0wNjkzZjA3ZDU0YWMiLCJ0YWdzIjpbXSwiaWF0IjoxNTU5MTIzMDk1LCJleHAiOjE1NTkyMDk0OTV9.JhbU5z_MUZXhDbHUIsiP5yVNy1uMqhEeINYW89kUWv8",
       "Content-Type": "application/x-www-form-urlencoded"
-    })
+    }
   };
 
+  console.log(data)
+  dispatch(messagesLoaded(data));
 
-  
+  const messages_url ="https://nile.rtst.co.za/api/artist/6/channels/" .concat(id)+ "/messages";
+  const AuthStr = 'Bearer '.concat(TOKEN); 
+  console.log(id + "IS THIS WORKING" , messages_url + " AND ~THIS TokenL " + AuthStr)
 
-  const messages_url ="https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages";
-    console.log(id + "IS THIS WORKING" , messages_url + " SND ~THIS Too")
 
-    axios.get(messages_url,  { 'headers': { 'Authorization':  "Bearer " +  TOKEN, "Content-Type": "application/x-www-form-urlencoded" }}).then((response)=>{
-      console.log(response)
-      console.log("Getting Ther")
-    }).then(response => response.json())
+  axios.get(messages_url,  { headers : { Authorization:  AuthStr }}).then((response)=>{
+    console.log(response)
+    console.log("Getting There")
+  }).then(response => response.json())
 
-    .then(response=> {
-      let chatStream = response["data"];
-      console.log("WE AT HERE GETTING MESSAGES AT CHANNEL CHATS: " + JSON.stringify(chatStream));
+ 
 
-      dispatch(messagesLoaded(chatStream));
-      console.log(id + "Working My Ass Off")
+  .then(response=> {
+    let chatStream = response["data"];
+    console.log("WE AT HERE GETTING MESSAGES AT CHANNEL CHATS: " + JSON.stringify(chatStream));
 
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+    dispatch(messagesLoaded(chatStream));
+    console.log(id + "Working My Ass Off")
+
+  })
+  .catch(err=>{
+    console.log(err)
+  })
+
+
 
 };
 
@@ -653,11 +661,11 @@ export const fetchCatalogue = (aid, tokenID) => dispatch => {
   dispatch(apiUserRegistered(tokenID));
 
   const programs_options = {
-    method: "GET",
-    headers: new Headers({
-      Authorization: "Bearer " + tokenID,
+    'method': "GET",
+    'headers': {
+      'Authorization': "Bearer " + tokenID,
       "Content-Type": "application/x-www-form-urlencoded"
-    })
+    }
   };
   const programs_url = "https://nile.rtst.co.za/api/artist/6/programs";
   fetch(programs_url, programs_options)
@@ -674,11 +682,18 @@ export const fetchChatStream = (token) => dispatch => {
   const messages_url =
   "https://nile.rtst.co.za/api/artist/6/channels/28/messages/";
 
+  const optionsR = {
+    timeout: 30 * 1000,
+    method: "GET",
+    'headers':{
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  };
 
-
-  return axios.get(messages_url,  { 'headers': { 'Authorization':  "Bearer " +  token, "Content-Type": "application/x-www-form-urlencoded" }}).then((response)=>{
+  return axios.get(messages_url,optionsR).then((response)=>{
     console.log(response)
-    console.log("Getting Ther")
+    console.log("Getting There")
   })
 
   .then(response=> {

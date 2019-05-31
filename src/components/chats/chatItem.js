@@ -16,20 +16,22 @@ import moment from "moment";
 import "moment-timezone";
 import { AsyncStorage } from "react-native";
 
-export class MessageItems extends React.Component {
+export class ChatItem extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showTheThing: false,
-      images: [],
-      markedDate: moment(new Date()).format("YYYY-MM-DD")
-    };
+
   }
 
+  componentDidMount() {}
+
+  componentWillMount() {
+  }
+
+
+
+
   renderItem = data => {
- 
-    const time = moment(data.item.time, "YYYY-MM-DDTHH:mm:ss.SSS[Z]").fromNow();
  
     return (
       <View
@@ -97,24 +99,9 @@ export class MessageItems extends React.Component {
         </TouchableOpacity>
       );
     } else {
-      const { list } = this.props;
-      console.log("Thia is the stuff "+  this.props.list)
       return (
         <View>
-          {this.state.images.length === 0 && (
-            <FlatList
-              data={list}
-              renderItem={item => this.renderItem(item)}
-              keyExtractor={item => item._id.toString()}
-            />
-          )}
-          {this.state.images.length > 0 && (
-            <FlatList
-              data={list}
-              renderItem={item => this.renderItem(item)}
-              keyExtractor={item => item._id.toString()}
-            />
-          )}
+            <Text>Chat Item</Text>
         </View>
       );
     }
