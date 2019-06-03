@@ -307,7 +307,7 @@ export class Settings extends Component {
             height: 45
           }}>
           <Text style={styles.title}>Version</Text>
-          <Text style={styles.entry}>1.0.16</Text>
+          <Text style={styles.entry}>1.0.17</Text>
         </View>
         <View
           style={{

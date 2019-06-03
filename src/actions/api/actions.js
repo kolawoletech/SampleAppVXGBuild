@@ -154,13 +154,17 @@ export const fetchChannels = () => dispatch => {
 };
 
 export const sendMessage = (id, opts, aid) => dispatch => {
+  console.log("This is  a numnber d" + id)
   dispatch(apiUserRegistering());
+  var integer = parseInt(id);
+  console.log(integer)
+
 
   const options = {
     method: "POST",
     body: "aid=" + aid,
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/x-www-form-urlencoded", 
     }
   };
 
@@ -172,25 +176,39 @@ export const sendMessage = (id, opts, aid) => dispatch => {
 
       console.log("After Stringify " + JSON.stringify(opts));
 
-      //console.log("The sent Payload is: " + body);
-
-      //dispatch(channelLoading(id))
-      //console.log("ID USED IN STORE IS "  + id)
       const channel_url =
-        "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages";
+        "https://nile.rtst.co.za/api/artist/6/channels/28/messages/";
+
 
       var config = {
-        headers: { Authorization: "Bearer " + token_data["data"] }
+        headers: { 'Authorization': "Bearer " + token_data["data"] ,  "Content-Type": "application/x-www-form-urlencoded"}
       };
 
-      axios
-        .post(channel_url, opts, config)
-        .then(function(response) {
-          console.log("Axios Response: " + JSON.stringify(response["data"]));
-        })
-        .catch(function(error) {
-          console.log("Axios Error: " + error);
-        });
+      const optionsSend = {
+        method: "POST",
+        body:  JSON.stringify(opts),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token_data["data"]
+        }
+      };
+
+      console.log("In the Body" + optionsSend.body)
+
+      fetch(channel_url, optionsSend)
+  
+      .then(res => {
+        console.log("Using another Method" + JSON.stringify(res))
+
+      }) .catch(function(error) {
+        console.log("Fetchs Error: " + error);
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        }
+      });
+    
     });
 
   //.catch(err => console.log("An error occured", err))
@@ -331,52 +349,22 @@ export const fetchChannelGuide = id => dispatch => {
 };
 
 export const fetchChannelChats = (id, AID, TOKEN) => dispatch => {
-  dispatch(apiUserRegistering());
+  //dispatch(apiUserRegistering());
 
-  const options = {
-    method: "POST",
-    body: "aid=" + AID,
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  };
 
-  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
-
-  console.log(" USING AUD: " + AID, "Channel ID: " + id, "TOKEN ID" + TOKEN);
-
-  const programs_options = {
-    'method': "GET",
-
-    'headers':{
-      'Authorization': "Bearer " +  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhaWQiOiJjOTBiZjJiZS00NTliLTQ2YmQtOWFjNS0wNjkzZjA3ZDU0YWMiLCJ0YWdzIjpbXSwiaWF0IjoxNTU5MTIzMDk1LCJleHAiOjE1NTkyMDk0OTV9.JhbU5z_MUZXhDbHUIsiP5yVNy1uMqhEeINYW89kUWv8",
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  };
-
-  console.log(data)
-  dispatch(messagesLoaded(data));
+  //console.log(data)
+  //dispatch(messagesLoaded(data));
 
   const messages_url ="https://nile.rtst.co.za/api/artist/6/channels/" .concat(id)+ "/messages";
   const AuthStr = 'Bearer '.concat(TOKEN); 
   console.log(id + "IS THIS WORKING" , messages_url + " AND ~THIS TokenL " + AuthStr)
 
 
-  axios.get(messages_url,  { headers : { Authorization:  AuthStr }}).then((response)=>{
-    console.log(response)
-    console.log("Getting There")
-  }).then(response => response.json())
-
- 
-
-  .then(response=> {
-    let chatStream = response["data"];
-    console.log("WE AT HERE GETTING MESSAGES AT CHANNEL CHATS: " + JSON.stringify(chatStream));
-
-    dispatch(messagesLoaded(chatStream));
-    console.log(id + "Working My Ass Off")
-
+  axios.get(messages_url,  { headers : { "Authorization":  AuthStr ,  "If-None-Match": null }}).then((response)=>{
+    let chatStream = response.data;
+    dispatch(messagesLoaded(chatStream.data));
   })
+
   .catch(err=>{
     console.log(err)
   })
@@ -687,7 +675,7 @@ export const fetchChatStream = (token) => dispatch => {
     method: "GET",
     'headers':{
       'Authorization': 'Bearer ' + token,
-      'Content-Type': 'application/x-www-form-urlencoded'
+      "If-None-Match": null
     }
   };
 
@@ -697,7 +685,7 @@ export const fetchChatStream = (token) => dispatch => {
   })
 
   .then(response=> {
-    chatStream = response["data"];
+    chatStream = response.data;
     console.log("WE AT HERE GETTING MESSAGES AT CHANNEL CHATS: " + JSON.stringify(chatStream));
 
     dispatch(messagesLoaded(chatStream));

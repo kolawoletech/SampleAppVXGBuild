@@ -10,8 +10,8 @@ import {
   Dimensions
 } from "react-native";
 
+import FastImage from 'react-native-fast-image'
 
-import { CachedImage } from 'react-native-cached-image';
 
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
@@ -52,7 +52,6 @@ export class CatalogueItems extends React.Component {
     }
 
     if (this.props.orientation != prevProps.orientation) {
-      console.log("Reload Compent");
 
       this.setState({
         facedown: this.props.orientation
@@ -86,7 +85,6 @@ export class CatalogueItems extends React.Component {
     const token = await fetch(url, options)
       .then(token_data => token_data.json())
       .then(token_data => {
-        //console.log("This is TOKEN from STORE "+ token_data["data"]);
 
         return token_data["data"];
       });
@@ -106,8 +104,7 @@ export class CatalogueItems extends React.Component {
       .then(icon => icon.json())
       .then(icon => {
         let img = icon["data"];
-
-        //console.log(id, img)
+        
         return { id, img };
       });
   }
@@ -119,7 +116,7 @@ export class CatalogueItems extends React.Component {
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}>
           <Card>
-            <CardImage
+{/*             <CardImage
               source={{
                 uri: this.state.images.find(
                   a => data.item.programme_id === a.id
@@ -135,7 +132,24 @@ export class CatalogueItems extends React.Component {
                 maxHeight: 83,
                 minHeight: 83
               }}
-            />
+
+              
+            /> */}
+            <FastImage
+            style={{ width: 150, height: 150,  }}
+            source={{
+              uri: this.state.images.find(
+                a => data.item.programme_id === a.id
+              )
+                ? this.state.images.find(a => data.item.programme_id === a.id)
+                    .img
+                : "https://newbietech.com.ng/placeholder-nile-logo-150.png",
+                headers: { Authorization: 'someAuthToken' },
+                priority: FastImage.priority.high,
+            }}
+            resizeMode={FastImage.resizeMode.contain}
+            cache={FastImage.cacheControl.cacheOnly}
+          />
             {/*                         <Image
                             source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png', cache: 'only-if-cached' }}
                             resizeMode="stretch"

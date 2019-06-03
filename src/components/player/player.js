@@ -231,7 +231,6 @@ export class Player extends React.Component {
     this.getCurrencySymbol();
     const channel = this.props.channel;
 
-    console.log("This is ChannelDATA On Player: " +JSON.stringify(this.props.id))
 
     Dimensions.addEventListener("change", () => {
       this.getOrientation();
@@ -398,10 +397,10 @@ export class Player extends React.Component {
   }
 
   async componentWillMount() {
-    setInterval(async () => {
+   
       await this.getMessagesWithAID();
 
-    }, 1000);
+    
     await this.checkWarningPerferences();
   }
 
@@ -495,7 +494,8 @@ export class Player extends React.Component {
     } else {
       var opts = {
         from: username,
-        body: content
+        body: content,
+        id:28
       };
 
       const channel = this.props.channel;
@@ -504,6 +504,12 @@ export class Player extends React.Component {
       this.setState({
         newMessage: ""
       });
+
+      setTimeout(() => {
+        this.getMessagesWithAID()
+        
+      }, 1000);
+      
     }
   }
 
