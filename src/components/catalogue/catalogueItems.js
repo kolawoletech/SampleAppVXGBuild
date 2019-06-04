@@ -116,7 +116,7 @@ export class CatalogueItems extends React.Component {
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}>
           <Card>
-{/*             <CardImage
+           <CardImage
               source={{
                 uri: this.state.images.find(
                   a => data.item.programme_id === a.id
@@ -134,8 +134,8 @@ export class CatalogueItems extends React.Component {
               }}
 
               
-            /> */}
-            <FastImage
+            />
+{/*             <FastImage
             style={{ width: 150, height: 150,  }}
             source={{
               uri: this.state.images.find(
@@ -149,7 +149,7 @@ export class CatalogueItems extends React.Component {
             }}
             resizeMode={FastImage.resizeMode.contain}
             cache={FastImage.cacheControl.cacheOnly}
-          />
+          /> */}
             {/*                         <Image
                             source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png', cache: 'only-if-cached' }}
                             resizeMode="stretch"

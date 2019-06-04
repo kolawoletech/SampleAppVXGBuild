@@ -38,45 +38,31 @@ export default class Tabs extends React.Component {
           </View>
         </LinearGradient>
         </View>
-
-        <View style={styles.tabContainer}>
-         
+        <View style={styles.tabContainer}>    
           <TouchableOpacity >
             <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Catalogue" onPress={() => { Actions.catalogue(); }}></Button>
           </TouchableOpacity>
-
           <TouchableOpacity>
             <Icon name="live-tv" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Channels" onPress={() => { Actions.channels(); }}></Button>
           </TouchableOpacity>
-          
-
           <TouchableOpacity >
             <Icon name="playlist-play" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Playlist" onPress={() => { Actions.media(); }}></Button>
           </TouchableOpacity>
-
           <TouchableOpacity >
             <Icon name="settings" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
             <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
           </TouchableOpacity>
-
-          <TouchableOpacity >
-            <Icon name="settings" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Chats" onPress={() => { Actions.messages(); }}></Button>
-          </TouchableOpacity>
-    
         </View>
 
       </ScrollView>

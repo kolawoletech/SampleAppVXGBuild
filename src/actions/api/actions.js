@@ -177,7 +177,7 @@ export const sendMessage = (id, opts, aid) => dispatch => {
       console.log("After Stringify " + JSON.stringify(opts));
 
       const channel_url =
-        "https://nile.rtst.co.za/api/artist/6/channels/28/messages/";
+        "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/messages/";
 
 
       var config = {

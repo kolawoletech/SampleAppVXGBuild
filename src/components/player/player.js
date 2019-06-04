@@ -118,7 +118,8 @@ export class Player extends React.Component {
   };
 
   async decreaseQuality() {
-    var channelID = this.state.id;
+    var channelID = this.props.id;
+    console.log(channelID)
     let AID = await AsyncStorage.getItem("aid");
 
     const down = {
@@ -130,7 +131,8 @@ export class Player extends React.Component {
   }
 
   async increaseQuality() {
-    var channelID = this.state.id;
+    
+    var channelID = this.props.id;
     let AID = await AsyncStorage.getItem("aid");
 
     const down = {
@@ -499,8 +501,9 @@ export class Player extends React.Component {
       };
 
       const channel = this.props.channel;
+      var channelID = this.props.id;
 
-      this.props.postMessage(channel.id, opts, AID);
+      this.props.postMessage(channelID, opts, AID);
       this.setState({
         newMessage: ""
       });
