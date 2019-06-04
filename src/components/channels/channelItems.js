@@ -5,7 +5,7 @@ import { styles } from './styles';
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
-import FastImage from 'react-native-fast-image'
+//import FastImage from 'react-native-fast-image'
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -94,13 +94,13 @@ export class ChannelItems extends React.Component {
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>
           {/* <CacheableImage style={styles.image} source={{uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://i.redd.it/rc29s4bz61uz.png' }} permanent={false} /> */}
-{/* 
+
             <Image
               resizeMode="stretch"
               style={{ width: 150, height: 150, position: 'absolute' }}
               source={{ uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://via.placeholder.com/150' }}
-            /> */}
-
+            />
+{/* 
           <FastImage
             style={{ width: 150, height: 150, position: 'absolute' }}
             source={{
@@ -109,7 +109,7 @@ export class ChannelItems extends React.Component {
                 priority: FastImage.priority.normal,
             }}
             resizeMode={FastImage.resizeMode.stretch}
-          />
+          /> */}
           </View>
 
           <View style={{ paddingTop: 32, width: '60%', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>

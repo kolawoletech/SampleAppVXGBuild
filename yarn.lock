@@ -5553,11 +5553,6 @@ react-native-elements@^1.1.0:
     react-native-ratings "^6.3.0"
     react-native-status-bar-height "^2.2.0"
 
-react-native-fast-image@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-6.0.1.tgz#677d60761bc487af18d830f46ab9cdd75b865a6c"
-  integrity sha512-jzgFAZrrWQXsnyiLpKgwkHva6YzD24/ZQG65en7kx8YWmS2H14Tpj5J6h0KQZhV3KxBSeCQbKE+vh99bSpT0/Q==
-
 react-native-fetch-blob@0.10.8:
   version "0.10.8"
   resolved "https://registry.yarnpkg.com/react-native-fetch-blob/-/react-native-fetch-blob-0.10.8.tgz#4fc256abae0cb5f10e7c41f28c11b3ff330d72a9"

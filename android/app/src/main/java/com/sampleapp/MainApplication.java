@@ -3,7 +3,6 @@ package com.sampleapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.dylanvann.fastimage.FastImageViewPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.mybigday.rnmediameta.RNMediaMetaPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
@@ -38,7 +37,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new FastImageViewPackage(),
             new KCKeepAwakePackage(),
             new RNMediaMetaPackage(),
             new NetInfoPackage(),
