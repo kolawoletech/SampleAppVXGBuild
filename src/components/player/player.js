@@ -777,13 +777,12 @@ export class Player extends React.Component {
     await this._player.applyConfig({
       connectionUrl: rstp_link,
       autoplay: true,
-      decodingType: 0, // Hardware – 1, Sofware – 0
+      decodingType: 1, // Hardware – 1, Sofware – 0
       connectionNetworkProtocol: -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
       numberOfCPUCores: 0, // 0<= - autodetect, > 0 - will set manually
-      synchroEnable: 0, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
+      synchroEnable: 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
       connectionBufferingTime: bufferValue,
       connectionDetectionTime: bufferValue,
-      startPreroll: 300,
       aspectRatioMode: 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
     });
     await this._player.open();

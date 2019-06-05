@@ -15,7 +15,7 @@ import { Actions } from "react-native-router-flux";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import { fetchChannelImage, newRegisterUser } from "../../actions/api/actions";
 import { ChannelItems } from "./channelItems";
-import { ChannelLogos } from "./channelLogos";
+import { CacheImage } from "./cacheImage";
 import LinearGradient from "react-native-linear-gradient";
 
 import { AsyncStorage } from "react-native";

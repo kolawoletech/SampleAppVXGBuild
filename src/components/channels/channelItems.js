@@ -6,12 +6,15 @@ import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 //import FastImage from 'react-native-fast-image'
-var RNFS = require('react-native-fs');
+import RNFS from "react-native-fs";
+//import base64Img from 'base64-img';
+//var base64Img = require('base64-img');
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import _ from "lodash";
 
+import fetch_blob from 'react-native-fetch-blob';
 
 export class ChannelItems extends React.Component {
   constructor(props) {
@@ -25,27 +28,29 @@ export class ChannelItems extends React.Component {
 
 
   async  componentDidUpdate(prevProps) {
-    if (this.props.list != prevProps.list) {
+    //TODO Add Condition to detect new Chanes
+    console.log("CHECK IF IMAGES ARE LOCAL:    p--------" + this.state.isImageSavedLocally)
+    if (this.state.isImageSavedLocally !== "undefined" || this.state.isImageSavedLocally !== true){
+      if (this.props.list != prevProps.list) {
 
 
 
-      const promises = this.props.list.map(item => {
-        return this._getImage(item.id)
-
-      })
-
-      const results = await Promise.all(promises)
-      this.setState({
-        images: results
-      })
+        const promises = this.props.list.map(item => {
+          return this._getImage(item.id)
+  
+        })
+  
+        const results = await Promise.all(promises)
+        this.setState({
+          images: results
+        })
+      }
+    } else {
+      console.log("Images already saved locally")
     }
+
   }
   
-  componentDidMount() {
-    console.log(RNFS.CachesDirectoryPath);
-
-  }
-
   async _getImage(id) {
     let AID = await AsyncStorage.getItem("aid");
 
@@ -77,6 +82,32 @@ export class ChannelItems extends React.Component {
       .then(icon => {
         let img = icon["data"]
 
+/*         base64Img.img(img, RNFS.CachesDirectoryPath, id, function(err, filepath) {
+          console.log("Error: " + err)
+          console.log("Filepath: " + filepath)
+
+        }); */
+
+        console.log(RNFS.CachesDirectoryPath);
+        var cachedImagePath = RNFS.CachesDirectoryPath+"/" + id + ".png"
+        var image_data = img.split('data:image/png;base64,');
+        var i = 0
+        image_data = image_data[1];
+        
+        console.log("Stripped Image: --- " + image_data )
+
+        RNFS.writeFile(cachedImagePath, image_data, 'base64').then(()=>{
+          this.setState({
+            isImageSavedLocally: true
+          }) 
+        })
+        .catch((error) => {
+          alert(JSON.stringify(error));
+          this.setState({
+            isImageSavedLocally: false
+          })
+        });
+
         return { id, img }
       })
 
@@ -84,7 +115,7 @@ export class ChannelItems extends React.Component {
 
 
   renderItem = (data) => {
-
+    console.log("Is Image Saved Locally: "+ this.state.isImageSavedLocally)
     return (
 
       <TouchableOpacity key={data.item.id} onPress={() => Actions.channel({ channelData: data.item })}>
@@ -97,12 +128,20 @@ export class ChannelItems extends React.Component {
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>
           {/* <CacheableImage style={styles.image} source={{uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://i.redd.it/rc29s4bz61uz.png' }} permanent={false} /> */}
-
+          {this.state.isImageSavedLocally === false && (
             <Image
               resizeMode="stretch"
               style={{ width: 150, height: 150, position: 'absolute' }}
               source={{ uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://via.placeholder.com/150' }}
             />
+            )}
+            {this.state.isImageSavedLocally === true || this.state.isImageSavedLocally !== "undefined"  && (
+            <Image
+              resizeMode="stretch"
+              style={{ width: 150, height: 150, position: 'absolute' }}
+              source={{ uri: 'https://via.placeholder.com/150' }}
+            />
+            )}
 {/* 
           <FastImage
             style={{ width: 150, height: 150, position: 'absolute' }}
@@ -138,7 +177,6 @@ export class ChannelItems extends React.Component {
     );
   }
   render() {
-    console.log("After Rendering " + JSON.stringify(this.props))
 
     if (this.props.list.length === 0) {
       return (
