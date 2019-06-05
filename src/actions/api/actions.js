@@ -82,6 +82,8 @@ export const switchQuality = (id, action) => dispatch => {
     }
   };
 
+  console.log("From the Switch Action Block: " + id)
+
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
   fetch(url, options)
     .then(token_data => token_data.json())
@@ -110,6 +112,11 @@ export const switchQuality = (id, action) => dispatch => {
         })
         .catch(function(error) {
           console.log("Axios Error: " + error);
+          if (error.response) {
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          }
         });
     });
 
@@ -520,7 +527,7 @@ export const fetchChannelRSTPLinks = (
   quality
 ) => dispatch => {
   dispatch(apiUserRegistering());
-  console.log("OnPressItem: " + aid);
+
   const options = {
     method: "POST",
     body: "aid=" + aid,
@@ -530,6 +537,8 @@ export const fetchChannelRSTPLinks = (
   };
 
   const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+
+
   fetch(url, options)
     .then(token_data => token_data.json())
     .then(token_data => {
@@ -550,15 +559,17 @@ export const fetchChannelRSTPLinks = (
         profile_id +
         "/";
 
+        console.log("This is the ID: From Switch " + id)
+
       fetch(program_url, programs_options)
         .then(uri => uri.json())
         .then(uri => {
           let link = uri["data"];
-          console.log("You picked: " + quality);
+        
           dispatch(channelRstpLinkLoaded(link));
           //dispatch(streamLoadedType(quality))
 
-          Actions.player({ link, qualityData: quality });
+          Actions.player({ link, qualityData: quality, id });
         });
     });
 };
@@ -602,7 +613,6 @@ export const playHighRSTPStream = (id, profile_id ) => dispatch => {
 
           dispatch(channelRstpLinkLoaded(link));
           Actions.player({ link, qualityData: "HIGH", id });
-          console.log(link);
         });
     });
 };

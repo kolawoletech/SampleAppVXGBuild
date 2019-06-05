@@ -33,6 +33,7 @@ export class Channel extends React.Component {
     await this.getChannelWithAID();
     await this.getChannelImageWithAID();
     this.autoQualityClick = this.autoQualityClick.bind(this);
+    this.onFetchRSTPLink = this.onFetchRSTPLink.bind(this)
   }
 
   onFetchRSTPLink = (channelID, profileID, AID, quality) => {

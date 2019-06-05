@@ -98,7 +98,6 @@ export class MessageItems extends React.Component {
       );
     } else {
       const { list } = this.props;
-      console.log("Thia is the stuff "+  this.props.list)
       return (
         <View>
           {this.state.images.length === 0 && (

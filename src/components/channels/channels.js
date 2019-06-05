@@ -112,7 +112,6 @@ class Channels extends Component {
     const { channels: data } = this.props;
     const { orientation: rotated } = this.props;
 
-    console.log("~Condoifognfgklm" + JSON.stringify(this.props.channels))
     if ( this.props.channels.data === 0 ||this.props.channels == null  ){
       return (
         <LinearGradient

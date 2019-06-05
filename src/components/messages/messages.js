@@ -20,7 +20,6 @@ class Messages extends Component {
     console.log("Constructor Working")
   }
   async componentDidMount() {
-    console.log("Loaded MESSAGES" + JSON.stringify(this.props));
   }
 
   async componentWillMount(){

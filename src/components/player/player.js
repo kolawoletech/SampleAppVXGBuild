@@ -43,7 +43,10 @@ export class Player extends React.Component {
 
   constructor() {
     super();
-    this.onLayout = this.onLayout.bind(this);
+    this._play1 = this._play1.bind(this);
+    this._close = this._close.bind(this);
+
+    //this.onLayout = this.onLayout.bind(this);
     this._onBack = this._onBack.bind(this);
     this.sendChat = this.sendChat.bind(this);
     this.decreaseQuality = this.decreaseQuality.bind(this);
@@ -52,6 +55,7 @@ export class Player extends React.Component {
     this.updateProgressBarOnData = this.updateProgressBarOnData.bind(this);
     this.hideCostWarningOnce = this.hideCostWarningOnce.bind(this)
     this.getMessagesWithAID = this.getMessagesWithAID.bind(this);
+    this.timeout = this.timeout.bind(this);
 
     this.state = {
       newMessage: "",
@@ -64,7 +68,7 @@ export class Player extends React.Component {
       id: "",
       totalRate: 0,
       totalCost: 0,
-      curremncySymbol: "",
+      currencySymbol: "",
       totalBitrate: 0,
       totalDataUsage: 0,
       progressText: "",
@@ -89,15 +93,12 @@ export class Player extends React.Component {
       this.setState({
         orientation: isPortrait() ? "portrait" : "landscape"
       });
+
+      this._player.close()
     });
   }
 
-  onLayout(e) {
-    this.setState({
-      width: Dimensions.get("window").width,
-      height: Dimensions.get("window").height
-    });
-  }
+
 
   costCounter(seconds) {
     this.cost * seconds;
@@ -127,14 +128,20 @@ export class Player extends React.Component {
       aid: "aid=" + AID
     };
 
-    this.props.switchStream(channelID, down);
+    setTimeout(() => {
+      this.props.switchStream(channelID, down);
+    }, 3000);
+    
   }
 
   async increaseQuality() {
     
     var channelID = this.props.id;
+    console.log(channelID)
+
     let AID = await AsyncStorage.getItem("aid");
 
+    console.log(AID)
     const down = {
       action: "up",
       aid: "aid=" + AID
@@ -218,6 +225,20 @@ export class Player extends React.Component {
     }
   };
 
+  async componentWillUnmount(){
+   // this.player.close()
+   this._close();
+  
+    if (this.timeout) {
+      //clearTimeout(this.timeout)
+      await clearInterval(this.timeout);
+      console.log("True")
+    } else {
+      await clearTimeout(this.timeout)
+      //clearInterval(this.timeout);
+    }
+  }
+
   async componentDidMount() {
     NetInfo.getConnectionInfo().then(data => {
       this.setState({
@@ -232,6 +253,7 @@ export class Player extends React.Component {
     await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
+    console.log( "I need to Know" + JSON.stringify(this.props))
 
 
     Dimensions.addEventListener("change", () => {
@@ -240,7 +262,8 @@ export class Player extends React.Component {
 
     await AsyncStorage.getItem("costPerMB").then(costPerMB => {
       this.setState({
-        rate: costPerMB
+        rate: costPerMB,
+        totalDataUsage: 0
       });
     });
 
@@ -248,111 +271,113 @@ export class Player extends React.Component {
 
     this.setState({ id: channel.id });
 
-    timeout = () => {
-      var intRate = totalBitrate * rate;
-      console.log("This is the Current Rate: " + this.state.rate);
-      var intTotalBitrate = parseFloat(totalBitrate);
-      var totalCost = parseInt(intTotalBitrate);
-      var VVV = totalCost * rate;
-      var parsedTotalCoast = parseFloat(totalCost);
+    
 
-      const rate = this.state.rate;
-      const totalRate = this.state.totalRate;
-
-      setTimeout(
-        function() {
-          // Do Something Here
-          // Then recall the parent function to
-          // create a recursive loop.
-          const quality = this.props.qualityData;
-          if (quality === "MEDIUM") {
-            var midRange = [
-              0.452,
-              0.469,
-              0.472,
-              0.484,
-              0.483,
-              0.48,
-              0.472,
-              0.47,
-              0.469,
-              0.482,
-              0.465,
-              0.317
-            ];
-          } else if (quality === "LOW") {
-            var midRange = [
-              0.0552,
-              0.0693,
-              0.0673,
-              0.0749,
-              0.088,
-              0.0876,
-              0.0925,
-              0.0776,
-              0.071,
-              0.0753,
-              0.0816,
-              0.0893
-            ];
-          } else if (quality === "HIGH") {
-            var midRange = [
-              0.904,
-              0.83,
-              1.1,
-              1.12,
-              0.95,
-              0.948,
-              0.942,
-              0.957,
-              0.939,
-              0.904,
-              0.889,
-              0.86,
-              0.833
-            ];
-          }
-          //var myArray = [5, 19, 4];
-
-          var rand = midRange[Math.floor(Math.random() * midRange.length)];
-          var maxRangeValue = Math.max.apply(Math, midRange);
-          var maxRangeValuePercentage =
-            parseFloat(rand) / parseFloat(maxRangeValue) - 0.1;
-
-          totalBitrate += rand;
-          var num = parseFloat(totalBitrate * rate).toFixed(2);
-
-          var maxIndicatorValue = this.state.indicatorLimit;
-          var totalDataUsage = this.state.totalDataUsage;
-          var maxIndicatorLimitPercentage =
-            parseFloat(totalDataUsage) / parseFloat(maxIndicatorValue);
-
-          if (maxIndicatorLimitPercentage >= 1) {
-            this.setState({
-              indicatorLevel: 1
-            });
-          } else {
-            this.setState({
-              indicatorLevel: maxIndicatorLimitPercentage
-            });
-          }
-
-          this.setState({
-            totalCost: num,
-            totalDataUsage: parseFloat(totalBitrate).toFixed(2),
-            totalBitrate: rand * 1000,
-            indeterminate: false,
-            progress: maxRangeValuePercentage
-          });
-
-          timeout();
-        }.bind(this),
-        1000
-      );
-    };
-
-    timeout();
+    await this.timeout();
   }
+
+  timeout = () => {
+    var intRate = totalBitrate * rate;
+    console.log("This is the Current Rate: " + this.state.rate);
+    var intTotalBitrate = parseFloat(totalBitrate);
+    var totalCost = parseInt(intTotalBitrate);
+    var VVV = totalCost * rate;
+    var parsedTotalCoast = parseFloat(totalCost);
+
+    const rate = this.state.rate;
+    const totalRate = this.state.totalRate;
+
+    setInterval(
+      function() {
+        // Do Something Here
+        // Then recall the parent function to
+        // create a recursive loop.
+        const quality = this.props.qualityData;
+        if (quality === "MEDIUM") {
+          var midRange = [
+            0.452,
+            0.469,
+            0.472,
+            0.484,
+            0.483,
+            0.48,
+            0.472,
+            0.47,
+            0.469,
+            0.482,
+            0.465,
+            0.317
+          ];
+        } else if (quality === "LOW") {
+          var midRange = [
+            0.0552,
+            0.0693,
+            0.0673,
+            0.0749,
+            0.088,
+            0.0876,
+            0.0925,
+            0.0776,
+            0.071,
+            0.0753,
+            0.0816,
+            0.0893
+          ];
+        } else if (quality === "HIGH") {
+          var midRange = [
+            0.904,
+            0.83,
+            1.1,
+            1.12,
+            0.95,
+            0.948,
+            0.942,
+            0.957,
+            0.939,
+            0.904,
+            0.889,
+            0.86,
+            0.833
+          ];
+        }
+        //var myArray = [5, 19, 4];
+
+        var rand = midRange[Math.floor(Math.random() * midRange.length)];
+        var maxRangeValue = Math.max.apply(Math, midRange);
+        var maxRangeValuePercentage =
+          parseFloat(rand) / parseFloat(maxRangeValue) - 0.1;
+
+        totalBitrate += rand;
+        var num = parseFloat(totalBitrate * rate).toFixed(2);
+
+        var maxIndicatorValue = this.state.indicatorLimit;
+        var totalDataUsage = this.state.totalDataUsage;
+        var maxIndicatorLimitPercentage =
+          parseFloat(totalDataUsage) / parseFloat(maxIndicatorValue);
+
+        if (maxIndicatorLimitPercentage >= 1) {
+          this.setState({
+            indicatorLevel: 1
+          });
+        } else {
+          this.setState({
+            indicatorLevel: maxIndicatorLimitPercentage
+          });
+        }
+
+        this.setState({
+          totalCost: num,
+          totalDataUsage: parseFloat(totalBitrate).toFixed(2),
+          totalBitrate: rand * 1000,
+          indeterminate: false,
+          progress: maxRangeValuePercentage
+        });
+
+        //timeout();
+      }.bind(this),
+      1000
+    );
+  };
 
   updateProgressBarOnWifi = () => {
     switch (mMeasure) {
@@ -406,6 +431,8 @@ export class Player extends React.Component {
     await this.checkWarningPerferences();
   }
 
+
+
   async checkWarningPerferences() {
     var value = await AsyncStorage.getItem("hideWarning");
     console.log(value);
@@ -428,8 +455,8 @@ export class Player extends React.Component {
 
   _onBack = () => {
     Actions.pop();
-
-    this._player.close();
+    this._close()
+  
   };
 
   checkIfAnon() {
@@ -677,7 +704,20 @@ export class Player extends React.Component {
                           justifyContent: "center",
                           alignContent: "center"
                         }}>
-                        R -.--
+                         -.--
+                      </Text>
+                    )}
+                    {this.state.step === 1 &&
+                    this.state.connectionType !== "wifi" && (
+                      <Text
+                        style={{
+                          color: "#fff",
+                          paddingLeft: 4,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          alignContent: "center"
+                        }}>
+                        {currencySymbol}{totalCost} 
                       </Text>
                     )}
                   {this.state.step === 2 &&
@@ -713,8 +753,7 @@ export class Player extends React.Component {
               <View
                 style={{
                   width: iconWidth
-                }}
-              >
+                }}>
                 <Symbol
                   name="chevron-double-right"
                   size={iconWidth}
@@ -741,13 +780,20 @@ export class Player extends React.Component {
       decodingType: 0, // Hardware – 1, Sofware – 0
       connectionNetworkProtocol: -1, // 0 - udp, 1 - tcp, 2 - http, 3 - https, -1 - AUTO
       numberOfCPUCores: 0, // 0<= - autodetect, > 0 - will set manually
-      synchroEnable: 1, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
+      synchroEnable: 0, // Enable A/V synchronization, 1 - synchronization is on, 0 - is off
       connectionBufferingTime: bufferValue,
       connectionDetectionTime: bufferValue,
       startPreroll: 300,
       aspectRatioMode: 1 // 0 - stretch, 1 - fit to screen with aspect ratio, 2 - crop, 3 - 100% size, 4 - zoom mode, 5 - move mode)
     });
     await this._player.open();
+  }
+
+  async _close() {
+    //const bufferValue = this.state.bufferSize;
+    await this._player.close();
+    console.log("Ran Close")
+    //await this._player.open();
   }
 
   render() {
@@ -758,6 +804,12 @@ export class Player extends React.Component {
     } else {
       return (
         <View style={styles.container}>
+{/*           {this.state.orientation === "portrait" ||
+        this.state.orientation === "" ? ( <View>{this.renderVideo()}</View>
+          ) : null}
+          {this.state.orientation !== "portrait" ||
+        this.state.orientation !== ""? ( <View>{this.renderVideo()}</View>
+          ) : null} */}
           <View>{this.renderVideo()}</View>
           {this.state.orientation === "portrait" ? (
             <TouchableHighlight onPress={this._onBack}>
@@ -813,8 +865,7 @@ export class Player extends React.Component {
                           fontWeight: "bold",
                           fontSize: 16,
                           alignSelf: "center"
-                        }}
-                      >
+                        }}>
                         Higher quality may incur higher data costs
                       </Text>
                       <CheckBox
@@ -829,16 +880,14 @@ export class Player extends React.Component {
                         leftText={"Don't Show Again"}
                       />
                       <TouchableHighlight
-                        onPress={this.hideQualityWarningForever}
-                      >
+                        onPress={this.hideQualityWarningForever} >
                         <View>
                           <Text
                             style={{
                               paddingRight: 2,
                               fontSize: 16,
                               alignSelf: "flex-end"
-                            }}
-                          >
+                            }}>
                             Dismiss
                           </Text>
                         </View>
@@ -871,8 +920,7 @@ export class Player extends React.Component {
                   style={{
                     width: "90%"
                   }}
-                  onPress={this.checkIfAnon}
-                >
+                  onPress={this.checkIfAnon} >
                   <View>
                     <TextInput
                       style={styles.newInput}
@@ -894,8 +942,7 @@ export class Player extends React.Component {
                   style={{
                     width: "10%"
                   }}
-                  onPress={this.sendChat}
-                >
+                  onPress={this.sendChat}>
                   <View>
                     <Icon
                       name="send"

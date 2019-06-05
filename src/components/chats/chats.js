@@ -25,7 +25,6 @@ class Chats extends Component {
 
 
   async componentDidMount() {
-    console.log("Loaded MESSAGES" + JSON.stringify(this.props));
     var id = 28
     var url = "https://nile.rtst.co.za/api/artist/6/channels/28/messages";
     console.log(url);

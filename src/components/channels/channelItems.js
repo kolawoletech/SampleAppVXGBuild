@@ -6,6 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { AsyncStorage } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 //import FastImage from 'react-native-fast-image'
+var RNFS = require('react-native-fs');
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -41,6 +42,8 @@ export class ChannelItems extends React.Component {
   }
   
   componentDidMount() {
+    console.log(RNFS.CachesDirectoryPath);
+
   }
 
   async _getImage(id) {
