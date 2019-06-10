@@ -670,6 +670,10 @@ export const fetchCatalogue = (aid, tokenID) => dispatch => {
     .then(programs => programs.json())
     .then(programs => {
       let progs = programs["data"];
+      console.log("Array of Catlaogies: "+ JSON.stringify(progs))
+      //dispatch(catalogueArray(JSON.stringify(progs)))
+      dispatch(catalogueLoaded(progs));
+
       dispatch(catalogueLoaded(progs));
     });
 };

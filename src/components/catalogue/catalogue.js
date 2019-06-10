@@ -53,9 +53,11 @@ class Catalogue extends Component {
     await this.setDefaultRate() 
     //await this.getCatalogueWithAID();
 
+
   }
 
   async componentWillMount() {
+    //await this.checkForNewUpdates()
     await this.setDefaultBufferOption()
     await this.getCatalogueWithAID();
     await this.setDefaultIndicatorLimit()
@@ -91,6 +93,19 @@ class Catalogue extends Component {
     }
   }
 
+  async checkForNewUpdates(){
+    try {
+      let catalogueItems =this.props.catalogue;
+      let result = catalogueItems.map(({ programme_id }) => programme_id).join(',');;
+      var array = result.split(',');
+
+
+      console.log("Structure of Items: " + typeof(result) + "The ARRAY: " + Array.isArray(array))
+    } catch (error) {
+      console.log("Structure of Items: " + error )
+
+    }
+  }
 
   async setDefaultRate() {
     try {
@@ -174,6 +189,10 @@ class Catalogue extends Component {
 
   render() {
     const { catalogue: data } = this.props;
+
+    
+
+   
     if (this.state.orientation == 'landscape'){
       return (
    
@@ -190,8 +209,7 @@ class Catalogue extends Component {
       return(
         <LinearGradient
         colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-        style={{ height: "100%" }}
-      >
+        style={{ height: "100%" }}>
         <View style={{ height: "100%" }}>
         {/* //TODO Find out why importan */}
         <Text  orientation={this.state.orientation} ></Text>

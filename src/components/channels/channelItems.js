@@ -29,92 +29,95 @@ export class ChannelItems extends React.Component {
 
   async  componentDidUpdate(prevProps) {
     //TODO Add Condition to detect new Chanes
-    console.log("CHECK IF IMAGES ARE LOCAL:    p--------" + this.state.isImageSavedLocally)
-    if (this.state.isImageSavedLocally !== "undefined" || this.state.isImageSavedLocally !== true){
+    console.log("CHECK IF IMAGES ARE LOCALLY:    p--------" + this.state.isImageSavedLocally)
+    if (this.state.isImageSavedLocally === "undefined" || this.state.isImageSavedLocally === true){
+      console.log("Images already saved locally")
+
+    } else {
       if (this.props.list != prevProps.list) {
 
 
 
         const promises = this.props.list.map(item => {
           return this._getImage(item.id)
-  
         })
   
         const results = await Promise.all(promises)
         this.setState({
           images: results
         })
+      } else {
+        console.log("Nothing New Here")
       }
-    } else {
-      console.log("Images already saved locally")
     }
 
   }
   
   async _getImage(id) {
-    let AID = await AsyncStorage.getItem("aid");
+    if (this.state.isImageSavedLocally === "undefined" || this.state.isImageSavedLocally === true){
+      let AID = await AsyncStorage.getItem("aid");
 
-    const options = {
-      method: 'POST',
-      body: "aid="+AID,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    };
-
-    const url = 'https://nile.rtst.co.za/api/artist/6/tokens';
-    const token = await fetch(url, options).then(token_data => token_data.json())
-      .then(token_data => {
-        return token_data["data"];
-      })
-    const channels_options = {
-      method: 'GET',
-      headers: new Headers({
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      })
-    }
-
-    const channel_url = 'https://nile.rtst.co.za/api/artist/6/channels/' + id + '/' + 'icon/';
-
-    return await fetch(channel_url, channels_options)
-      .then(icon => icon.json())
-      .then(icon => {
-        let img = icon["data"]
-
-/*         base64Img.img(img, RNFS.CachesDirectoryPath, id, function(err, filepath) {
-          console.log("Error: " + err)
-          console.log("Filepath: " + filepath)
-
-        }); */
-
-        console.log(RNFS.CachesDirectoryPath);
-        var cachedImagePath = RNFS.CachesDirectoryPath+"/" + id + ".png"
-        var image_data = img.split('data:image/png;base64,');
-        var i = 0
-        image_data = image_data[1];
-        
-        console.log("Stripped Image: --- " + image_data )
-
-        RNFS.writeFile(cachedImagePath, image_data, 'base64').then(()=>{
-          this.setState({
-            isImageSavedLocally: true
-          }) 
+      const options = {
+        method: 'POST',
+        body: "aid="+AID,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      };
+  
+      const url = 'https://nile.rtst.co.za/api/artist/6/tokens';
+      const token = await fetch(url, options).then(token_data => token_data.json())
+        .then(token_data => {
+          return token_data["data"];
         })
-        .catch((error) => {
-          alert(JSON.stringify(error));
-          this.setState({
-            isImageSavedLocally: false
+      const channels_options = {
+        method: 'GET',
+        headers: new Headers({
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/x-www-form-urlencoded'
+        })
+      }
+  
+      const channel_url = 'https://nile.rtst.co.za/api/artist/6/channels/' + id + '/' + 'icon/';
+  
+      return await fetch(channel_url, channels_options)
+        .then(icon => icon.json())
+        .then(icon => {
+          let img = icon["data"]
+  
+          console.log(RNFS.CachesDirectoryPath);
+          var cachedImagePath = RNFS.CachesDirectoryPath+"/" + id + ".png"
+          var image_data = img.split('data:image/png;base64,');
+          var i = 0
+          image_data = image_data[1];
+          
+          console.log("Stripped Image: --- " + image_data )
+  
+          RNFS.writeFile(cachedImagePath, image_data, 'base64').then(()=>{
+            this.setState({
+              isImageSavedLocally: true
+            }) 
           })
-        });
-
-        return { id, img }
-      })
+          .catch((error) => {
+            alert(JSON.stringify(error));
+            this.setState({
+              isImageSavedLocally: false
+            })
+          });
+  
+          return { id, img }
+        })
+    } else{
+      console.log("LOVE, IT IS ALREADY LOCAL, SAVE YOUR DATA")
+    }
+ 
 
   }
 
 
   renderItem = (data) => {
+    var cachedImageLocation = RNFS.CachesDirectoryPath+"/"+data.item.id+".png"
+   // console.log(cachedImageFolder)
     console.log("Is Image Saved Locally: "+ this.state.isImageSavedLocally)
     return (
 
@@ -139,10 +142,10 @@ export class ChannelItems extends React.Component {
             <Image
               resizeMode="stretch"
               style={{ width: 150, height: 150, position: 'absolute' }}
-              source={{ uri: 'https://via.placeholder.com/150' }}
+              source={{ uri: cachedImageLocation  }}
             />
             )}
-{/* 
+          {/* 
           <FastImage
             style={{ width: 150, height: 150, position: 'absolute' }}
             source={{
