@@ -77,26 +77,8 @@ export class Program extends React.Component {
         this.props.link = null;
     }
 
-    async componentDidMount() {
-
-        try {
-            await this.getProgramImageWithAID()
-        } catch (e) {
-            console.log(e)
-        }
-
-    }
 
 
-    async getProgramImageWithAID(){
-        let AID = await AsyncStorage.getItem("aid");
-        let TOKENID = await AsyncStorage.getItem("sessionTokenID");
-
-        const program = this.props.programData;
-
-        this.props.imageURI(program.programme_id, AID, TOKENID);
-
-    }
 
     state = {
         modalVisible: false,
@@ -130,7 +112,11 @@ export class Program extends React.Component {
             );
         } else {
             const { link } = this.props;
-            let { img } = this.props;
+            //let { img } = this.props;
+            const list = this.props.programData;
+
+            let img =  RNFS.CachesDirectoryPath +"/NileMediaCatalogueImages/" + list.programme_id + ".jpeg";   // console.log(cachedImageFolder)
+
             //console.log("THis is Program Name Payloiad" + JSON.stringify(this.props))
             return (
 

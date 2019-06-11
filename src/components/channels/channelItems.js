@@ -66,7 +66,7 @@ export class ChannelItems extends React.Component {
 
       const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaChannelImages` + "/";
 
-      RNFS.exists(cachedImageFolder).then(exists => {
+      RNFS.exists(cachedImageFolder).then(async (exists) => {
         console.log("Exists ~: " + exists)
         if (exists ==="true"){
           RNFS.readDir(cachedImageFolder).then(async (results)=>{
@@ -111,7 +111,17 @@ export class ChannelItems extends React.Component {
             }
           })
         } else {
+          console.log("Create A Folder");
+          const promises = this.props.list.map(async item => {
+            //return this._getImage(item.programme_id);
+            console.log("Item IDS" + item.id);
+            return this._getImageUpdate(item.id);
+          });
 
+          const results = await Promise.all(promises);
+          this.setState({
+            images: results
+          });
         }
       })
 

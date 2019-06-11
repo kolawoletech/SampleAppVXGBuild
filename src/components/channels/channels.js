@@ -124,7 +124,7 @@ class Channels extends Component {
     const { orientation: rotated } = this.props;
     console.log("Channels Props: " + JSON.stringify(this.props))
 
-    if ( this.props.channels.data === 0 ||this.props.channels == null && this.state.orientation == 'landscape' ){
+    if ( this.props.channels.data === 0 ||this.props.channels == null ){
       return (
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
