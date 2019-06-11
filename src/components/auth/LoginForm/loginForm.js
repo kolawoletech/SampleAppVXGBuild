@@ -27,6 +27,7 @@ class LoginFormComponent extends Component {
   async componentDidMount(){
     setTimeout(async () => {
       await this.getNewToken()
+      //TODO Landing Page
       Actions.catalogue()
     }, 2000);
   }
@@ -62,9 +63,7 @@ class LoginFormComponent extends Component {
     if (!prevProps.error && error) Alert.alert('error', error);
     console.log("Logged: " +logged)
     if (logged) {Actions.reset('catalogue')}
-    else{
-      Actions.reset('catalogue')
-    }
+ 
   
   }
 

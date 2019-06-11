@@ -665,14 +665,14 @@ export const fetchCatalogue = (aid, tokenID) => dispatch => {
       "Content-Type": "application/x-www-form-urlencoded"
     }
   };
+
   const programs_url = "https://nile.rtst.co.za/api/artist/6/programs";
   fetch(programs_url, programs_options)
     .then(programs => programs.json())
     .then(programs => {
       let progs = programs["data"];
-      console.log("Array of Catlaogies: "+ JSON.stringify(progs))
-      //dispatch(catalogueArray(JSON.stringify(progs)))
-      dispatch(catalogueLoaded(progs));
+     
+      //dispatch(catalogueLoaded(progs));
 
       dispatch(catalogueLoaded(progs));
     });

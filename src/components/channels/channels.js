@@ -25,11 +25,26 @@ import _ from "lodash";
 class Channels extends Component {
   constructor(props) {
     super(props);
+    this.onLayout = this.onLayout.bind(this);
 
-    this.state = {
-      orientation: "",
-      screen: Dimensions.get("window")
+    const isPortrait = () => {
+      const dim = Dimensions.get("screen");
+      return dim.height >= dim.width;
     };
+    this.state = {
+      orientation: isPortrait() ? "portrait" : "landscape"
+    };
+
+
+    // Event Listener for orientation changes
+    Dimensions.addEventListener("change", () => {
+      this.setState({
+        orientation: isPortrait() ? "portrait" : "landscape"
+      });
+
+      this.forceUpdate()
+    });
+
   }
 
 
@@ -72,20 +87,16 @@ class Channels extends Component {
     const { orientation : rotated } = this.props;
 
 
-    Dimensions.addEventListener("change", () => {
-   /*    this.setState({
-        orientation: isPortrait() ? "portrait" : "landscape"
-      }); */
-    });
-
-
-    const isPortrait = () => {
-      const dim = Dimensions.get("screen");
-      return dim.height >= dim.width;
-    };
     
   }
 
+
+  onLayout(e) {
+    this.setState({
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    });
+  }
 
 
   async getChannelsWithAID(){
@@ -111,8 +122,9 @@ class Channels extends Component {
   render() {
     const { channels: data } = this.props;
     const { orientation: rotated } = this.props;
+    console.log("Channels Props: " + JSON.stringify(this.props))
 
-    if ( this.props.channels.data === 0 ||this.props.channels == null  ){
+    if ( this.props.channels.data === 0 ||this.props.channels == null && this.state.orientation == 'landscape' ){
       return (
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
@@ -125,7 +137,9 @@ class Channels extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%" }}>
-          <ChannelItems list={data} onPressItem={this.onRemoveChannel} />
+          <Text  orientation={this.state.orientation}></Text>
+
+          <ChannelItems orientation={this.state.orientation}  list={data} onPressItem={this.onRemoveChannel} />
         </LinearGradient>
       );
     }

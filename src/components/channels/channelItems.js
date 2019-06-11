@@ -7,8 +7,7 @@ import { AsyncStorage } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 //import FastImage from 'react-native-fast-image'
 import RNFS from "react-native-fs";
-//import base64Img from 'base64-img';
-//var base64Img = require('base64-img');
+
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -22,14 +21,177 @@ export class ChannelItems extends React.Component {
 
     this.state = {
       showTheThing: false,
-      images: []
+      images: [],
+      channelImagesSavedLocally: [],
+      channelImagesSavedOnline: []
     }
+  }
+
+  arraysEqual = (a, b) => {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length != b.length) return false;
+
+    // If you don't care about the order of the elements inside
+    // the array, you should sort both arrays here.
+    // Please note that calling sort on an array will modify that array.
+    // you might want to clone your array first.
+
+    for (var i = 0; i < a.length; ++i) {
+      if (a[i] !== b[i]) return false;
+    }
+    return true;
+  };
+
+  async componentWillMount() {
+    await this.checkForNewUpdates();
+    console.log("ChannelItems:" + JSON.stringify(this.props))
+  }
+
+  async checkForNewUpdates(){
+    try {
+      let channelItems = this.props.list;
+
+      let result = channelItems
+        .map(({ id }) => id)
+        .join(",");
+
+      var array = result.split(",");
+
+      this.setState({
+        channelImagesSavedOnline: array
+      });
+
+      console.log("checkForNewUpdates Saved Online State" + this.state.savedOnline + "checkForNewUpdates Saved Online Actual array: " + array);
+
+      const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaChannelImages` + "/";
+
+      RNFS.exists(cachedImageFolder).then(exists => {
+        console.log("Exists ~: " + exists)
+        if (exists ==="true"){
+          RNFS.readDir(cachedImageFolder).then(async (results)=>{
+            var arr = [];
+            for (i = 0; i < results.length; i++) {
+              console.log("GOT RESULT OF CHANNEL IMAGES", results);
+              var filename = results[i].name.split(".").slice(0, -1).join(".");
+              arr.push(parseInt(filename));
+
+/*               this.setState({
+                channelImagesSavedOnline: arr
+              }); */
+            }
+
+
+            this.setState({
+              channelImagesSavedLocally: arr
+            }); 
+
+            await Promise.all(arr);
+          }).then(async ()=>{
+            if (this.arraysEqual(this.state.channelImagesSavedLocally,array)){
+              console.log("checkForNewUpdates: Same Items");
+            } else {
+              console.log("checkForNewUpdates: New Updates Found, Delete Folder ");
+              let path = RNFS.CachesDirectoryPath + `/NileMediaChannelImages` + "/";
+
+              RNFS.unlink(path).then(async ()=>{
+                console.log("checkForNewUpdates: Create Folder and Get Images");
+
+                const promises = this.props.list.map(item => {
+                  //return this._getImage(item.programme_id);
+                  console.log("Item IDS" + item.d);
+                  return this._getImageUpdate(item.id);
+                });
+
+                const results = await Promise.all(promises);
+                this.setState({
+                  images: results
+                });
+              })
+            }
+          })
+        } else {
+
+        }
+      })
+
+
+    } catch (error) {
+      console.log("Error:  " + error)
+    }
+  }
+
+  async _getImageUpdate(id){
+    let AID = await AsyncStorage.getItem("aid");
+    
+    const options = {
+      method: "POST",
+      body: "aid=" + AID,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    };
+
+    const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+
+    const token = await fetch(url, options)
+      .then(token_data => token_data.json())
+      .then(token_data => {
+        return token_data["data"];
+      })
+    const channels_options = {
+      method: "GET",
+
+      headers: new Headers({
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/x-www-form-urlencoded"
+      })
+    };
+
+    const channel_url = "https://nile.rtst.co.za/api/artist/6/channels/" + id + "/" + "icon/";
+
+    return await fetch(channel_url, channels_options)
+    .then(icon => icon.json())
+    .then(icon => {
+      let img = icon["data"];
+
+      var image_data = img.split("data:image/png;base64,");
+      var i = 0;
+      image_data = image_data[1];
+
+      console.log("Stripped Image: --- " + image_data);
+      const cachedImagePath = RNFS.CachesDirectoryPath +`/NileMediaChannelImages` + "/" + id + ".png";
+
+      const absolutePath = RNFS.CachesDirectoryPath + `/NileMediaChannelImages`;
+
+      RNFS.mkdir(absolutePath)
+        .then(result => {
+          RNFS.writeFile(cachedImagePath, image_data, "base64")
+            .then(() => {
+              this.setState({
+                isImageSavedLocally: true
+              });
+            })
+            .catch(error => {
+              alert(JSON.stringify(error));
+
+              this.setState({
+                isImageSavedLocally: false
+              });
+            });
+        })
+        .catch(err => {
+          console.warn("err", err);
+        });
+      return { id, img };
+    });
+
   }
 
 
   async  componentDidUpdate(prevProps) {
     //TODO Add Condition to detect new Chanes
-    console.log("CHECK IF IMAGES ARE LOCALLY:    p--------" + this.state.isImageSavedLocally)
+  /*   console.log("CHECK IF IMAGES ARE LOCALLY:    p--------" + this.state.isImageSavedLocally)
     if (this.state.isImageSavedLocally === "undefined" || this.state.isImageSavedLocally === true){
       console.log("Images already saved locally")
 
@@ -49,76 +211,26 @@ export class ChannelItems extends React.Component {
       } else {
         console.log("Nothing New Here")
       }
+    } */
+
+    if (this.props.list != prevProps.list) {
+      const promises = this.props.list.map(item => {
+        return this._getImageUpdate(item.id);
+      });
+
+      const results = await Promise.all(promises);
+      this.setState({
+        images: results
+      });
     }
 
   }
   
-  async _getImage(id) {
-    if (this.state.isImageSavedLocally === "undefined" || this.state.isImageSavedLocally === true){
-      let AID = await AsyncStorage.getItem("aid");
 
-      const options = {
-        method: 'POST',
-        body: "aid="+AID,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      };
-  
-      const url = 'https://nile.rtst.co.za/api/artist/6/tokens';
-      const token = await fetch(url, options).then(token_data => token_data.json())
-        .then(token_data => {
-          return token_data["data"];
-        })
-      const channels_options = {
-        method: 'GET',
-        headers: new Headers({
-          'Authorization': 'Bearer ' + token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        })
-      }
-  
-      const channel_url = 'https://nile.rtst.co.za/api/artist/6/channels/' + id + '/' + 'icon/';
-  
-      return await fetch(channel_url, channels_options)
-        .then(icon => icon.json())
-        .then(icon => {
-          let img = icon["data"]
-  
-          console.log(RNFS.CachesDirectoryPath);
-          var cachedImagePath = RNFS.CachesDirectoryPath+"/" + id + ".png"
-          var image_data = img.split('data:image/png;base64,');
-          var i = 0
-          image_data = image_data[1];
-          
-          console.log("Stripped Image: --- " + image_data )
-  
-          RNFS.writeFile(cachedImagePath, image_data, 'base64').then(()=>{
-            this.setState({
-              isImageSavedLocally: true
-            }) 
-          })
-          .catch((error) => {
-            alert(JSON.stringify(error));
-            this.setState({
-              isImageSavedLocally: false
-            })
-          });
-  
-          return { id, img }
-        })
-    } else{
-      console.log("LOVE, IT IS ALREADY LOCAL, SAVE YOUR DATA")
-    }
- 
-
-  }
 
 
   renderItem = (data) => {
-    var cachedImageLocation = RNFS.CachesDirectoryPath+"/"+data.item.id+".png"
-   // console.log(cachedImageFolder)
-    console.log("Is Image Saved Locally: "+ this.state.isImageSavedLocally)
+    var cachedImageLocation =RNFS.CachesDirectoryPath +"/NileMediaChannelImages/" +data.item.id + ".png";   // console.log(cachedImageFolder)
     return (
 
       <TouchableOpacity key={data.item.id} onPress={() => Actions.channel({ channelData: data.item })}>
@@ -133,6 +245,7 @@ export class ChannelItems extends React.Component {
           {/* <CacheableImage style={styles.image} source={{uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://i.redd.it/rc29s4bz61uz.png' }} permanent={false} /> */}
           {this.state.isImageSavedLocally === false && (
             <Image
+              
               resizeMode="stretch"
               style={{ width: 150, height: 150, position: 'absolute' }}
               source={{ uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://via.placeholder.com/150' }}

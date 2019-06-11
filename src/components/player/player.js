@@ -340,7 +340,6 @@ export class Player extends React.Component {
             0.833
           ];
         }
-        //var myArray = [5, 19, 4];
 
         var rand = midRange[Math.floor(Math.random() * midRange.length)];
         var maxRangeValue = Math.max.apply(Math, midRange);
@@ -412,7 +411,6 @@ export class Player extends React.Component {
       this.state.connectionType !== "wifi" &&
       this.state.rate == "0"
     ) {
-      //let assume its data
       this.setState({
         progressText:this.state.currencySymbol + this.state.totalDataUsage
       });

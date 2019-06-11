@@ -187,7 +187,7 @@ export class GuideItems extends React.Component {
             } else {
                 return(
                     <View>
-                        <Text>Nothing is scheduled Yet</Text>
+                        <Text>Loadin</Text>
                     </View>
                 )
             }

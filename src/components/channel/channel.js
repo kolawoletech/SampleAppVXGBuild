@@ -10,6 +10,8 @@ import {
   Button,
   TouchableHighlight
 } from "react-native";
+import RNFS from "react-native-fs";
+
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Actions } from "react-native-router-flux";
@@ -31,7 +33,7 @@ export class Channel extends React.Component {
     const channel = this.props.channelData;
     //this.props.channelObject(channel.id);
     await this.getChannelWithAID();
-    await this.getChannelImageWithAID();
+    //await this.getChannelImageWithAID();
     this.autoQualityClick = this.autoQualityClick.bind(this);
     this.onFetchRSTPLink = this.onFetchRSTPLink.bind(this)
   }
@@ -71,6 +73,8 @@ export class Channel extends React.Component {
     const { quality: qualityList, id: channelID } = this.props.channelData;
     const list = this.props.channelData;
     const channel_details = this.chan;
+    const channel = this.props.channelData;
+
     if (this.props == "undefined") {
       return (
         <View>
@@ -78,7 +82,9 @@ export class Channel extends React.Component {
         </View>
       );
     } else {
-      let { img } = this.props;
+      //let { img } = this.props;
+      let img =  RNFS.CachesDirectoryPath +"/NileMediaChannelImages/" +channel.id + ".png";   // console.log(cachedImageFolder)
+
 
       return (
         <LinearGradient
