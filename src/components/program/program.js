@@ -115,7 +115,7 @@ export class Program extends React.Component {
             //let { img } = this.props;
             const list = this.props.programData;
 
-            let img =  RNFS.CachesDirectoryPath +"/NileMediaCatalogueImages/" + list.programme_id + ".jpeg";   // console.log(cachedImageFolder)
+            let img =  RNFS.CachesDirectoryPath +"/NileMediaCatalogueImages/" + list.programme_id + ".png";   // console.log(cachedImageFolder)
 
             //console.log("THis is Program Name Payloiad" + JSON.stringify(this.props))
             return (
@@ -126,22 +126,18 @@ export class Program extends React.Component {
                         style={{ height: '100%' }}>
                         <Toast ref="toast" position='bottom'/> 
                         <View>
-
-
                             <ScrollView>
-
-                                <View style={{
-                                    width: '100%', height: 225, justifyContent: 'center',
-                                    alignItems: 'center',
-                                    backgroundColor: "rgba(255,255,255,0.5)",
-
-                                }}>
+                                <View 
+                                    style={{
+                                        width: '100%', height: 225, justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: "rgba(255,255,255,0.5)" 
+                                    }}>
                                     <Image
                                         source={{ uri: img }}
                                         resizeMode="stretch"
                                         style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center' }}
                                     />
-
                                     <View style={{ flex: 1, padding: 7 }}>
                                         <Text
                                             numberOfLines={2}
@@ -152,8 +148,6 @@ export class Program extends React.Component {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 textAlign: 'center'
-                                                
-
                                             }}>{list.name}</Text>
                                     </View>
 
