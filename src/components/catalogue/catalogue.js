@@ -18,6 +18,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { AsyncStorage } from "react-native";
 
 import { Dimensions } from "react-native";
+import {  OfflineNotice } from "./offlineNotice";
 
 class Catalogue extends Component {
   constructor(props) {
@@ -33,7 +34,8 @@ class Catalogue extends Component {
     };
 
     this.state = {
-      orientation: isPortrait() ? "portrait" : "landscape"
+      orientation: isPortrait() ? "portrait" : "landscape",
+      isConnected: true
     };
 
     // Event Listener for orientation changes
@@ -53,9 +55,17 @@ class Catalogue extends Component {
     await this.setDefaultRate() 
     //await this.getCatalogueWithAID();
 
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
   }
 
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+  }
+
+  handleConnectivityChange = isConnected => {
+    this.setState({ isConnected });
+  }
   async componentWillMount() {
     //await this.checkForNewUpdates()
     await this.setDefaultBufferOption()
@@ -199,6 +209,8 @@ class Catalogue extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%" }}>
+                      <OfflineNotice />
+
           <View style={{ height: "100%" }}>
             <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
           </View>
@@ -210,10 +222,10 @@ class Catalogue extends Component {
         <LinearGradient
         colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
         style={{ height: "100%" }}>
+          <OfflineNotice />
         <View style={{ height: "100%" }}>
         {/* //TODO Find out why importan */}
-        <Text  orientation={this.state.orientation} ></Text>
-        <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
+          <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
         </View>
       </LinearGradient>
       )

@@ -55,7 +55,7 @@ export default class Routes extends React.Component {
             drawerPosition='100'
 
             contentComponent={TabsContainer}>
-          <Stack key="root" >      
+          <Stack key="root" direction="vertical">    
               <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" initial={true} />
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
@@ -72,6 +72,12 @@ export default class Routes extends React.Component {
               <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
             </Stack>
             </Drawer>
+{/*             <Stack key="root2" direction="vertical">    
+             
+              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
+              <Scene key="catalogue" component={CatalogueContainer} title="Catalogue"/>
+              <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
+            </Stack> */}
         </RouterRedux>
       </Provider>
     );

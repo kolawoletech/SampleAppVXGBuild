@@ -6,9 +6,11 @@ import {
   StyleSheet,
   FlatList,
   Button,
-  Image,
+  ScrollView,
   Dimensions
 } from "react-native";
+import Image from 'react-native-scalable-image';
+
 import RNFS from "react-native-fs";
 
 //import FastImage from 'react-native-fast-image'
@@ -33,12 +35,14 @@ export class CatalogueItems extends React.Component {
       images: [],
       facedown: this.props.orientation,
       savedLocally: [],
-      savedOnline: []
+      savedOnline: [],
+      isImageSavedLocally: ""
     };
   }
 
   async componentDidMount() {
     await this.checkForNewUpdates();
+
   }
 /* 
   shouldComponentUpdate(nextState) {
@@ -338,7 +342,7 @@ export class CatalogueItems extends React.Component {
       ".png";
 
     return (
-      <View style={{ width: "50%", height: "50%" }}>
+      <View style={{ width: "50%"}}>
         <TouchableOpacity
           style={styles.item}
           key={data.item.programme_id}
@@ -359,31 +363,13 @@ export class CatalogueItems extends React.Component {
                 maxHeight: 83,
                 minHeight: 83
               }}
-            /> */}
-            {/*         {this.state.isImageSavedLocally === "false" && (
-                <CardImage
-                  resizeMode="contain"
-                  style={{
-                    backgroundColor: "transparent",
-                    maxHeight: 83,
-                    minHeight: 83
-                  }}
-                  source={{ uri:'https://via.placeholder.com/150' }}
-                />
-              )} */}
-            {this.state.isImageSavedLocally === true ||
-              (this.state.isImageSavedLocally !== "undefined" && (
-                <CardImage
-                  cache='only-if-cached'
-                  resizeMode="contain"
-                  style={{
-                    backgroundColor: "transparent",
-                    maxHeight: 83,
-                    minHeight: 83
-                  }}
+            /> */}       
+         
+                <Image
+                  width={Dimensions.get('window').width/2.5} 
                   source={{ uri: cachedImageLocation }}
                 />
-              ))}
+             
             {/*             <FastImage
             style={{ width: 150, height: 150,  }}
             source={{
@@ -415,7 +401,6 @@ export class CatalogueItems extends React.Component {
               size={22}
               color="white"
             />
-
             <Text
               numberOfLines={2}
               style={{
@@ -426,8 +411,7 @@ export class CatalogueItems extends React.Component {
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white"
-              }}
-            >
+              }}>
               {data.item.name}
             </Text>
           </Card>
@@ -546,6 +530,9 @@ export class CatalogueItems extends React.Component {
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.programme_id.toString()}
               numColumns={2}
+              style={{
+                flexGrow: 0
+              }}
             />
           )}
           {this.state.images.length > 0 && (
@@ -554,6 +541,9 @@ export class CatalogueItems extends React.Component {
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.programme_id.toString()}
               numColumns={2}
+              style={{
+                flexGrow: 0
+              }}
             />
           )}
         </View>
@@ -565,20 +555,30 @@ export class CatalogueItems extends React.Component {
       return (
         <View onLayout={this._onLayout}>
           {this.state.images.length === 0 && (
-            <FlatList
-              data={list}
-              renderItem={item => this.renderItemInLandscape(item)}
-              keyExtractor={item => item.programme_id.toString()}
-              numColumns={3}
-            />
+            <ScrollView>
+              <FlatList
+                data={list}
+                renderItem={item => this.renderItemInLandscape(item)}
+                keyExtractor={item => item.programme_id.toString()}
+                numColumns={3}
+                style={{
+                  flexGrow: 0
+                }}
+              />
+            </ScrollView>
           )}
           {this.state.images.length > 0 && (
-            <FlatList
-              data={list}
-              renderItem={item => this.renderItemInLandscape(item)}
-              keyExtractor={item => item.programme_id.toString()}
-              numColumns={3}
-            />
+            <ScrollView>
+              <FlatList
+                data={list}
+                renderItem={item => this.renderItemInLandscape(item)}
+                keyExtractor={item => item.programme_id.toString()}
+                numColumns={3}
+                style={{
+                  flexGrow: 0
+                }}
+              />
+            </ScrollView>
           )}
         </View>
       );

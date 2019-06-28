@@ -19,6 +19,7 @@ import { CacheImage } from "./cacheImage";
 import LinearGradient from "react-native-linear-gradient";
 
 import { AsyncStorage } from "react-native";
+import {  OfflineNotice } from "./offlineNotice";
 
 import _ from "lodash";
 
@@ -32,7 +33,8 @@ class Channels extends Component {
       return dim.height >= dim.width;
     };
     this.state = {
-      orientation: isPortrait() ? "portrait" : "landscape"
+      orientation: isPortrait() ? "portrait" : "landscape",
+      isConnected: true
     };
 
 
@@ -50,6 +52,18 @@ class Channels extends Component {
 
   async componentDidMount() {
     this.checkUserSignedIn();
+
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
+
+  }
+
+
+  handleConnectivityChange = isConnected => {
+    this.setState({ isConnected });
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
   }
   
 
@@ -129,6 +143,7 @@ class Channels extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%" }}>
+            
           <LoadingIndicator />
         </LinearGradient>
       );
@@ -137,6 +152,8 @@ class Channels extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%" }}>
+          <OfflineNotice />
+
           <Text  orientation={this.state.orientation}></Text>
 
           <ChannelItems orientation={this.state.orientation}  list={data} onPressItem={this.onRemoveChannel} />

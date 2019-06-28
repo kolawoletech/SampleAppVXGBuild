@@ -102,10 +102,11 @@ class LoginFormComponent extends Component {
               width:'100%',
               height:'90%'
             }}>
-              <WebView 
-               source={PRIVACY_POLICY}
-              />
-              
+              {/*          
+                <WebView 
+                source={PRIVACY_POLICY}
+                />
+              */}
             </View>
             <View>
             <TouchableHighlight>

@@ -27,10 +27,13 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    margin: 8
+    margin: 8,
+
+    flexGrow: 0
   },
   itemLandscape: {
-    margin: 12
+    margin: 12,
+    flexGrow: 0
   },
   text: {
     color: '#000',

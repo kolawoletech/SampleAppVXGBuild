@@ -116,11 +116,7 @@ export class Program extends React.Component {
             const list = this.props.programData;
 
             let img =  RNFS.CachesDirectoryPath +"/NileMediaCatalogueImages/" + list.programme_id + ".png";   // console.log(cachedImageFolder)
-
-            //console.log("THis is Program Name Payloiad" + JSON.stringify(this.props))
             return (
-
-
                 <View>
                     <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
                         style={{ height: '100%' }}>
