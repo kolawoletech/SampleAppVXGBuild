@@ -21,7 +21,7 @@ class Landing extends Component {
     }
 
     async componentWillMount() {
-        // Get Channels
+        // Get Channelsa
 
         //await this.getChannelImages();
     }

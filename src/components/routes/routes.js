@@ -14,7 +14,7 @@ import ChannelsContainer from '../channels';
 import ChannelContainer from '../channel';
 import PlayerContainer from '../player';
 
-
+import CMasonryListContainer from '../cmasonryList';
 
 //import AdvancedMediaPlayerContainer from '../advancedMediaPlayer';
 
@@ -55,7 +55,7 @@ export default class Routes extends React.Component {
             drawerPosition='100'
 
             contentComponent={TabsContainer}>
-          <Stack key="root" direction="vertical">    
+            <Stack key="root" direction="vertical">    
               <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" initial={true} />
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
@@ -70,6 +70,7 @@ export default class Routes extends React.Component {
               <Scene key="landing" component={LandingContainer} title="Landing" />
               <Scene key="chats" component={ChatsContainer} title="Chats" />
               <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
+              <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"></Scene>
             </Stack>
             </Drawer>
 {/*             <Stack key="root2" direction="vertical">    
