@@ -325,18 +325,25 @@ export class MediaItems extends React.Component {
   };
   render() {
     const { list } = this.props;
+    if (this.props.list === null || this.props.list === 'undefined' ){
+      return(
+        <Text>Empty Playlist</Text>
+      )
+    } else {
+      return (
+        <ScrollView>
+          {(this.state.metadata.length && this.state.thumbnails.length) > 0 && (
+            <FlatList
+              data={list}
+              horizontal={false}
+              renderItem={item => this.renderItem(item)}
+              keyExtractor={item => item._id.toString()}
+            />
+          )}
+        </ScrollView>
+      );
+    }
 
-    return (
-      <ScrollView>
-        {(this.state.metadata.length && this.state.thumbnails.length) > 0 && (
-          <FlatList
-            data={list}
-            horizontal={false}
-            renderItem={item => this.renderItem(item)}
-            keyExtractor={item => item._id.toString()}
-          />
-        )}
-      </ScrollView>
-    );
+  
   }
 }

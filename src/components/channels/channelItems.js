@@ -51,12 +51,15 @@ export class ChannelItems extends React.Component {
   async checkForNewUpdates(){
     try {
       let channelItems = this.props.list;
+      console.log("This is the Item List for IDs" +  JSON.stringify(this.props))
 
       let result = channelItems
         .map(({ id }) => id)
         .join(",");
 
       var array = result.split(",");
+      console.log("This is the Item List for IDs" +  array)
+
 
       this.setState({
         channelImagesSavedOnline: array

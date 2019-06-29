@@ -235,7 +235,8 @@ class Catalogue extends Component {
                 onRefresh={this._refreshRequest}
                 refreshing={this.state.isRefreshing}
                 data={data} 
-                renderItem={({ item }) => <MasonryListItemInLandscape item={item} />}
+             
+                renderItem={({ item }) => <MasonryListItemInLandscape   item={item} />}
                 getHeightForItem={({ item }) => 67 + 2}
                 numColumns={2}
                 keyExtractor={item => item.programme_id.toString()}
@@ -251,7 +252,6 @@ class Catalogue extends Component {
             style={{ height: "100%" }}>
           <OfflineNotice /> 
             <View style={{ height: "100%" }}>
-                {/* //TODO Add Item Here */}
                 <MasonryList
                     onRefresh={this._refreshRequest}
                     refreshing={this.state.isRefreshing}
