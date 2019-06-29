@@ -28,8 +28,6 @@ export const styles = StyleSheet.create({
   },
   item: {
     margin: 8,
-
-    flexGrow: 0
   },
   itemLandscape: {
     margin: 12,

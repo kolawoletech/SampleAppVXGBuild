@@ -14,6 +14,7 @@ import { PureComponent } from 'react';
 
 
 import { Dimensions } from "react-native";
+import MasonryListItemInLandscape from "./masonryListItemInLandscape";
 //import {  OfflineNotice } from "./offlineNotice";
 
 
@@ -247,8 +248,8 @@ export class CMasonryList extends React.Component  {
                 onRefresh={this._refreshRequest}
                 refreshing={this.state.isRefreshing}
                 data={data} 
-                renderItem={({ item }) => <MasonryListItem item={item} />}
-                //getHeightForItem={({ item }) => item.height + 2}
+                renderItem={({ item }) => <MasonryListItemInLandscape item={item} />}
+                getHeightForItem={({ item }) => 67 + 2}
                 numColumns={2}
                 keyExtractor={item => item.programme_id.toString()}
             />
@@ -270,6 +271,8 @@ export class CMasonryList extends React.Component  {
                     data={data} 
                     renderItem={({ item }) => <MasonryListItem item={item} />}
                     getHeightForItem={({ item }) => 67 + 2}
+                    //getHeightForItem={({ item }) => item.height + 2}
+
                     numColumns={2}
                     keyExtractor={item => item.programme_id.toString()}
                 />

@@ -25,7 +25,7 @@ import { Card, CardImage } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
 let { width, height } = Dimensions.get("window");
 
-export default class MasonryListItem extends PureComponent {
+export default class MasonryListItemInLandscape extends PureComponent {
     componentDidMount() {
         console.warn('mount cell');
     }
@@ -44,10 +44,16 @@ export default class MasonryListItem extends PureComponent {
         return (
             <View>
                 <TouchableOpacity
-                    style={styles.item}>
+                    style={styles.item} >
                     <Card>
                         <Image
-                            width={Dimensions.get('window').width/2.3} 
+                            style={{
+                                alignContent: "center",
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                textAlign: 'center'
+                            }}
+                            width={Dimensions.get('window').width/2.176} 
                             source={{ uri: cachedImageLocation }}
                             resizeMode="stretch"
                         />

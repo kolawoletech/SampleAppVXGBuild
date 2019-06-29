@@ -52,8 +52,13 @@ export class ProgramQuality extends React.Component {
     renderItem = (qualityList) => {
         const { pid } = this.props;
         const { onPressItem } = this.props;
-        const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 1000000)
 
+        const { qual } = this.props;
+        let result = qual.map(({ profile_id }) => profile_id);
+        const min = Math.min(...result);
+
+        const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 1000000)
+        console.log("Quality List Fior Podcast" + JSON.stringify(qualityList))
         if (qualityList.profile_id == 7) {
             let quality = 7;
         }
@@ -66,7 +71,7 @@ export class ProgramQuality extends React.Component {
                 {
                     <View>
 
-                        {qualityList.profile_id === 7 &&
+                        {qualityList.profile_id === min &&
                             <View>
                                 <View style={styles.item}>
                                     <View style={{ flexDirection: 'row' }}>
@@ -76,7 +81,12 @@ export class ProgramQuality extends React.Component {
                                     </View>
                                 </View>
                                 <View>
-                                    <Text
+
+                                    
+                             
+
+                                    {qualityList.video !== null && (
+                                        <Text
                                         style={{
                                             color: '#fff',
                                             flexWrap: 'wrap',
@@ -85,8 +95,10 @@ export class ProgramQuality extends React.Component {
                                             textAlign: 'center',
                                             fontSize: 10
 
-                                        }}>{qualityList.video.width}x{qualityList.video.height}</Text>
-
+                                        }}>{qualityList.video.width}x{qualityList.video.height}
+                                        </Text>
+                                    )}
+                      
                                 </View>
                                 <View>
                                     <Text
@@ -98,18 +110,20 @@ export class ProgramQuality extends React.Component {
                                             textAlign: 'center',
                                             fontSize: 11
 
-                                        }}>{sizeInMB} MB</Text>
+                                        }}>{sizeInMB} MB
+                                    </Text>
                                 </View>
                             </View>}
 
 
-                        {qualityList.profile_id === 8 && <View><View style={styles.item}>
+                        {qualityList.profile_id === min + 1 && <View><View style={styles.item}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon name="file-download" size={22} color="#fff" />
                                 <Text style={styles.buttonText} >MEDIUM</Text>
                             </View>
                         </View>
                             <View>
+                            {qualityList.video !== null && (
                                 <Text
                                     style={{
                                         color: '#fff',
@@ -118,8 +132,11 @@ export class ProgramQuality extends React.Component {
                                         justifyContent: 'center',
                                         textAlign: 'center',
                                         fontSize: 10
-                                    }}>{qualityList.video.width}x{qualityList.video.height}</Text>
+                                    }}>{qualityList.video.width}x{qualityList.video.height}
+                                </Text>
+                            )}
                             </View>
+                            
                             <View>
                                 <Text
                                     style={{
@@ -137,7 +154,7 @@ export class ProgramQuality extends React.Component {
                         </View>}
 
 
-                        {qualityList.profile_id === 9 &&
+                        {qualityList.profile_id === min + 2 &&
                             <View>
                                 <View style={styles.item}>
                                     <View style={{ flexDirection: 'row' }}>
@@ -148,17 +165,20 @@ export class ProgramQuality extends React.Component {
                                 </View>
 
                                 <View>
-                                    <Text
-                                        style={{
-                                            color: '#fff',
-                                            flexWrap: 'wrap',
-                                            alignContent: 'center',
-                                            justifyContent: 'center',
-                                            textAlign: 'center',
-                                            fontSize: 10
+                                    {qualityList.video !== null && (
+                                        <Text
+                                            style={{
+                                                color: '#fff',
+                                                flexWrap: 'wrap',
+                                                alignContent: 'center',
+                                                justifyContent: 'center',
+                                                textAlign: 'center',
+                                                fontSize: 10
 
 
-                                        }}>{qualityList.video.width}x{qualityList.video.height}</Text>
+                                            }}>{qualityList.video.width}x{qualityList.video.height}
+                                        </Text>
+                                    )}
                                 </View>
                                 <View>
                                     <Text

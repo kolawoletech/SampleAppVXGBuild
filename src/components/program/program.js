@@ -19,24 +19,21 @@ import RNFS from 'react-native-fs'
 export class Program extends React.Component {
     constructor(props) {
         super(props);
-
-
     }
 
 
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
+        console.log("What are we getting: " + JSON.stringify(this.props))
         this.props.fetchLink(programmeID, profileID, AID, TOKENID );
         console.log("Working Fix")
     }
 
 
     notAvailable() {
-        Alert.alert(" Selection not available, Please check back in the future");
-        
+        Alert.alert(" Selection not available, Please check back in the future"); 
     }
 
     downloadVideo = (name, url) => {
-
         console.log(url)
         this.createDirectory();
 

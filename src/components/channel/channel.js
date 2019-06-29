@@ -29,6 +29,11 @@ import { ChannelQuality } from "./channelQuality";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 
 export class Channel extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log("Propes Heres" + JSON.stringify(this.props));
+    this.autoQualityClick = this.autoQualityClick.bind(this);
+  }
   async componentDidMount() {
     const channel = this.props.channelData;
     //this.props.channelObject(channel.id);
@@ -83,8 +88,7 @@ export class Channel extends React.Component {
       );
     } else {
       //let { img } = this.props;
-      let img =  RNFS.CachesDirectoryPath +"/NileMediaChannelImages/" +channel.id + ".png";   // console.log(cachedImageFolder)
-
+      let img =  RNFS.CachesDirectoryPath +"/NileMediaChannelImages/" +channel.id + ".png";  
 
       return (
         <LinearGradient

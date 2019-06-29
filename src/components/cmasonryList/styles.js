@@ -27,9 +27,7 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    margin: 8,
-
-    flexGrow: 0
+    margin: 8
   },
   itemLandscape: {
     margin: 12,
