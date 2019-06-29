@@ -55,7 +55,7 @@ export default class MasonryListItemInLandscape extends PureComponent {
                             }}
                             width={Dimensions.get('window').width/2.176} 
                             source={{ uri: cachedImageLocation }}
-                            resizeMode="stretch"
+                            resizeMode="contain"
                         />
                         <Text
                             numberOfLines={2}

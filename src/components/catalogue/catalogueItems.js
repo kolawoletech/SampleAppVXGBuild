@@ -348,12 +348,27 @@ export class CatalogueItems extends React.Component {
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}>
           <Card>
-           
+            {/*         <CardImage
+              source={{
+                uri: this.state.images.find(
+                  a => data.item.programme_id === a.id
+                )
+                  ? this.state.images.find(a => data.item.programme_id === a.id)
+                      .img
+                  : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
+              }}
+              resizeMode="contain"
+              style={{
+                backgroundColor: "transparent",
+                maxHeight: 83,
+                minHeight: 83
+              }}
+            /> */}       
          
-            <Image
-              width={Dimensions.get('window').width/2.5} 
-              source={{ uri: cachedImageLocation }}
-            />
+                <Image
+                  width={Dimensions.get('window').width/2.5} 
+                  source={{ uri: cachedImageLocation }}
+                />
              
             {/*             <FastImage
             style={{ width: 150, height: 150,  }}
@@ -417,8 +432,7 @@ export class CatalogueItems extends React.Component {
         <TouchableOpacity
           style={styles.itemLandscape}
           key={data.item.programme_id}
-          onPress={() => Actions.program({ programData: data.item })}
-        >
+          onPress={() => Actions.program({ programData: data.item })}>
           <Card>
             {/*             <CardImage
               source={{
@@ -466,7 +480,8 @@ export class CatalogueItems extends React.Component {
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white"
-              }} >
+              }}
+            >
               {data.item.name}
             </Text>
           </Card>

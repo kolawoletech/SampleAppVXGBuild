@@ -50,8 +50,7 @@ export default class MasonryListItemInLandscape extends PureComponent {
                             style={{
                                 alignContent: "center",
                                 justifyContent: 'center',
-                                alignItems: 'center',
-                                textAlign: 'center'
+                                alignItems: 'center'
                             }}
                             width={Dimensions.get('window').width/2.176} 
                             source={{ uri: cachedImageLocation }}
