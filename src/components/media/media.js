@@ -29,6 +29,7 @@ import RNFetchBlob from "rn-fetch-blob";
 var RNFS = require("react-native-fs");
 import Tabs from "../tabs";
 import { white } from "ansi-colors";
+import NetInfo from "@react-native-community/netinfo";
 
 export class Media extends Component {
   _player = null;
@@ -54,7 +55,8 @@ export class Media extends Component {
       paused: false,
       videos: [],
       currentVideo: 0,
-      showChild: true
+      showChild: true, 
+      isConnected: true
     };
   }
 
@@ -83,11 +85,20 @@ export class Media extends Component {
 
   componentDidMount() {
     console.log("Current Statte" + JSON.stringify(this.state));
-
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
   
   }
 
+  handleConnectivityChange = isConnected => {
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
+
   async componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
     console.log("unmount");
     console.log("Current Statte " + JSON.stringify(this.state));
     if (this.player) {
@@ -258,6 +269,7 @@ export class Media extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%", paddingTop: 35 }}>
+          {this.state.isConnected === true  && (
           <Drawer
             type="overlay"
             tapToClose={true}
@@ -269,6 +281,8 @@ export class Media extends Component {
             })}
             ref={ref => (this._drawer = ref)}
             content={<Tabs />}>
+            </Drawer>
+           )}
             <View
               style={{
                 flexDirection: "row",
@@ -276,6 +290,7 @@ export class Media extends Component {
                 alignItems: "center",
                 alignContent: "flex-start"
               }}>
+              {this.state.isConnected === true  && (
               <TouchableHighlight
                 onPress={() => {
                   this._drawer.open();
@@ -291,6 +306,7 @@ export class Media extends Component {
                   <Icon name="menu" size={35} color="white" />
                 </View>
               </TouchableHighlight>
+              )}
               <View>
                 <Text
                   style={{
@@ -329,7 +345,7 @@ export class Media extends Component {
             ) : (
               <Text style={styles.text}>Nothing Here</Text>
             )}
-          </Drawer>
+          
         </LinearGradient>
       </View>
     );

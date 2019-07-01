@@ -81,8 +81,12 @@ class Catalogue extends Component {
   }
 
   handleConnectivityChange = isConnected => {
-    this.setState({ isConnected });
-  }
+    if (isConnected) {
+      this.setState({ isConnected });
+    } else {
+      this.setState({ isConnected });
+    }
+  };
   async componentWillMount() {
     console.warn('unmount cell');
 
