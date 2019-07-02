@@ -363,6 +363,14 @@ class MasonryListItem extends PureComponent {
               source={{ uri: cachedImageLocation }}
               resizeMode="stretch"
             />
+            <Icon
+              size={22}
+              color="white"
+              style={{ position: "absolute", left: 10 }}
+              name="cloud-download"
+              size={22}
+              color="white"
+            />
             <Text
               numberOfLines={2}
               style={{

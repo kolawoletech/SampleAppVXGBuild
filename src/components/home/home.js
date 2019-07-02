@@ -12,7 +12,7 @@ class Home extends Component {
   logout = () => {
     this.props.logout();
     setTimeout(() => {
-      Actions.reset('login');
+      //Actions.reset('login');
     }, 100);
   };
 

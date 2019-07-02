@@ -33,7 +33,7 @@ export const loginUser = (email, password) => dispatch => {
 };
 
 export const loginAnonymously = () => dispatch => {
-  dispatch(sessionLoading());
+/*   dispatch(sessionLoading());
   firebaseService
     .auth()
     .signInAnonymously()
@@ -42,7 +42,9 @@ export const loginAnonymously = () => dispatch => {
     })
     .catch(error => {
       dispatch(sessionError(error.message));
-    });
+    }); */
+
+    Actions.catalogue();
 };
 
 export const signupUser = (email, password) => dispatch => {
@@ -153,6 +155,7 @@ export const apiRegisterUser = () => dispatch => {
           AsyncStorage.setItem('sessionTokenID', tokenID ).then(() =>{
           })
         }, 1000);
+
      
 
 

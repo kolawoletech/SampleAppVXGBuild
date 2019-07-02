@@ -17,8 +17,17 @@ import LinearGradient from 'react-native-linear-gradient';
 const NILEMEDIA_LOGO = require('../../../../assets/icons/nilemedia.png');
 
 class LoginFormComponent extends Component {
+ 
+  constructor(props){
+    super(props)
+    this.state= {
+      showPrivacyPolicy : false,
+      showContinue: false,
+      launch: false
+    }
+  }
   async componentWillMount() {
-    await this.props.restore();
+    //await this.props.restore();
     await this.checkUserAID().then(async ()=>{
     })
     console.log(JSON.stringify(this.props))
@@ -42,31 +51,46 @@ class LoginFormComponent extends Component {
     }
   }
 
+  goToCatalogue(){
+    Actions.catalogue();
+    console.log("Run Once");
+  }
   async checkUserAID(){
     try {
        let value = await AsyncStorage.getItem('aid');
 
        if (value !== null){
+    
         console.log("This is a not a new user")
+ 
+
+        this.setState({
+          launch : true
+        })
+
+        if( this.state.launch === true){
+          this.goToCatalogue()
+        }
+        
+
+
        }
        else {
         console.log("This is a new user")
-        await this.props.registerAID(); 
+        this.setState({
+          showPrivacyPolicy: true
+        }) 
+        await this.props.registerAID().then((result)=>{
+          console.log("Result from this.props.registerAID(): " + result)
+
+
+        this.setState({
+          showContinue : true
+        })
+        }); 
       }
     } catch (error) {
     }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { error, logged , loginAnonymously} = this.props;
-
-    if (!prevProps.error && error) Alert.alert('error', error);
-    console.log("Logged: " +logged)
-    if (logged) {
-      //Actions.reset('catalogue')
-    }
- 
-  
   }
 
   render() {
@@ -75,19 +99,18 @@ class LoginFormComponent extends Component {
     return (
       <LinearGradient  colors={['#76B6C4', '#4E8FA2', '#0F516C']}
       style={{ borderRadius: 5 , height: '100%'}}>
-      <KeyboardAwareScrollView style={scrollView}>
         <View style={imageBox}>
           <Image style={image} source={NILEMEDIA_LOGO} />
         </View>
-        <View style={loginBox}>
-          {loading ? (
-            <View>
+        <View>
+          {this.state.showPrivacyPolicy !== true ? (
+            <View  style={loginBox}>
               <LoadingIndicator color="#ffffff" size="large" />
             </View>
             
           ) : (
             <View>
-            <TouchableHighlight>
+{/*             <TouchableHighlight>
                 <Button
                   style={{
                     top: 10,
@@ -98,38 +121,37 @@ class LoginFormComponent extends Component {
                   title="Get Started" 
                   color="#fff"
                 />
-            </TouchableHighlight>
+            </TouchableHighlight> */}
             <View 
             style={{
               width:'100%',
               height:'90%'
             }}>
-              {/*          
-                <WebView 
+              <WebView 
                 source={PRIVACY_POLICY}
-                />
-              */}
+              />
             </View>
             <View>
-            <TouchableHighlight>
-                
-                <Button
-                 style={{
-                  top: 10,
-                  fontWeight: 'bold',
-                  fontSize: 21
-                }}
-                  onPress={loginAnon} 
-                  title="Continue" 
-                  color="#fff"
-                />
-            </TouchableHighlight>
+           
+              <TouchableHighlight>
+                  
+                  <Button
+                  style={{
+                    top: 10,
+                    fontWeight: 'bold',
+                    fontSize: 21
+                  }}
+                    onPress={loginAnon} 
+                    title="Continue" 
+                    color="#fff"
+                  />
+              </TouchableHighlight>
+            
             </View>
             </View>
             
           )}
         </View>
-      </KeyboardAwareScrollView>
       </LinearGradient>
     );
   }

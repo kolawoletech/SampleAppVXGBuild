@@ -654,7 +654,7 @@ export const fetchMediaItemMetadata = id => dispatch => {
 };
 
 export const fetchCatalogue = (aid, tokenID) => dispatch => {
-  dispatch(apiUserRegistering());
+  //dispatch(apiUserRegistering());
 
   dispatch(apiUserRegistered(tokenID));
 

@@ -61,7 +61,7 @@ class Catalogue extends Component {
         orientation: isPortrait() ? "portrait" : "landscape"
       });
 
-      this.forceUpdate()
+      //this.forceUpdate()
     });
   }
 
@@ -221,7 +221,7 @@ class Catalogue extends Component {
     if (_.isEmpty(this.props.catalogue) === true){
 
       return (
-        <Text>Loading</Text>
+        <LoadingIndicator color="#ffffff" size="large"/>
       )
     
     }
