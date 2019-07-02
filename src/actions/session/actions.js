@@ -130,7 +130,7 @@ export const apiRegisterUser = () => dispatch => {
     .then( aid => aid.json())
     .then(aid => {
       dispatch(APISessionRegister);
-      console.log("This is your new user AId" + aid["data"]);
+     // console.log("This is your new user AId" + aid["data"]);
       const userAID = aid["data"];
 
       const options = {
@@ -281,7 +281,7 @@ const getUserUID = user => ({
 // START OF GET WIFI OPTIONS
 
 export const getWiFiSettingsOption = (selected) => dispatch => {
-  console.log( "Boolesan Selected IS : " + selected);
+  //console.log( "Boolesan Selected IS : " + selected);
   dispatch(getWiFiOption(selected))
 };
 

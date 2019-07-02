@@ -31,7 +31,6 @@ export class ChannelQuality extends React.Component {
       });
     });
 
-    console.log("Loadedf Chiledldj: =>" + this.state.aid);
   }
   renderItem = qualityList => {
     //console.log(JSON.stringify(aid) + ' OR ' + this.state.aid  )

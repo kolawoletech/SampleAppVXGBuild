@@ -67,8 +67,7 @@ export class Media extends Component {
     });
 
     if (this.state.hideVideo == true) {
-      console.log("Current Statte" + JSON.stringify(this.state));
-      console.log("First Block" + this.state.hideVideo);
+   
 
       this.props.play(uri);
       this.loadWithRetry(this.player, this.state.uri);

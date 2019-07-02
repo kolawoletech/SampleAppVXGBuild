@@ -136,7 +136,6 @@ class Channels extends Component {
   render() {
     const { channels: data } = this.props;
     const { orientation: rotated } = this.props;
-    console.log("Channels Props: " + JSON.stringify(this.props))
 
     if ( this.props.channels.data === 0 ||this.props.channels == null ){
       return (

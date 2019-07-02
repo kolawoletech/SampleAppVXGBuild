@@ -39,7 +39,6 @@ class Chats extends Component {
     return await fetch(url, options)
     .then(response => {
       // a successful response
-      console.log("Awaiting Response" + JSON.stringify(response))
     })
     .catch(error => {
       // an error when the request fails, such as during a timeout

@@ -8,9 +8,11 @@ import {
   FlatList,
   Button,
   ScrollView,
-  Image,
-  Dimensions
+  Dimensions,
+  Image
 } from "react-native";
+
+
 const { width, height } = Dimensions.get("window");
 import moment from "moment";
 import "moment-timezone";

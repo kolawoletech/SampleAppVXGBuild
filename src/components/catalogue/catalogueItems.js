@@ -51,7 +51,6 @@ export class CatalogueItems extends React.Component {
  */
   async checkForNewUpdates() {
     try {
-      console.log("Structure of Items: " + "This Prips" + JSON.stringify(this.props))
       let catalogueItems = this.props.list;
       let result = catalogueItems
         .map(({ programme_id }) => programme_id)
@@ -95,7 +94,6 @@ export class CatalogueItems extends React.Component {
             })
             .then(async () => {
               if (this.arraysEqual(this.state.savedLocally, array)) {
-                console.log(this.state.savedLocally + "&" + array);
                 console.log("checkForNewUpdates: Same Items");
               } else {
                 console.log(
@@ -109,7 +107,6 @@ export class CatalogueItems extends React.Component {
 
                   const promises = this.props.list.map(item => {
                     //return this._getImage(item.programme_id);
-                    console.log("Item IDS" + item.programme_id);
                     return this._getImageUpdate(item.programme_id);
                   });
 
@@ -127,7 +124,6 @@ export class CatalogueItems extends React.Component {
           console.log("Create A Folder");
           const promises = this.props.list.map(async item => {
             //return this._getImage(item.programme_id);
-            console.log("Item IDS" + item.programme_id);
             return this._getImageUpdate(item.programme_id);
           });
 
@@ -180,9 +176,7 @@ export class CatalogueItems extends React.Component {
 
     } */
     let savedLocally = this.state.savedLocally;
-    console.log("checking saved locally: " + this.state.savedLocally);
     let savedOnline = this.state.savedOnline;
-    console.log("checking saved online: " + this.state.savedOnline);
 
     if (this.arraysEqual(savedLocally, savedOnline)) {
       console.log("Same Items");
@@ -226,7 +220,6 @@ export class CatalogueItems extends React.Component {
           var i = 0;
           image_data = image_data[1];
 
-          console.log("Stripped Image: --- " + image_data);
           const cachedImagePath =
             RNFS.CachesDirectoryPath +
             `/NileMediaCatalogueImages` +
@@ -300,7 +293,6 @@ export class CatalogueItems extends React.Component {
         var i = 0;
         image_data = image_data[1];
 
-        console.log("Stripped Image: --- " + image_data);
         const cachedImagePath =
           RNFS.CachesDirectoryPath +
           `/NileMediaCatalogueImages` +

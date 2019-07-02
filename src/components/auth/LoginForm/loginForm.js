@@ -30,7 +30,6 @@ class LoginFormComponent extends Component {
     //await this.props.restore();
     await this.checkUserAID().then(async ()=>{
     })
-    console.log(JSON.stringify(this.props))
   }
 
   async componentDidMount(){
@@ -53,7 +52,6 @@ class LoginFormComponent extends Component {
 
   goToCatalogue(){
     Actions.catalogue();
-    console.log("Run Once");
   }
   async checkUserAID(){
     try {
@@ -81,7 +79,6 @@ class LoginFormComponent extends Component {
           showPrivacyPolicy: true
         }) 
         await this.props.registerAID().then((result)=>{
-          console.log("Result from this.props.registerAID(): " + result)
 
 
         this.setState({

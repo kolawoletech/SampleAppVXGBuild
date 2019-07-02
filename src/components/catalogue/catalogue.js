@@ -136,7 +136,6 @@ class Catalogue extends Component {
       var array = result.split(',');
 
 
-      console.log("Structure of Items: " + typeof(result) + "The ARRAY: " + Array.isArray(array))
     } catch (error) {
       console.log("Structure of Items: " + error )
 
@@ -216,7 +215,6 @@ class Catalogue extends Component {
   render() {
     const { catalogue: data } = this.props;
 
-    console.log("Thius is Masiong h : ====> : " + JSON.stringify(this.props.catalogue))
 
     
 
