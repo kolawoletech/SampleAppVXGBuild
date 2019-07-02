@@ -1,3 +1,3 @@
 import OfflineAlert from './offlineAlert';
 
-export default OfflineAlert ;
+export default OfflineAlert;

@@ -13,8 +13,7 @@ import { connect } from "react-redux";
 import {
   PlayVideo,
   Stop,
-  FetchVideos,
-  fetchMediaItemMetadata
+  FetchVideos
 } from "../../actions/media/actions";
 
 import VideoPlayer from "react-native-video-player";
@@ -84,9 +83,7 @@ export class Media extends Component {
   };
 
   componentDidMount() {
-    console.log("Current Statte" + JSON.stringify(this.state));
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
-  
   }
 
   handleConnectivityChange = isConnected => {
@@ -131,9 +128,7 @@ export class Media extends Component {
       showChild: false
     });
 
-    this.componentDidMount();
-    //this.componentWillUnmount()
-    this.componentWillMount();
+   
 
     setTimeout(() => {
       this.setState({
@@ -176,7 +171,11 @@ export class Media extends Component {
 
       var key = input[i].replace(/(.*)\.[^.]+$/, "$1");
       console.log("Extension `;" + ext)
-
+      if (ext === 'mp4'){
+        type = true
+      } else if (ext === 'm4a'){
+        type  = false
+      }
       arr.push({
         _id: key,
         name: input[i],
@@ -270,11 +269,14 @@ export class Media extends Component {
     } = this.props;
 
     let videos = this.state.videos;
+    let videoArray = JSON.stringify(videos)
+    console.log(JSON.stringify(this.state.videos))
     return (
       <View style={{ height: "100%" }}>
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%", paddingTop: 35 }}>
+          
           <Drawer
             type="overlay"
             tapToClose={true}
@@ -286,6 +288,8 @@ export class Media extends Component {
             })}
             ref={ref => (this._drawer = ref)}
             content={<Tabs />}>
+            
+           
             <View
               style={{
                 flexDirection: "row",
@@ -293,6 +297,7 @@ export class Media extends Component {
                 alignItems: "center",
                 alignContent: "flex-start"
               }}>
+              
               <TouchableHighlight
                 onPress={() => {
                   this._drawer.open();
@@ -308,6 +313,7 @@ export class Media extends Component {
                   <Icon name="menu" size={35} color="white" />
                 </View>
               </TouchableHighlight>
+              
               <View>
                 <Text
                   style={{
@@ -337,12 +343,19 @@ export class Media extends Component {
             </View>
             {this.state.showChild || this.state.data !== undefined ? (
               <View>
-                <MediaItems
-                  list={videos}
-                  _onPressDelete={this.onDeleteURI}
-                  onPressItem={this.onPlayURI}
-                />
+              
+
+              <View>
+                
+                 <MediaItems
+                 list={videos}
+                 _onPressDelete={this.onDeleteURI}
+                 onPressItem={this.onPlayURI}
+               />
               </View>
+              </View>
+
+              
             ) : (
               <Text style={styles.text}>Nothing Here</Text>
             )}
@@ -360,8 +373,7 @@ const mapStateToProps = ({ mediaReducer: { videos, uri } }) => ({
 
 const mapDispatchToProps = {
   fetch: FetchVideos,
-  play: PlayVideo,
-  fetchMetadata: fetchMediaItemMetadata
+  play: PlayVideo
 };
 
 export default connect(

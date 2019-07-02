@@ -32,7 +32,8 @@ export class MediaItems extends React.Component {
       getTheMetaData: false,
       metadata: [],
       thumbnails: [],
-      path: []
+      path: [],
+      currentItem: ""
     };
   }
 
@@ -42,10 +43,36 @@ export class MediaItems extends React.Component {
   }
 
 
+  getFileExtension(filename)  {
+    console.log("Runing")
+    var regex = /[^\/]+$/;
+
+    let strippedName = regex.exec(filename)
+
+    return strippedName;
+  }
+
   async getDetails() {
     const pathPromises = this.props.list.map(item => {
       var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+
+      
       return this._getPaths(VIDEO_FOLDER + item._id + ".mp4", item._id);
+    });
+    const pathResults = await Promise.all(pathPromises);
+
+    this.setState({
+      path: pathResults
+    });
+
+  }
+
+  async getPodcastDetails() {
+    const pathPromises = this.props.list.map(item => {
+      var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+
+      
+      return this._getPaths(VIDEO_FOLDER + item._id + ".m4a", item._id);
     });
     const pathResults = await Promise.all(pathPromises);
 
@@ -62,10 +89,19 @@ export class MediaItems extends React.Component {
       });
 
       const thumbmailPromises = this.props.list.map(item => {
+        this.setState({
+          currentItem: item.ext
+        })
         return this._getImages(item._id);
       });
-
-      await this.getDetails();
+      if (this.state.currentItem === 'mp4'){
+        await this.getDetails();
+      } else   if (this.state.currentItem === 'm4a'){
+        await this.getPodcastDetails();
+      } else {
+       // await this.getErrorDetails();
+      }
+      //await this.getDetails();
 
       const results = await Promise.all(promises);
       const thumbnailResults = await Promise.all(thumbmailPromises);
@@ -113,6 +149,8 @@ export class MediaItems extends React.Component {
 
         return { id, metdat };
       }).catch((err) =>{
+
+        console.log("Errror Getting: " + err)
         let metdat = {
           name: "Not Found",
           description: "Not Found",
@@ -171,11 +209,11 @@ export class MediaItems extends React.Component {
         let size = stats.size;
         let creationTime = stats.ctime;
         let path = stats.path;
-  
+        let name = stats.name
 
       
 
-        return { id, size, creationTime, path };
+        return { id, size, creationTime, path, name };
       })
       .catch(err => {
         console.log(err);
@@ -191,7 +229,8 @@ export class MediaItems extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => onPressItem(data.item.uri)}
-        style={styles.item}>
+        style={styles.item}
+        >
         <LinearGradient
           colors={["#0F516C", "#76B6C4"]}
           style={{
@@ -279,12 +318,12 @@ export class MediaItems extends React.Component {
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 style={{ color: "white",  margin: 6, fontSize: 12, height: 14 , padding:0}}>
-                  {(data.item.ext === 'mp4'
+                  {data.item.ext === 'mp4'
                   ? (
                     "Video"
                       
                     ) + " | "
-                  : "Podcast"+ " | ")}
+                  : "Podcast"+ " | "}
                 {this.state.path.find(a => data.item._id === a.id)
                   ? Math.floor(
                       this.state.path.find(a => data.item._id === a.id).size /
