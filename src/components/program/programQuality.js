@@ -95,7 +95,22 @@ export class ProgramQuality extends React.Component {
                                             textAlign: 'center',
                                             fontSize: 10
 
-                                        }}>{qualityList.video.width}x{qualityList.video.height}
+                                        }}>{qualityList.video.bitrates_kbps}x{qualityList.video.height}
+                                        </Text>
+                                    )}
+
+
+                                    {qualityList.video == null && (
+                                        <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 10
+
+                                        }}>{qualityList.audio.bitrates_kbps} Kb/s
                                         </Text>
                                     )}
                       
@@ -135,6 +150,20 @@ export class ProgramQuality extends React.Component {
                                     }}>{qualityList.video.width}x{qualityList.video.height}
                                 </Text>
                             )}
+
+                            {qualityList.video == null && (
+                                        <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 10
+
+                                        }}>{qualityList.audio.bitrates_kbps} Kb/s
+                                        </Text>
+                                    )}
                             </View>
                             
                             <View>
@@ -177,6 +206,20 @@ export class ProgramQuality extends React.Component {
 
 
                                             }}>{qualityList.video.width}x{qualityList.video.height}
+                                        </Text>
+                                    )}
+
+                                    {qualityList.video == null && (
+                                        <Text
+                                        style={{
+                                            color: '#fff',
+                                            flexWrap: 'wrap',
+                                            alignContent: 'center',
+                                            justifyContent: 'center',
+                                            textAlign: 'center',
+                                            fontSize: 10
+
+                                        }}>{qualityList.audio.bitrates_kbps} Kb/s
                                         </Text>
                                     )}
                                 </View>

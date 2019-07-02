@@ -78,6 +78,8 @@ class Catalogue extends Component {
 
   componentWillUnmount() {
     NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
+
+   
   }
 
   handleConnectivityChange = isConnected => {

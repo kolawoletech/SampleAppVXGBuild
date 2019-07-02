@@ -415,6 +415,9 @@ export const fetchProgramURILinks = (
 
       dispatch(programUriLinkLoaded(link));
 
+
+
+
       downloadVideo = async (name, url) => {
         console.log(url);
 
@@ -503,6 +506,150 @@ export const fetchProgramURILinks = (
 
       createDirectory = () => {
         console.log(" Created Folder and Download Running");
+
+        key = {
+          NSURLIsExcludedFromBackupKey: true
+        };
+
+        const VIDE0_FOLDER = RNFS.DocumentDirectoryPath + "/NileMediaVideos/";
+
+        RNFS.mkdir(RNFS.DocumentDirectoryPath + "/NileMediaVideos/", key);
+      };
+
+      this.downloadVideo(id, link);
+    });
+
+  // .catch(err => console.log("An error occured", err))
+  //TODO Play High Still has channelID
+};
+
+
+export const fetchAudioURILinks = (
+  id,
+  profile_id,
+  aid,
+  tokenID
+) => dispatch => {
+  dispatch(apiUserRegistering());
+  console.log("Program Links:  " + aid);
+  dispatch(apiUserRegistered(tokenID));
+  //console.log("This is TOKEN from STORE "+ token_data["data"]);
+  const programs_options = {
+    method: "GET",
+
+    headers: new Headers({
+      Authorization: "Bearer " + tokenID,
+      "Content-Type": "application/x-www-form-urlencoded"
+    })
+  };
+
+  //dispatch(channelLoading(id))
+  //console.log("ID USED IN STORE IS "  + id)
+  const program_url =
+    "https://nile.rtst.co.za/api/artist/6/programs/" +
+    id +
+    "/uri/" +
+    profile_id +
+    "/";
+
+  fetch(program_url, programs_options)
+    .then(uri => uri.json())
+    .then(uri => {
+      let link = uri["data"];
+
+      dispatch(programUriLinkLoaded(link));
+
+
+
+
+      downloadVideo = async (name, url) => {
+        console.log(url);
+
+        NetInfo.getConnectionInfo().then(data => {
+          console.log("Connection type", data.type);
+
+          console.log("Connection effective type", data.effectiveType);
+
+          AsyncStorage.getItem("wifiBoolValue").then(result => {
+            console.log("Log the result here : " + result);
+
+            if (result === "true" && data.type !== "wifi") {
+              console.log(result + "" + data.type);
+              Alert.alert(
+                "No WIFI Connection",
+                "[If you wish to download over your mobile network then the WI-FI only settings in the settings menu must be switched off]"
+              );
+            } else {
+              this.createDirectory();
+            }
+          });
+        });
+
+        const destPath =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+
+        console.log("Here I am");
+        let option = {
+          fromUrl: url,
+          toFile: destPath
+        };
+
+        const FILE_LOCATION =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+
+        RNFS.exists(FILE_LOCATION).then(exists => {
+          console.log(exists);
+          if (exists) {
+            console.log("File Already Exist");
+            Alert.alert(
+              "Podcast Already Exists In Playlist",
+              "Overwrite?",
+              [
+                {
+                  text: "Yes",
+                  onPress: () => {
+                    this.continueDownload(url);
+                  },
+                  style: "ok"
+                },
+                {
+                  text: "No",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel"
+                }
+              ],
+              { cancelable: false }
+            );
+          } else {
+            RNFS.downloadFile(option).promise.then(res => {
+              console.log("res -----------------------------> ", res);
+            });
+
+            Alert.alert("Download Started", "Check Playlist When Done");
+          }
+        });
+      };
+
+      continueDownload = url => {
+        console.log(url);
+        const destPath =
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+
+        let option = {
+          fromUrl: url,
+          toFile: destPath
+        };
+
+        console.log("continuing download");
+        RNFS.downloadFile(option).promise.then(res => {
+          console.log("res -----------------------------> ", res);
+        });
+
+        Alert.alert("Download Started", "Check Playlist When Done For Podcast");
+      };
+
+      createDirectory = () => {
+        console.log(" Created Folder and Download Running For Podcast");
 
         key = {
           NSURLIsExcludedFromBackupKey: true

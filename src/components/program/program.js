@@ -4,7 +4,7 @@ import { styles } from './styles';
 import Toast, { DURATION } from 'react-native-easy-toast';
 
 import { connect } from 'react-redux';
-import { fetchChannelObject, fetchProgramURILinks, fetchProgramImage } from '../../actions/api/actions';
+import { fetchChannelObject, fetchProgramURILinks, fetchProgramImage, fetchAudioURILinks } from '../../actions/api/actions';
 import { ProgramQuality } from './programQuality';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -24,8 +24,16 @@ export class Program extends React.Component {
 
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
         console.log("What are we getting: " + JSON.stringify(this.props))
-        this.props.fetchLink(programmeID, profileID, AID, TOKENID );
+        
         console.log("Working Fix")
+        if (this.props.programData.quality[0].video == null){
+            this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
+
+        } else {
+            this.props.fetchLink(programmeID, profileID, AID, TOKENID );
+        }
+
+        console.log("ONFETCH LINK: " + JSON.stringify(this.props))
     }
 
 
@@ -38,6 +46,21 @@ export class Program extends React.Component {
         this.createDirectory();
 
         const destPath = RNFS.DocumentDirectoryPath + '/NileMediaVideos/' + name + '.mp4';
+        let option = {
+            fromUrl: url,
+            toFile: destPath
+        };
+        RNFS.downloadFile(option).promise.then(res => {
+            console.log('res -----------------------------> ', res);
+        });
+    };
+
+
+    downloadAudio = (name, url) => {
+        console.log(url)
+        this.createDirectory();
+
+        const destPath = RNFS.DocumentDirectoryPath + '/NileMediaVideos/' + name + '.m4a';
         let option = {
             fromUrl: url,
             toFile: destPath
@@ -128,8 +151,8 @@ export class Program extends React.Component {
                                     }}>
                                     <Image
                                         source={{ uri: img }}
-                                        resizeMode="stretch"
-                                        style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center' }}
+                                        resizeMode="contain"
+                                        style={{ display: 'flex', width: '100%', height: '100%', position: 'absolute', alignItems: 'center', zIndex: -100 }}
                                     />
                                     <View style={{ flex: 1, padding: 7 }}>
                                         <Text
@@ -251,6 +274,7 @@ const mapStateToProps = ({ apiReducer: { link, img } }) => ({
 const mapDispatchToProps = {
     channelObject: fetchChannelObject,
     fetchLink: fetchProgramURILinks,
+    fetchAudio: fetchAudioURILinks,
     imageURI: fetchProgramImage
 };
 

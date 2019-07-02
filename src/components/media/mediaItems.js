@@ -41,6 +41,7 @@ export class MediaItems extends React.Component {
 
   }
 
+
   async getDetails() {
     const pathPromises = this.props.list.map(item => {
       var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
@@ -170,6 +171,7 @@ export class MediaItems extends React.Component {
         let size = stats.size;
         let creationTime = stats.ctime;
         let path = stats.path;
+  
 
       
 
@@ -183,14 +185,13 @@ export class MediaItems extends React.Component {
   renderItem = data => {
     const { onPressItem } = this.props;
     const { _onPressDelete } = this.props;
-
+   
   
 
     return (
       <TouchableOpacity
         onPress={() => onPressItem(data.item.uri)}
-        style={styles.item}
-        >
+        style={styles.item}>
         <LinearGradient
           colors={["#0F516C", "#76B6C4"]}
           style={{
@@ -200,21 +201,19 @@ export class MediaItems extends React.Component {
             margin: 3
           }}
           start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
+          end={{ x: 1, y: 0 }}>
           <View
             style={{
               width: "100%",
               height: 135,
               flexDirection: "row"
-            }}
-          >
+            }}>
             <View
               style={{
                 width: "45%"
               }}>
               <Image
-                resizeMode="stretch"
+                resizeMode="contain"
                 style={{ width: "100%", height: 135, position: "absolute" }}
                 source={{
                   uri: this.state.thumbnails.find(a => data.item._id === a.id)
@@ -243,7 +242,7 @@ export class MediaItems extends React.Component {
                 {this.state.metadata.find(a => data.item._id === a.id)
                   ? this.state.metadata.find(a => data.item._id === a.id).metdat
                       .name
-                  : "Network Failure"}
+                  : "Network Failure"} 
               </Text>
               <Text
                 numberOfLines={1}
@@ -268,8 +267,7 @@ export class MediaItems extends React.Component {
               <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={{ color: "white",  margin: 6,fontSize: 12, height: 14 }}
-              >
+                style={{ color: "white",  margin: 6,fontSize: 12, height: 14 }}>
                 {this.state.path.find(a => data.item._id === a.id)
                   ? moment(
                       this.state.path.find(a => data.item._id === a.id)
@@ -280,8 +278,13 @@ export class MediaItems extends React.Component {
               <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={{ color: "white",  margin: 6, fontSize: 12, height: 14 , padding:0}}
-              >
+                style={{ color: "white",  margin: 6, fontSize: 12, height: 14 , padding:0}}>
+                  {(data.item.ext === 'mp4'
+                  ? (
+                    "Video"
+                      
+                    ) + " | "
+                  : "Podcast"+ " | ")}
                 {this.state.path.find(a => data.item._id === a.id)
                   ? Math.floor(
                       this.state.path.find(a => data.item._id === a.id).size /

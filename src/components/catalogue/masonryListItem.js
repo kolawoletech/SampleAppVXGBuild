@@ -360,8 +360,15 @@ class MasonryListItem extends PureComponent {
           <Card>
             <Image
               width={Dimensions.get("window").width / 2.3}
-              source={{ uri: cachedImageLocation }}
+              source={{ uri: cachedImageLocation}}
               resizeMode="stretch"
+              style={{
+                flex: 1,
+                alignSelf: 'stretch',
+                height: 145,
+                backgroundImage: 'https://via.placeholder.com/150'
+              }}
+              background={true}
             />
             <Icon
               size={22}
@@ -382,8 +389,7 @@ class MasonryListItem extends PureComponent {
                 backgroundColor: "#76b6c4",
                 textAlign: "center",
                 color: "white"
-              }}
-            >
+              }}>
               {item.name}
             </Text>
           </Card>

@@ -165,18 +165,24 @@ export class Media extends Component {
 
   _convertArrayToObject(input) {
     let loc = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-
+    console.log("LOC: " + loc)
+    console.log("Input: " + input)
     var arr = [];
     var len = input.length;
 
     for (var i = 0; i < len; i++) {
+      var ext = input[i].split('.').pop();
+      var type = "";
+
       var key = input[i].replace(/(.*)\.[^.]+$/, "$1");
+      console.log("Extension `;" + ext)
 
       arr.push({
         _id: key,
         name: input[i],
-        isVideo: true,
-        uri: loc + input[i]
+        isVideo: type,
+        uri: loc + input[i],
+        ext: ext
       });
     }
     return arr;
@@ -269,7 +275,6 @@ export class Media extends Component {
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%", paddingTop: 35 }}>
-          {this.state.isConnected === true  && (
           <Drawer
             type="overlay"
             tapToClose={true}
@@ -281,8 +286,6 @@ export class Media extends Component {
             })}
             ref={ref => (this._drawer = ref)}
             content={<Tabs />}>
-            </Drawer>
-           )}
             <View
               style={{
                 flexDirection: "row",
@@ -290,7 +293,6 @@ export class Media extends Component {
                 alignItems: "center",
                 alignContent: "flex-start"
               }}>
-              {this.state.isConnected === true  && (
               <TouchableHighlight
                 onPress={() => {
                   this._drawer.open();
@@ -306,7 +308,6 @@ export class Media extends Component {
                   <Icon name="menu" size={35} color="white" />
                 </View>
               </TouchableHighlight>
-              )}
               <View>
                 <Text
                   style={{
@@ -345,7 +346,7 @@ export class Media extends Component {
             ) : (
               <Text style={styles.text}>Nothing Here</Text>
             )}
-          
+          </Drawer>
         </LinearGradient>
       </View>
     );
