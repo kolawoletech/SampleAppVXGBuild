@@ -17,7 +17,6 @@ export default class OfflineAlert extends React.Component {
             [
                 {text: 'Cancel', onPress: () => console.log('Yes Pressed'), style: 'cancel'},
                 {text: 'Offline Mode', onPress: () => { Actions.media() } },
-                
             ],
             { cancelable: false }
 

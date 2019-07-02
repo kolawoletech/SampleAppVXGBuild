@@ -239,8 +239,7 @@ export class MediaItems extends React.Component {
                   fontWeight: "bold",
                   margin: 6,
                  
-                }}
-              >
+                }}>
                 {this.state.metadata.find(a => data.item._id === a.id)
                   ? this.state.metadata.find(a => data.item._id === a.id).metdat
                       .name
