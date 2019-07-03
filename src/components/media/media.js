@@ -13,13 +13,13 @@ import { connect } from "react-redux";
 import {
   PlayVideo,
   Stop,
-  FetchVideos
+  FetchVideos,
+  fetchMediaItemMetadata
 } from "../../actions/media/actions";
 
 import VideoPlayer from "react-native-video-player";
 import Drawer from "react-native-drawer";
 
-import { VXGMobileSDK } from "react-native-vxg-mobile-sdk";
 import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -27,7 +27,6 @@ import { Actions } from "react-native-router-flux";
 import RNFetchBlob from "rn-fetch-blob";
 var RNFS = require("react-native-fs");
 import Tabs from "../tabs";
-import { white } from "ansi-colors";
 import NetInfo from "@react-native-community/netinfo";
 
 export class Media extends Component {
@@ -39,9 +38,6 @@ export class Media extends Component {
     this.index = 0;
 
     this.document_dir = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-
-    this.filename_prefix = "increment_photo_";
-
     this.state = {
       loading: false,
       data: [],
@@ -128,6 +124,9 @@ export class Media extends Component {
     });
 
    
+    this.componentDidMount();
+    //this.componentWillUnmount()
+    this.componentWillMount();
 
     setTimeout(() => {
       this.setState({
@@ -159,8 +158,7 @@ export class Media extends Component {
 
   _convertArrayToObject(input) {
     let loc = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-    console.log("LOC: " + loc)
-    console.log("Input: " + input)
+    console.log(loc);
     var arr = [];
     var len = input.length;
 
@@ -169,7 +167,6 @@ export class Media extends Component {
       var type = "";
 
       var key = input[i].replace(/(.*)\.[^.]+$/, "$1");
-      console.log("Extension `;" + ext)
       if (ext === 'mp4'){
         type = true
       } else if (ext === 'm4a'){
@@ -260,16 +257,9 @@ export class Media extends Component {
   };
 
   render() {
-    const uri = this.props.uri;
-    console.log("Present URI: " + uri);
-    const {
-      videos: data
-      //uri: puri
-    } = this.props;
-
+  
     let videos = this.state.videos;
-    let videoArray = JSON.stringify(videos)
-    console.log(JSON.stringify(this.state.videos))
+
     return (
       <View style={{ height: "100%" }}>
         <LinearGradient
@@ -342,16 +332,13 @@ export class Media extends Component {
             </View>
             {this.state.showChild || this.state.data !== undefined ? (
               <View>
-              
-
-              <View>
                 
-                 <MediaItems
-                 list={videos}
-                 _onPressDelete={this.onDeleteURI}
-                 onPressItem={this.onPlayURI}
-               />
-              </View>
+                  <MediaItems
+                    list={videos}
+                    _onPressDelete={this.onDeleteURI}
+                    onPressItem={this.onPlayURI}
+                  />
+                
               </View>
 
               
@@ -372,18 +359,14 @@ const mapStateToProps = ({ mediaReducer: { videos, uri } }) => ({
 
 const mapDispatchToProps = {
   fetch: FetchVideos,
-  play: PlayVideo
+  play: PlayVideo,
+  fetchMetadata: fetchMediaItemMetadata
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(Media);
-
-const drawerStyles = {
-  drawer: { shadowColor: "#000000", shadowOpacity: 0.8, shadowRadius: 3 },
-  main: { paddingLeft: 3 }
-};
 
 const styles = StyleSheet.create({
   container: {

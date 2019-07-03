@@ -19,6 +19,7 @@ import "moment-timezone";
 import LinearGradient from "react-native-linear-gradient";
 import RNFetchBlob from "rn-fetch-blob";
 var RNFS = require("react-native-fs");
+//import RNFS from "react-native-fs";
 
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -35,6 +36,7 @@ export class MediaItems extends React.Component {
       metadata: [],
       thumbnails: [],
       path: [],
+      audioPath: [],
       currentItem: ""
     };
   }
@@ -67,6 +69,8 @@ export class MediaItems extends React.Component {
       path: pathResults
     });
 
+    console.log("Trouble: " + this.state.path)
+
   }
 
   async getPodcastDetails() {
@@ -78,32 +82,57 @@ export class MediaItems extends React.Component {
     });
     const pathResults = await Promise.all(pathPromises);
 
+
+    console.log("Trouble" +  JSON.stringify(pathResults))
+
     this.setState({
-      path: pathResults
+      audioPath: pathResults
     });
 
   }
 
   async componentDidUpdate(prevProps) {
+
+
     if (this.props.list != prevProps.list) {
       const promises = this.props.list.map(item => {
         return this._getMetadata(item._id);
       });
 
       const thumbmailPromises = this.props.list.map(item => {
+
         this.setState({
           currentItem: item.ext
-        })
+        });
+
+        if (item.ext === 'mp4'){
+          this.a = item.ext;
+          this.b = '';
+
+        } else if (item.ext === 'mp4') {
+          this.b = item.ext;
+          this.a = '';
+        }
+        
+
+        console.log("Extension "+ item.ext)
         return this._getImages(item._id);
       });
-      if (this.state.currentItem === 'mp4'){
-        await this.getDetails();
-      } else   if (this.state.currentItem === 'm4a'){
-        await this.getPodcastDetails();
+
+      if (this.a == 'mp4' &&  this.b=== ''){
+        console.log("Trouble Theis is an MP4 " + this.a)
+        this.getDetails();
+      } else if (this.b == 'm4a' &&  this.a === ''){
+        this.getPodcastDetails();
+        console.log("Trouble Theis is an M4A " + this.b)
+
       } else {
        // await this.getErrorDetails();
       }
       //await this.getDetails();
+      
+
+      console.log("Trouble Makwre")
 
       const results = await Promise.all(promises);
       const thumbnailResults = await Promise.all(thumbmailPromises);
@@ -112,6 +141,7 @@ export class MediaItems extends React.Component {
         metadata: results,
         thumbnails: thumbnailResults
       });
+      this.forceUpdate()
     }
   }
 
@@ -210,12 +240,13 @@ export class MediaItems extends React.Component {
       .then(stats => {
         let size = stats.size;
         let creationTime = stats.ctime;
-        let path = stats.path;
-        let name = stats.name
+        let path = stats.path
+         
 
+        console.log( id, size, creationTime, path)
       
 
-        return { id, size, creationTime, path, name };
+        return { id, size, creationTime, path};
       })
       .catch(err => {
         console.log(err);
@@ -305,18 +336,60 @@ export class MediaItems extends React.Component {
                 : "Network"}
             </Text> */}
 
-              <Text
+              { data.item.ext == 'm4a' ? 
+                <View>
+                  <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{ color: "white",  margin: 6,fontSize: 12, height: 14 }}>
+                  {this.state.audioPath.find(a => data.item._id === a.id)
+                    ? moment(
+                        this.state.audioPath.find(a => data.item._id === a.id)
+                          .creationTime
+                      ).format("YYYY-MM-DD h:mm:ss")
+                    : ""}
+                </Text>
+                </View>
+               
+              :
+              
+                <View>
+                  <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{ color: "white",  margin: 6,fontSize: 12, height: 14 }}>
+                  {this.state.path.find(a => data.item._id === a.id)
+                    ? moment(
+                        this.state.path.find(a => data.item._id === a.id)
+                          .creationTime
+                      ).format("YYYY-MM-DD h:mm:ss")
+                    : "O: OO"}
+                </Text>
+                </View>
+                
+              }
+              { data.item.ext === 'm4a'? 
+                <View>
+                <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={{ color: "white",  margin: 6,fontSize: 12, height: 14 }}>
-                {this.state.path.find(a => data.item._id === a.id)
-                  ? moment(
-                      this.state.path.find(a => data.item._id === a.id)
-                        .creationTime
-                    ).format("YYYY-MM-DD h:mm:ss")
-                  : "Network"}
-              </Text>
-              <Text
+                style={{ color: "white",  margin: 6, fontSize: 12, height: 14 , padding:0}}>
+                  {data.item.ext === 'mp4'
+                  ? (
+                    "Video"
+                    ) + " | "
+                  : "Podcast"+ " | "}
+                {this.state.audioPath.find(a => data.item._id === a.id)
+                  ? Math.floor(
+                      this.state.audioPath.find(a => data.item._id === a.id).size /
+                        1000000
+                    ) + "MB"
+                  : ""}
+                </Text>
+                </View>
+                : 
+                <View>
+                 <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
                 style={{ color: "white",  margin: 6, fontSize: 12, height: 14 , padding:0}}>
@@ -331,8 +404,11 @@ export class MediaItems extends React.Component {
                       this.state.path.find(a => data.item._id === a.id).size /
                         1000000
                     ) + "MB"
-                  : "Network"}
-              </Text>
+                  : ""}
+                </Text>
+                </View>
+              }
+          
               <View
                 style={{
                   justifyContent: "center",
