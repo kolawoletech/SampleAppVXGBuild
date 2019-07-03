@@ -29,6 +29,12 @@ var RNFS = require("react-native-fs");
 import Tabs from "../tabs";
 import NetInfo from "@react-native-community/netinfo";
 
+import SQLite from "react-native-sqlite-storage";
+SQLite.DEBUG(true);
+SQLite.enablePromise(true);
+//import { Button } from 'react-native-elements';
+
+
 export class Media extends Component {
   _player = null;
 
@@ -54,6 +60,80 @@ export class Media extends Component {
       isConnected: true
     };
   }
+
+  initDB() {
+    let db;
+    return new Promise((resolve) => {
+      console.log("Plugin integrity check ...");
+      SQLite.echoTest()
+        .then(() => {
+          console.log("Integrity check passed ...");
+          console.log("Opening database ...");
+          SQLite.openDatabase(
+            "database_name",
+            "database_version",
+            "database_displayname",
+            "database_size"
+          )
+            .then(DB => {
+              db = DB;
+              console.log("Database OPEN");
+              db.executeSql('SELECT 1 FROM Product LIMIT 1').then(() => {
+                  console.log("Database is ready ... executing query ...");
+              }).catch((error) =>{
+                  console.log("Received error: ", error);
+                  console.log("Database not yet ready ... populating data");
+                  db.transaction((tx) => {
+                      tx.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
+                  }).then(() => {
+                      console.log("Table created successfully");
+                  }).catch(error => {
+                      console.log(error);
+                  });
+              });
+              resolve(db);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        })
+        .catch(error => {
+          console.log("echoTest failed - plugin not functional");
+        });
+      });
+  };
+
+  save_media = () => {
+ 
+    //alert(user_name, user_contact, user_address);
+    
+    db.transaction(function(tx) {
+    tx.executeSql(
+        'INSERT INTO table_user (user_name, user_contact, user_address) VALUES (?,?,?)',
+        ["user_name", "user_contact", "user_address"],
+        (tx, results) => {
+        console.log('Results', results.rowsAffected);
+        if (results.rowsAffected > 0) {
+            Alert.alert(
+            'Success',
+            'You are Registered Successfully',
+            [
+                {
+                text: 'Ok',
+                onPress: () =>
+                    console.log("Success")
+                },
+            ],
+            { cancelable: false }
+            );
+        } else {
+            alert('Registration Failed');
+        }
+        }
+    );
+    });
+
+  };
 
   onPlayURI = uri => {
 
@@ -332,6 +412,10 @@ export class Media extends Component {
             </View>
             {this.state.showChild || this.state.data !== undefined ? (
               <View>
+                   <Button 
+                 title="Learn More"
+                 color="#841584"
+                 onPress={ this.save_media}></Button>
                 
                   <MediaItems
                     list={videos}

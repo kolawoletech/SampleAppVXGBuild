@@ -16,11 +16,47 @@ import { AsyncStorage } from "react-native";
 
 import RNFS from 'react-native-fs'
 
+import { openDatabase } from 'react-native-sqlite-storage';
+import { Button } from 'react-native-elements';
+
+var db = openDatabase({ name: 'MediaDatabase.db' });
+
 export class Program extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    save_media = () => {
+ 
+        //alert(user_name, user_contact, user_address);
+        
+        db.transaction(function(tx) {
+        tx.executeSql(
+            'INSERT INTO table_user (user_name, user_contact, user_address) VALUES (?,?,?)',
+            ["user_name", "user_contact", "user_address"],
+            (tx, results) => {
+            console.log('Results', results.rowsAffected);
+            if (results.rowsAffected > 0) {
+                Alert.alert(
+                'Success',
+                'You are Registered Successfully',
+                [
+                    {
+                    text: 'Ok',
+                    onPress: () =>
+                        console.log("Success")
+                    },
+                ],
+                { cancelable: false }
+                );
+            } else {
+                alert('Registration Failed');
+            }
+            }
+        );
+        });
+   
+    };
 
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
         console.log("What are we getting: " + JSON.stringify(this.props))
@@ -241,6 +277,10 @@ export class Program extends React.Component {
 
                                 </View>
                                 <View>
+                                <Button 
+                 title="Learn More"
+                 color="#841584"
+                 onPress={ this.save_media}></Button>
                                     <Text
                                         style={{
                                             color: '#fff',

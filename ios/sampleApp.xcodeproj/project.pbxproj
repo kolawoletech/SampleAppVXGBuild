@@ -51,6 +51,7 @@
 		D8A6712222762E05001E12F3 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A6711F22762DBD001E12F3 /* libBVLinearGradient.a */; };
 		D8A672AD2276D43E001E12F3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A66FBD2274D36D001E12F3 /* libRNDeviceInfo.a */; };
 		D8A672DE2276DD47001E12F3 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D8A66F062274C505001E12F3 /* libRNGestureHandler.a */; };
+		D8B1641C22CD0F79001F1526 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B1641B22CD0F79001F1526 /* libsqlite3.tbd */; };
 		E6C782BAD3434398B3DC1FD7 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48B79E09915C4ACDA3CF0F73 /* MaterialCommunityIcons.ttf */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		F081E254D5124E2690179957 /* libRNCWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE072A68E414E3DB248F7A9 /* libRNCWebView.a */; };
@@ -572,6 +573,7 @@
 		D814AB412280259300F8250C /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		D88A123A227AE8D4008B7D57 /* ffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ffmpeg.framework; path = "../node_modules/react-native-vxg-mobile-sdk/ios/ffmpeg/universal/ffmpeg.framework"; sourceTree = "<group>"; };
 		D8A6711922762DBD001E12F3 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		D8B1641B22CD0F79001F1526 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		DBAADB64D603431E88FDCC72 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EEF5ECFB233B4A3BBAE6A47F /* RCTVXGMobileSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVXGMobileSDK.xcodeproj; path = "../node_modules/react-native-vxg-mobile-sdk/ios/RCTVXGMobileSDK.xcodeproj"; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				352808054984433FA3FB4F9D /* libRNMediaMeta.a in Frameworks */,
 				366E43B3D0D3441A94A91DA4 /* libKCKeepAwake.a in Frameworks */,
 				5917DF8406C449B1B21BCBBF /* libSQLite.a in Frameworks */,
+				D8B1641C22CD0F79001F1526 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +768,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D8B1641B22CD0F79001F1526 /* libsqlite3.tbd */,
 				D88A123A227AE8D4008B7D57 /* ffmpeg.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
