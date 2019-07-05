@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { AsyncStorage } from "react-native";
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
-//import { Permissions, Camera, FileSystem } from 'expo';
 import { fetchProgramURILink, getUID } from '../../actions/api/actions';
 
 
@@ -58,10 +56,7 @@ export class ProgramQuality extends React.Component {
         const min = Math.min(...result);
 
         const sizeInMB = Math.floor(parseInt(qualityList.size, 10) / 1000000)
-        console.log("Quality List Fior Podcast" + JSON.stringify(qualityList))
-        if (qualityList.profile_id == 7) {
-            let quality = 7;
-        }
+  
 
 
         return (
@@ -81,10 +76,6 @@ export class ProgramQuality extends React.Component {
                                     </View>
                                 </View>
                                 <View>
-
-                                    
-                             
-
                                     {qualityList.video !== null && (
                                         <Text
                                         style={{
@@ -262,6 +253,7 @@ export class ProgramQuality extends React.Component {
         );
     }
     render() {
+        console.log("Part 2 Onloading Quality Tabs " + JSON.stringify(this.props))
         if (this.props == "undefined") {
             return (
                 <TouchableOpacity>

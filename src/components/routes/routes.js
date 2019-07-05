@@ -30,6 +30,9 @@ import LandingContainer from '../landing'
 import configureStore from '../../store';
 //import MenuContainer from '../menu';
 import ChatsContainer from '../chats'
+
+import CachedCatalogueContainer from '../cachedCatalogue'
+
 import NetInfo from "@react-native-community/netinfo";
 
 
@@ -78,7 +81,7 @@ export default class Routes extends React.Component {
  
             {this.state.isConnected === true  && (
               <Stack key="root" direction="vertical">    
-                <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login" />
+                <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login"  initial={true}/>
                 <Scene key="signup" component={SignupContainer} title="Signup" />
                 <Scene key="home" component={HomeContainer} title="Home" />
                 <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
@@ -91,8 +94,9 @@ export default class Routes extends React.Component {
                 <Scene key="messages" component={MessagesContainer} title="Messages" />
                 <Scene key="landing" component={LandingContainer} title="Landing" />
                 <Scene key="chats" component={ChatsContainer} title="Chats" />
-                <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media"  initial={true}/>
-                <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"></Scene>
+                <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
+                <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
+                <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
               </Stack>
             )}
              

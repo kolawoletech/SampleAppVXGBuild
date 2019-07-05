@@ -61,7 +61,7 @@ export class Media extends Component {
     };
   }
 
-  initDB() {
+  initDB = () =>{
     let db;
     return new Promise((resolve) => {
       console.log("Plugin integrity check ...");
@@ -412,17 +412,18 @@ export class Media extends Component {
             </View>
             {this.state.showChild || this.state.data !== undefined ? (
               <View>
-                   <Button 
-                 title="Learn More"
-                 color="#841584"
-                 onPress={ this.save_media}></Button>
+                  <Button 
+                    title="Learn More"
+                    color="#841584"
+                    onPress={ this.initDB}>
+                      
+                  </Button>
                 
                   <MediaItems
                     list={videos}
                     _onPressDelete={this.onDeleteURI}
                     onPressItem={this.onPlayURI}
                   />
-                
               </View>
 
               

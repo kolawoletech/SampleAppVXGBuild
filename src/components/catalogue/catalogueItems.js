@@ -359,7 +359,10 @@ export class CatalogueItems extends React.Component {
          
                 <Image
                   width={Dimensions.get('window').width/2.5} 
-                  source={{ uri: cachedImageLocation }}
+                  source={{ 
+                    uri: cachedImageLocation,
+                    cache: 'only-if-cached',
+                   }}
                 />
              
             {/*             <FastImage

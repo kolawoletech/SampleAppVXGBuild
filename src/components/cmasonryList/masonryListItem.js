@@ -28,6 +28,8 @@ let { width, height } = Dimensions.get("window");
 export default class MasonryListItem extends PureComponent {
     componentDidMount() {
         console.warn('mount cell');
+        console.log(RNFS.CachesDirectoryPath);
+
     }
 
     componentWillUnmount() {

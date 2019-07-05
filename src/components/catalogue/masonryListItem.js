@@ -25,6 +25,8 @@ import { Card, CardImage } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
 let { width, height } = Dimensions.get("window");
 
+import _ from "lodash";
+
 class MasonryListItem extends PureComponent {
 
     constructor(props) {
@@ -36,14 +38,129 @@ class MasonryListItem extends PureComponent {
           facedown: this.props.orientation,
           savedLocally: [],
           savedOnline: [],
-          isImageSavedLocally: ""
+          //isImageSavedLocally: ""
         };
     }
 
     async componentDidMount() {
         console.warn("mount cell");
-        await this.checkForNewUpdates();
+        
     }
+
+    async componentWillMount(){
+      await this.checkForNewUpdates();
+    }
+    async componentWillUnmount(){
+      //await this.checkForNewUpdates();
+    }
+
+
+    async checkForNewUpdates2() {
+      try {
+        console.log("Structure of Items: " + "This Prips" + JSON.stringify(this.props.catalogue))
+        let catalogueItems = this.props.catalogue;
+        let result = catalogueItems
+          .map(({ programme_id }) => programme_id)
+          .join(",");
+
+        var array = result.split(",");
+          
+
+
+        this.setState({
+          savedLocally: array
+        });
+        
+  
+        console.log(
+          "checkForNewUpdates Saved Online State" +
+            array
+        );
+        //onsole.log("checkForNewUpdates Structure of Items: " + "The ARRAY: " + array);
+  
+        const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
+
+        RNFS.exists(cachedImageFolder).then(async exists => {
+          console.log('Saved Folder does exist? ' + exists)
+          if (exists) {
+            RNFS.readDir(cachedImageFolder) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+              .then(async (result) => {
+                var arr = [];
+                for (i = 0; i < result.length; i++) {
+                  console.log("Saved GOT RESULT", result[i].name);
+                  var filename = result[i].name
+                    .split(".")
+                    .slice(0, -1)
+                    .join(".");
+                  arr.push(parseInt(filename));
+                }
+                // stat the first file
+  
+                this.setState({
+                  savedLocally: arr
+                });
+
+                console.log(
+                  "Saved 1checkForNewUpdates Saved LOCAL State" +
+                    arr
+                );
+  
+                await Promise.all(arr);
+              
+                console.log(
+                  "Saved 2checkForNewUpdates Saved LOCAL State" +
+                    arr
+                );
+              })
+              .then(async (arr, array) => {
+                if (this.arraysEqual(arr, array)) {
+                  console.log(this.state.savedLocally + "&" + array);
+                  console.log("checkForNewUpdates: Same Items");
+                } else {
+                 /*  console.log(
+                    "checkForNewUpdates: New Updates Found, Delete Folder "
+                  );
+                  let path = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
+                  RNFS.unlink(path).then(async () => {
+                    console.log(
+                      "checkForNewUpdates: Create Folder and Get Images"
+                    );
+  
+                    const promises = this.props.catalogue.map(item => {
+                      //return this._getImage(item.programme_id);
+                      console.log("Item IDS" + item.programme_id);
+                      return this._getImageUpdate(item.programme_id);
+                    });
+  
+                    const results = await Promise.all(promises);
+                    this.setState({
+                      images: results
+                    });
+                  }); */
+                }
+              })
+              .catch(err => {
+                console.log(err.message, err.code);
+              });
+          } else {
+            console.log("Create A Folder");
+            const promises = this.props.catalogue.map(async item => {
+              //return this._getImage(item.programme_id);
+              console.log("Item IDS" + item.programme_id);
+              return this._getImageUpdate(item.programme_id);
+            });
+  
+            const results = await Promise.all(promises);
+            this.setState({
+              images: results
+            });
+          }
+        });
+      } catch (error) {
+        console.log("Structure of Items: " + error);
+      }
+  }
+  
 
     async checkForNewUpdates() {
         try {
@@ -56,26 +173,30 @@ class MasonryListItem extends PureComponent {
           var array = result.split(",");
             
 
+
           this.setState({
-            savedOnline: array
+            savedLocally: array
           });
+          
     
           console.log(
             "checkForNewUpdates Saved Online State" +
-              this.state.savedOnline +
-              "checkForNewUpdates Saved Online Actual array: " +
               array
           );
+
+          this.array = array
           //onsole.log("checkForNewUpdates Structure of Items: " + "The ARRAY: " + array);
     
           const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
+
           RNFS.exists(cachedImageFolder).then(async exists => {
-            if (exists === "true" ) {
+            console.log('Saved Folder does exist? ' + exists)
+            if (exists) {
               RNFS.readDir(cachedImageFolder) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
                 .then(async (result) => {
                   var arr = [];
-                  for (i = 0; i <= result.length; i++) {
-                    console.log("GOT RESULT", result);
+                  for (i = 0; i < result.length; i++) {
+                    console.log("Saved GOT RESULT", result[i].name);
                     var filename = result[i].name
                       .split(".")
                       .slice(0, -1)
@@ -87,14 +208,29 @@ class MasonryListItem extends PureComponent {
                   this.setState({
                     savedLocally: arr
                   });
+
+                  console.log(
+                    "Saved 1checkForNewUpdates Saved LOCAL State" +
+                      arr
+                  );
     
                   await Promise.all(arr);
+                  this.arr = arr;
+                
+                  console.log(
+                    "Saved 2checkForNewUpdates Saved LOCAL State" +
+                      arr
+                  );
                 })
                 .then(async () => {
-                  if (this.arraysEqual(this.state.savedLocally, array)) {
-                    console.log(this.state.savedLocally + "&" + array);
+                  if (this.arraysEqual(this.arr, this.arr)) {
+                    console.log(this.arr + "&" + this.array);
                     console.log("checkForNewUpdates: Same Items");
                   } else {
+                    console.log("checkForNewUpdates: Different Items");
+                    console.log(this.arr + "&" + this.array);
+
+
                     console.log(
                       "checkForNewUpdates: New Updates Found, Delete Folder "
                     );
@@ -158,24 +294,12 @@ class MasonryListItem extends PureComponent {
     }
 
     async componentWillUnmount() {
-        console.warn("unmount cell");
+      console.warn("unmount cell");
     }
 
 
     arraysEqual = (a, b) => {
-        if (a === b) return true;
-        if (a == null || b == null) return false;
-        if (a.length != b.length) return false;
-
-        // If you don't care about the order of the elements inside
-        // the array, you should sort both arrays here.
-        // Please note that calling sort on an array will modify that array.
-        // you might want to clone your array first.
-
-        for (var i = 0; i < a.length; ++i) {
-            if (a[i] !== b[i]) return false;
-        }
-        return true;
+      return _.isEqual(a.sort(), b.sort()) 
     };
 
 
@@ -360,7 +484,10 @@ class MasonryListItem extends PureComponent {
           <Card>
             <Image
               width={Dimensions.get("window").width / 2.3}
-              source={{ uri: cachedImageLocation}}
+              source={{ 
+                uri: cachedImageLocation,
+                cache: 'only-if-cached',
+              }}
               resizeMode="stretch"
               style={{
                 flex: 1,

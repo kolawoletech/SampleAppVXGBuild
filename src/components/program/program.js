@@ -19,56 +19,92 @@ import RNFS from 'react-native-fs'
 import { openDatabase } from 'react-native-sqlite-storage';
 import { Button } from 'react-native-elements';
 
-var db = openDatabase({ name: 'MediaDatabase.db' });
+import SQLite from "react-native-sqlite-storage";
+SQLite.DEBUG(true);
+SQLite.enablePromise(true);
 
 export class Program extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    save_media = () => {
- 
-        //alert(user_name, user_contact, user_address);
-        
-        db.transaction(function(tx) {
-        tx.executeSql(
-            'INSERT INTO table_user (user_name, user_contact, user_address) VALUES (?,?,?)',
-            ["user_name", "user_contact", "user_address"],
-            (tx, results) => {
-            console.log('Results', results.rowsAffected);
-            if (results.rowsAffected > 0) {
-                Alert.alert(
-                'Success',
-                'You are Registered Successfully',
-                [
-                    {
-                    text: 'Ok',
-                    onPress: () =>
-                        console.log("Success")
-                    },
-                ],
-                { cancelable: false }
-                );
-            } else {
-                alert('Registration Failed');
-            }
-            }
-        );
+    initDB = () =>{
+        let db;
+        return new Promise((resolve) => {
+            console.log("Plugin integrity check ...");
+            SQLite.echoTest()
+            .then(() => {
+                console.log("Integrity check passed ...");
+                console.log("Opening database ...");
+                SQLite.openDatabase(
+                "database_name",
+                "database_version",
+                "database_displayname",
+                "database_size"
+                ).then(DB => {
+                    db = DB;
+                    console.log("Database OPEN");
+                    db.executeSql('SELECT 1 FROM Product LIMIT 1').then(() => {
+                        console.log("Database is ready ... executing query ...");
+                    }).catch((error) =>{
+                        console.log("Received error: ", error);
+                        console.log("Database not yet ready ... populating data");
+                        db.transaction((tx) => {
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
+                        }).then(() => {
+                            console.log("Table created successfully");
+                        }).catch(error => {
+                            console.log(error);
+                        });
+                    });
+                    resolve(db);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            })
+            .catch(error => {
+                console.log("echoTest failed - plugin not functional");
+            });
         });
-   
     };
 
+
+    addMedia(programData) {
+        return new Promise((resolve) => {
+          this.initDB().then((db) => {
+            db.transaction((tx) => {
+              tx.executeSql('INSERT INTO Product VALUES (?, ?, ?, ?, ?)', [programData._id, programData.name, prod.description]).then(([tx, results]) => {
+                resolve(results);
+              });
+            }).then((result) => {
+              this.closeDatabase(db);
+            }).catch((err) => {
+              console.log(err);
+            });
+          }).catch((err) => {
+            console.log(err);
+          });
+        });  
+    }
+
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
-        console.log("What are we getting: " + JSON.stringify(this.props))
+        console.log("Part 3 OnClicking Download: " + JSON.stringify(this.props))
         
-        console.log("Working Fix")
         if (this.props.programData.quality[0].video == null){
-            this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
+            this.props.fetchAudio(programmeID, profileID, AID, TOKENID ).then(() => {
+                this.addMedia(this.props.programData)
+            });
+            
 
         } else {
-            this.props.fetchLink(programmeID, profileID, AID, TOKENID );
+            this.props.fetchLink(programmeID, profileID, AID, TOKENID ).then(() =>{
+                this.addMedia(this.props.programData)
+            });
+            
         }
-
+        
+        //this.addToDatabase("sample","sample", "sample");
         console.log("ONFETCH LINK: " + JSON.stringify(this.props))
     }
 
@@ -131,6 +167,8 @@ export class Program extends React.Component {
 
     componentWillMount() {
         this.props.link = null;
+        console.log(JSON.stringify("Part 1 OnMounting" + JSON.stringify(this.props)))
+
     }
 
 
@@ -153,7 +191,6 @@ export class Program extends React.Component {
         } = this.props.programData;
         const list = this.props.programData;
 
-        console.log("List Initial", this.props)
 
 
 
@@ -229,6 +266,12 @@ export class Program extends React.Component {
 
                                 <View style={styles.pills}>
                                     <View >
+                                        <Button 
+                                            title="Learn More"
+                                            color="#841584"
+                                            onPress={ this.addToDatabase}>
+                                            
+                                        </Button>
                                         <ProgramQuality qual={qualityList} pid={programmeID}
                                             onPressItem={this.onFetchLink}
                                         //onPressItem={this.createDirectory}

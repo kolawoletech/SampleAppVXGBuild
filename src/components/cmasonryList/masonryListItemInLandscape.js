@@ -13,6 +13,7 @@ import Image from 'react-native-scalable-image';
 import { PureComponent } from 'react';
 
 import RNFS from "react-native-fs";
+//var RNFS = require('react-native-fs');
 
 
 import { styles } from "./styles";
@@ -28,10 +29,13 @@ let { width, height } = Dimensions.get("window");
 export default class MasonryListItemInLandscape extends PureComponent {
     componentDidMount() {
         console.warn('mount cell');
+        console.log(RNFS.CachesDirectoryPath);
+
     }
 
     componentWillUnmount() {
         console.warn('unmount cell');
+        console.log(RNFS.CachesDirectoryPath);
     }
 
     render() {
@@ -54,7 +58,10 @@ export default class MasonryListItemInLandscape extends PureComponent {
                                 textAlign: 'center'
                             }}
                             width={Dimensions.get('window').width/2.176} 
-                            source={{ uri: cachedImageLocation }}
+                            source={{ 
+                                uri: cachedImageLocation,
+                                cache: 'only-if-cached',
+                            }}
                             resizeMode="contain"
                         />
                         <Text
