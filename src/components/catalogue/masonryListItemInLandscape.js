@@ -351,6 +351,8 @@ class MasonryListItemInLandscape extends PureComponent {
         "/NileMediaCatalogueImages/" +
         item.programme_id +
         ".png";
+
+        console.log("Image Location" +cachedImageLocation)
         return (
             <View>
                 <TouchableOpacity
@@ -359,14 +361,14 @@ class MasonryListItemInLandscape extends PureComponent {
                     style={styles.item} >
                     <Card>
                         <Image
-                            style={{
-                                alignContent: "center",
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}
-                            width={Dimensions.get('window').width/2.176} 
-                            source={{ uri: cachedImageLocation }}
-                            resizeMode="stretch"
+                          style={{
+                              alignContent: "center",
+                              justifyContent: 'center',
+                              alignItems: 'center'
+                          }}
+                          width={Dimensions.get('window').width/2.176} 
+                          source={{ uri: cachedImageLocation }}
+                          resizeMode="stretch"
                         />
                         <Text
                             numberOfLines={2}

@@ -32,6 +32,7 @@ import configureStore from '../../store';
 import ChatsContainer from '../chats'
 
 import CachedCatalogueContainer from '../cachedCatalogue'
+import LocalMediaContainer from '../localMedia'
 
 import NetInfo from "@react-native-community/netinfo";
 
@@ -97,6 +98,8 @@ export default class Routes extends React.Component {
                 <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
                 <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
                 <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
+
+                <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media" ></Scene>
               </Stack>
             )}
              

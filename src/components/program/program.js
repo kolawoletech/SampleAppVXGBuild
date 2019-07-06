@@ -26,6 +26,9 @@ SQLite.enablePromise(true);
 export class Program extends React.Component {
     constructor(props) {
         super(props);
+        //this.addMedia = this.addMedia(this)
+        //this.onLayout = this.onLayout.bind(this);
+
     }
 
     initDB = () =>{
@@ -37,20 +40,20 @@ export class Program extends React.Component {
                 console.log("Integrity check passed ...");
                 console.log("Opening database ...");
                 SQLite.openDatabase(
-                "database_name",
-                "database_version",
+                "m",
+                0.2,
                 "database_displayname",
                 "database_size"
                 ).then(DB => {
                     db = DB;
                     console.log("Database OPEN");
-                    db.executeSql('SELECT 1 FROM Product LIMIT 1').then(() => {
+                    db.executeSql('SELECT 1 FROM Media LIMIT 1').then(() => {
                         console.log("Database is ready ... executing query ...");
                     }).catch((error) =>{
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Product (prodId, prodName, prodDesc, prodImage, prodPrice)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType)');
                         }).then(() => {
                             console.log("Table created successfully");
                         }).catch(error => {
@@ -70,11 +73,12 @@ export class Program extends React.Component {
     };
 
 
-    addMedia(programData) {
+    addMedia = (programData, mediaType) =>{
+        console.log("Part 4")
         return new Promise((resolve) => {
           this.initDB().then((db) => {
             db.transaction((tx) => {
-              tx.executeSql('INSERT INTO Product VALUES (?, ?, ?, ?, ?)', [programData._id, programData.name, prod.description]).then(([tx, results]) => {
+              tx.executeSql('INSERT INTO Media VALUES (?, ?, ?, ?)', [programData.programme_id, programData.name, programData.description, mediaType]).then(([tx, results]) => {
                 resolve(results);
               });
             }).then((result) => {
@@ -88,20 +92,36 @@ export class Program extends React.Component {
         });  
     }
 
+
+    closeDatabase = (db) => {
+        if (db) {
+            console.log("Closing DB");
+            db.close()
+              .then(status => {
+                console.log("Database CLOSED");
+              })
+              .catch(error => {
+                this.errorCB(error);
+              });
+          } else {
+            console.log("Database was not OPENED");
+          }
+    }
+
+ 
+
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
         console.log("Part 3 OnClicking Download: " + JSON.stringify(this.props))
         
         if (this.props.programData.quality[0].video == null){
-            this.props.fetchAudio(programmeID, profileID, AID, TOKENID ).then(() => {
-                this.addMedia(this.props.programData)
-            });
+            this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
+            this.addMedia(this.props.programData, "podcast")
             
 
         } else {
-            this.props.fetchLink(programmeID, profileID, AID, TOKENID ).then(() =>{
-                this.addMedia(this.props.programData)
-            });
-            
+            this.props.fetchLink(programmeID, profileID, AID, TOKENID )
+            this.addMedia(this.props.programData, "video")
+
         }
         
         //this.addToDatabase("sample","sample", "sample");

@@ -21,6 +21,10 @@ import RNFetchBlob from "rn-fetch-blob";
 var RNFS = require("react-native-fs");
 //import RNFS from "react-native-fs";
 
+import SQLite from "react-native-sqlite-storage";
+SQLite.DEBUG(true);
+SQLite.enablePromise(true);
+
 import { styles } from "./styles";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -41,11 +45,91 @@ export class MediaItems extends React.Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
    
-
+    await this.getProductDetails()
   }
 
+  initDB = () =>{
+    let db;
+    return new Promise((resolve) => {
+        console.log("Plugin integrity check ...");
+        SQLite.echoTest()
+        .then(() => {
+            console.log("Integrity check passed ...");
+            console.log("Opening database ...");
+            SQLite.openDatabase(
+            "m",
+            0.2,
+            "database_displayname",
+            "database_size"
+            ).then(DB => {
+                db = DB;
+                console.log("Database OPEN");
+                db.executeSql('SELECT 1 FROM Media LIMIT 1').then(() => {
+                    console.log("Database is ready ... executing query ...");
+                }).catch((error) =>{
+                    console.log("Received error: ", error);
+                    console.log("Database not yet ready ... populating data");
+                    db.transaction((tx) => {
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType)');
+                    }).then(() => {
+                        console.log("Table created successfully");
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                });
+                resolve(db);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        })
+        .catch(error => {
+            console.log("echoTest failed - plugin not functional");
+        });
+    });
+};
+
+
+  closeDatabase = (db) => {
+    if (db) {
+        console.log("Closing DB");
+        db.close()
+          .then(status => {
+            console.log("Database CLOSED");
+          })
+          .catch(error => {
+            this.errorCB(error);
+          });
+      } else {
+        console.log("Database was not OPENED");
+      }
+      
+  }
+
+  productById = (id) => {
+    console.log(id);
+    return new Promise((resolve) => {
+      this.initDB().then((db) => {
+        db.transaction((tx) => {
+          tx.executeSql('SELECT * FROM Media WHERE mediaId = ?', [id]).then(([tx,results]) => {
+            console.log(results);
+            if(results.rows.length > 0) {
+              let row = results.rows.item(0);
+              resolve(row);
+            }
+          });
+        }).then((result) => {
+          this.closeDatabase(db);
+        }).catch((err) => {
+          console.log(err);
+        });
+      }).catch((err) => {
+        console.log(err);
+      });
+    });  
+  }
 
   getFileExtension(filename)  {
     console.log("Runing")

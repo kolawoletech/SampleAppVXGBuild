@@ -7,7 +7,8 @@ import {
   FlatList,
   Button,
   ScrollView,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import Image from "react-native-scalable-image";
 import { PureComponent } from "react";
@@ -43,8 +44,7 @@ class MasonryListItem extends PureComponent {
     }
 
     async componentDidMount() {
-        console.warn("mount cell");
-        
+      console.warn("mount cell");    
     }
 
     async componentWillMount(){
@@ -55,111 +55,7 @@ class MasonryListItem extends PureComponent {
     }
 
 
-    async checkForNewUpdates2() {
-      try {
-        console.log("Structure of Items: " + "This Prips" + JSON.stringify(this.props.catalogue))
-        let catalogueItems = this.props.catalogue;
-        let result = catalogueItems
-          .map(({ programme_id }) => programme_id)
-          .join(",");
 
-        var array = result.split(",");
-          
-
-
-        this.setState({
-          savedLocally: array
-        });
-        
-  
-        console.log(
-          "checkForNewUpdates Saved Online State" +
-            array
-        );
-        //onsole.log("checkForNewUpdates Structure of Items: " + "The ARRAY: " + array);
-  
-        const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
-
-        RNFS.exists(cachedImageFolder).then(async exists => {
-          console.log('Saved Folder does exist? ' + exists)
-          if (exists) {
-            RNFS.readDir(cachedImageFolder) // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
-              .then(async (result) => {
-                var arr = [];
-                for (i = 0; i < result.length; i++) {
-                  console.log("Saved GOT RESULT", result[i].name);
-                  var filename = result[i].name
-                    .split(".")
-                    .slice(0, -1)
-                    .join(".");
-                  arr.push(parseInt(filename));
-                }
-                // stat the first file
-  
-                this.setState({
-                  savedLocally: arr
-                });
-
-                console.log(
-                  "Saved 1checkForNewUpdates Saved LOCAL State" +
-                    arr
-                );
-  
-                await Promise.all(arr);
-              
-                console.log(
-                  "Saved 2checkForNewUpdates Saved LOCAL State" +
-                    arr
-                );
-              })
-              .then(async (arr, array) => {
-                if (this.arraysEqual(arr, array)) {
-                  console.log(this.state.savedLocally + "&" + array);
-                  console.log("checkForNewUpdates: Same Items");
-                } else {
-                 /*  console.log(
-                    "checkForNewUpdates: New Updates Found, Delete Folder "
-                  );
-                  let path = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
-                  RNFS.unlink(path).then(async () => {
-                    console.log(
-                      "checkForNewUpdates: Create Folder and Get Images"
-                    );
-  
-                    const promises = this.props.catalogue.map(item => {
-                      //return this._getImage(item.programme_id);
-                      console.log("Item IDS" + item.programme_id);
-                      return this._getImageUpdate(item.programme_id);
-                    });
-  
-                    const results = await Promise.all(promises);
-                    this.setState({
-                      images: results
-                    });
-                  }); */
-                }
-              })
-              .catch(err => {
-                console.log(err.message, err.code);
-              });
-          } else {
-            console.log("Create A Folder");
-            const promises = this.props.catalogue.map(async item => {
-              //return this._getImage(item.programme_id);
-              console.log("Item IDS" + item.programme_id);
-              return this._getImageUpdate(item.programme_id);
-            });
-  
-            const results = await Promise.all(promises);
-            this.setState({
-              images: results
-            });
-          }
-        });
-      } catch (error) {
-        console.log("Structure of Items: " + error);
-      }
-  }
   
 
     async checkForNewUpdates() {
@@ -174,15 +70,8 @@ class MasonryListItem extends PureComponent {
             
 
 
-          this.setState({
-            savedLocally: array
-          });
-          
     
-          console.log(
-            "checkForNewUpdates Saved Online State" +
-              array
-          );
+    
 
           this.array = array
           //onsole.log("checkForNewUpdates Structure of Items: " + "The ARRAY: " + array);
@@ -209,21 +98,15 @@ class MasonryListItem extends PureComponent {
                     savedLocally: arr
                   });
 
-                  console.log(
-                    "Saved 1checkForNewUpdates Saved LOCAL State" +
-                      arr
-                  );
+             
     
                   await Promise.all(arr);
                   this.arr = arr;
                 
-                  console.log(
-                    "Saved 2checkForNewUpdates Saved LOCAL State" +
-                      arr
-                  );
+
                 })
                 .then(async () => {
-                  if (this.arraysEqual(this.arr, this.arr)) {
+                  if (this.arraysEqual(this.arr, this.array)) {
                     console.log(this.arr + "&" + this.array);
                     console.log("checkForNewUpdates: Same Items");
                   } else {
@@ -231,14 +114,10 @@ class MasonryListItem extends PureComponent {
                     console.log(this.arr + "&" + this.array);
 
 
-                    console.log(
-                      "checkForNewUpdates: New Updates Found, Delete Folder "
-                    );
+                    console.log( "checkForNewUpdates: New Updates Found, Delete Folder ");
                     let path = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
                     RNFS.unlink(path).then(async () => {
-                      console.log(
-                        "checkForNewUpdates: Create Folder and Get Images"
-                      );
+                      console.log("checkForNewUpdates: Create Folder and Get Images");
     
                       const promises = this.props.catalogue.map(item => {
                         //return this._getImage(item.programme_id);
@@ -258,7 +137,7 @@ class MasonryListItem extends PureComponent {
                 });
             } else {
               console.log("Create A Folder");
-              const promises = this.props.catalogue.map(async item => {
+             /*  const promises = this.props.catalogue.map(async item => {
                 //return this._getImage(item.programme_id);
                 console.log("Item IDS" + item.programme_id);
                 return this._getImageUpdate(item.programme_id);
@@ -267,7 +146,7 @@ class MasonryListItem extends PureComponent {
               const results = await Promise.all(promises);
               this.setState({
                 images: results
-              });
+              }); */
             }
           });
         } catch (error) {
@@ -474,55 +353,58 @@ class MasonryListItem extends PureComponent {
       "/NileMediaCatalogueImages/" +
       item.programme_id +
       ".png";
-    return (
-      <View>
-        <TouchableOpacity
-          style={styles.item}
-          key={item.programme_id}
-          onPress={() => Actions.program({ programData: item })}
-        >
-          <Card>
-            <Image
-              width={Dimensions.get("window").width / 2.3}
-              source={{ 
-                uri: cachedImageLocation,
-                cache: 'only-if-cached',
-              }}
-              resizeMode="stretch"
-              style={{
-                flex: 1,
-                alignSelf: 'stretch',
-                height: 145,
-                backgroundImage: 'https://via.placeholder.com/150'
-              }}
-              background={true}
-            />
-            <Icon
-              size={22}
-              color="white"
-              style={{ position: "absolute", left: 10 }}
-              name="cloud-download"
-              size={22}
-              color="white"
-            />
-            <Text
-              numberOfLines={2}
-              style={{
-                fontSize: 14,
-                minHeight: 30,
-                padding: 3,
-                width: "100%",
-                fontWeight: "normal",
-                backgroundColor: "#76b6c4",
-                textAlign: "center",
-                color: "white"
-              }}>
-              {item.name}
-            </Text>
-          </Card>
-        </TouchableOpacity>
-      </View>
-    );
+
+
+      console.log("Image Location: " + cachedImageLocation)
+
+      return (
+        <View>
+          <TouchableOpacity
+            style={styles.item}
+            key={item.programme_id}
+            onPress={() => Actions.program({ programData: item })}>
+            <Card>
+              <Image
+                width={Dimensions.get("window").width / 2.3}
+                source={{ 
+                  uri: cachedImageLocation ||  'https://via.placeholder.com/150',
+                  cache: 'only-if-cached',
+                }}
+                resizeMode="stretch"
+                style={{
+                  width: 50,
+                
+                  height: 145,
+                  backgroundImage: 'https://via.placeholder.com/150'
+                }}
+                background={true}
+              />
+              <Icon
+                size={22}
+                color="white"
+                style={{ position: "absolute", left: 10 }}
+                name="cloud-download"
+                size={22}
+                color="white"
+              />
+              <Text
+                numberOfLines={2}
+                style={{
+                  fontSize: 14,
+                  minHeight: 30,
+                  padding: 3,
+                  width: "100%",
+                  fontWeight: "normal",
+                  backgroundColor: "#76b6c4",
+                  textAlign: "center",
+                  color: "white"
+                }}>
+                {item.name}
+              </Text>
+            </Card>
+          </TouchableOpacity>
+        </View>
+      );
   }
 }
 

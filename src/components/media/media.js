@@ -229,12 +229,7 @@ export class Media extends Component {
       </TouchableOpacity>
     );
   };
-  state = {
-    is_camera_visible: false,
-    is_photo_visible: false,
-    has_camera_permission: null,
-    progress_photos: []
-  };
+
 
   _convertArrayToObject(input) {
     let loc = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
@@ -411,19 +406,13 @@ export class Media extends Component {
               )}
             </View>
             {this.state.showChild || this.state.data !== undefined ? (
-              <View>
-                  <Button 
-                    title="Learn More"
-                    color="#841584"
-                    onPress={ this.initDB}>
-                      
-                  </Button>
-                
-                  <MediaItems
-                    list={videos}
-                    _onPressDelete={this.onDeleteURI}
-                    onPressItem={this.onPlayURI}
-                  />
+              <View>          
+                <MediaItems
+                  list={videos}
+                  _onPressDelete={this.onDeleteURI}
+                  onPressItem={this.onPlayURI}
+                  
+                />
               </View>
 
               

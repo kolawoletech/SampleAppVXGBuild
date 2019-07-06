@@ -29,7 +29,12 @@ import _ from "lodash";
 
 class Catalogue extends Component {
 
-  state = { isRefreshing: false };
+  state = { 
+    isRefreshing: false,
+    list: [], 
+    offset: 0, 
+    limit: 100 
+  };
 
   _refreshRequest = () => {
     this.setState({ isRefreshing: true });
@@ -205,9 +210,13 @@ class Catalogue extends Component {
       const wifiOption = JSON.stringify(true);
 
       AsyncStorage.setItem("wifiBoolValue", wifiOption).then(value => {
-        console.log(value);
+        console.logs(value);
       });
     }
+  }
+
+  handleLoadMore = () => {
+    console.log("ON REACH END")
   }
 
 
@@ -239,7 +248,8 @@ class Catalogue extends Component {
                 onRefresh={this._refreshRequest}
                 refreshing={this.state.isRefreshing}
                 data={data} 
-             
+                onEndReachedThreshold={0.4}
+                onEndReached={this.handleLoadMore.bind(this)}
                 renderItem={({ item }) => <MasonryListItemInLandscape   item={item} />}
                 getHeightForItem={({ item }) => 67 + 2}
                 numColumns={2}
@@ -263,7 +273,7 @@ class Catalogue extends Component {
                     renderItem={({ item }) => <MasonryListItem item={item} />}
                     getHeightForItem={({ item }) => 67 + 2}
                     //getHeightForItem={({ item }) => item.height + 2}
-
+                    //onEndReached={""}
                     numColumns={2}
                     keyExtractor={item => item.programme_id.toString()}
                 />

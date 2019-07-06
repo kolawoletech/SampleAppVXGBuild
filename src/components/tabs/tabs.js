@@ -73,7 +73,7 @@ export default class Tabs extends React.Component {
             <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Cached Catalogue" onPress={() => { Actions.cachedCatalogue(); }}></Button>
+            <Button color='black' title="Local Media" onPress={() => { Actions.localMedia(); }}></Button>
           </TouchableOpacity>
         </View>
 
