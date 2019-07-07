@@ -344,51 +344,9 @@ export class CatalogueItems extends React.Component {
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}>
           <Card>
-            {/*         <CardImage
-              source={{
-                uri: this.state.images.find(
-                  a => data.item.programme_id === a.id
-                )
-                  ? this.state.images.find(a => data.item.programme_id === a.id)
-                      .img
-                  : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
-              }}
-              resizeMode="contain"
-              style={{
-                backgroundColor: "transparent",
-                maxHeight: 83,
-                minHeight: 83
-              }}
-            /> */}       
-         
-             <ProgressiveImage 
-               id={data.item.programme_id}
-              /> 
-         
-             
-            {/*             <FastImage
-            style={{ width: 150, height: 150,  }}
-            source={{
-              uri: this.state.images.find(
-                a => data.item.programme_id === a.id
-              )
-                ? this.state.images.find(a => data.item.programme_id === a.id)
-                    .img
-                : "https://newbietech.com.ng/placeholder-nile-logo-150.png",
-                headers: { Authorization: 'someAuthToken' },
-                priority: FastImage.priority.high,
-            }}
-            resizeMode={FastImage.resizeMode.contain}
-            cache={FastImage.cacheControl.cacheOnly}
-          /> */}
-            {/*                         <Image
-                            source={{ uri: this.state.images.find(a => data.item.programme_id === a.id) ? this.state.images.find(a => data.item.programme_id === a.id).img : 'https://newbietech.com.ng/placeholder-nile-logo-150.png', cache: 'only-if-cached' }}
-                            resizeMode="stretch"
-                            style={{
-                                width: '100%', height: '80%', backgroundColor: 'transparent', maxHeight: 83, minHeight: 83
-                            }}
-                           
-                        /> */}
+            <ProgressiveImage 
+              id={data.item.programme_id}
+            /> 
             <Icon
               size={22}
               color="white"
@@ -431,31 +389,9 @@ export class CatalogueItems extends React.Component {
           key={data.item.programme_id}
           onPress={() => Actions.program({ programData: data.item })}>
           <Card>
-            {/*             <CardImage
-              source={{
-                uri: this.state.images.find(
-                  a => data.item.programme_id === a.id
-                )
-                  ? this.state.images.find(a => data.item.programme_id === a.id)
-                      .img
-                  : "https://newbietech.com.ng/placeholder-nile-logo-150.png"
-              }}
-              resizeMode="contain"
-              style={{
-                backgroundColor: "transparent"
-              }}
-            /> */}
-
-            {this.state.isImageSavedLocally === true ||
-              (this.state.isImageSavedLocally !== "undefined" && (
-                <CardImage
-                  resizeMode="contain"
-                  style={{
-                    backgroundColor: "transparent"
-                  }}
-                  source={{ uri: cachedImageLocation }}
-                />
-              ))}
+          <ProgressiveImage 
+              id={data.item.programme_id}
+            /> 
 
             <Icon
               size={22}
@@ -520,20 +456,7 @@ export class CatalogueItems extends React.Component {
 
       return (
         <View>
-          {this.state.images.length === 0 && (
-            <FlatList
-              data={list}
-              renderItem={item => this.renderItem(item)}
-              keyExtractor={item => item.programme_id.toString()}
-              numColumns={2}
-              style={{
-                flexGrow: 0
-              }}
 
-              onEndReachedThreshold={0.4}
-              onEndReached={this.handleLoadMore.bind(this)}
-            />
-          )}
           {this.state.images.length > 0 && (
             <FlatList
               data={list}
@@ -543,8 +466,7 @@ export class CatalogueItems extends React.Component {
               style={{
                 flexGrow: 0
               }}
-              onEndReachedThreshold={0.4}
-              onEndReached={this.handleLoadMore.bind(this)}
+           
             />
           )}
         </View>
@@ -554,41 +476,24 @@ export class CatalogueItems extends React.Component {
       const { orientation } = this.props;
 
       return (
-        <View onLayout={this._onLayout}>
-          {this.state.images.length === 0 && (
-            <ScrollView>
-              <FlatList
-                data={list}
-                renderItem={item => this.renderItemInLandscape(item)}
-                keyExtractor={item => item.programme_id.toString()}
-                numColumns={3}
-                style={{
-                  flexGrow: 0
-                }}
-                onEndReachedThreshold={0.4}
-              onEndReached={this.handleLoadMore.bind(this)}
-              />
-            </ScrollView>
-          )}
+        <View>
+
           {this.state.images.length > 0 && (
-            <ScrollView>
+          
               <FlatList
                 data={list}
                 renderItem={item => this.renderItemInLandscape(item)}
                 keyExtractor={item => item.programme_id.toString()}
-                numColumns={3}
+                numColumns={2}
                 style={{
                   flexGrow: 0
                 }}
-                onEndReachedThreshold={0.4}
-              onEndReached={this.handleLoadMore.bind(this)}
+           
               />
-            </ScrollView>
+         
           )}
         </View>
       );
-    } else {
-      <Text>Breakdown</Text>;
-    }
+    } 
   }
 }
