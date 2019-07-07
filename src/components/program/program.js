@@ -13,6 +13,7 @@ var { width, height } = Dimensions.get('window')
 
 import DeviceInfo from 'react-native-device-info';
 import { AsyncStorage } from "react-native";
+import RNFetchBlob from "rn-fetch-blob";
 
 import RNFS from 'react-native-fs'
 
@@ -40,8 +41,8 @@ export class Program extends React.Component {
                 console.log("Integrity check passed ...");
                 console.log("Opening database ...");
                 SQLite.openDatabase(
-                "m",
-                0.2,
+                "media",
+                0.1,
                 "database_displayname",
                 "database_size"
                 ).then(DB => {
@@ -53,7 +54,7 @@ export class Program extends React.Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType, mediaUri)');
                         }).then(() => {
                             console.log("Table created successfully");
                         }).catch(error => {
@@ -73,12 +74,12 @@ export class Program extends React.Component {
     };
 
 
-    addMedia = (programData, mediaType) =>{
+    addMedia = (programData, mediaType, mediaUri) =>{
         console.log("Part 4")
         return new Promise((resolve) => {
           this.initDB().then((db) => {
             db.transaction((tx) => {
-              tx.executeSql('INSERT INTO Media VALUES (?, ?, ?, ?)', [programData.programme_id, programData.name, programData.description, mediaType]).then(([tx, results]) => {
+              tx.executeSql('INSERT INTO Media VALUES (?, ?, ?, ?, ?)', [programData.programme_id, programData.name, programData.description, mediaType, mediaUri ]).then(([tx, results]) => {
                 resolve(results);
               });
             }).then((result) => {
@@ -115,12 +116,16 @@ export class Program extends React.Component {
         
         if (this.props.programData.quality[0].video == null){
             this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
-            this.addMedia(this.props.programData, "podcast")
+            var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+            var PODCAST_LOCATION = VIDEO_FOLDER + programmeID;
+            this.addMedia(this.props.programData, "podcast", PODCAST_LOCATION )
             
 
         } else {
             this.props.fetchLink(programmeID, profileID, AID, TOKENID )
-            this.addMedia(this.props.programData, "video")
+            var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
+            var VIDEO_LOCATION = VIDEO_FOLDER + programmeID ;
+            this.addMedia(this.props.programData, "video", VIDEO_LOCATION)
 
         }
         
@@ -286,12 +291,7 @@ export class Program extends React.Component {
 
                                 <View style={styles.pills}>
                                     <View >
-                                        <Button 
-                                            title="Learn More"
-                                            color="#841584"
-                                            onPress={ this.addToDatabase}>
-                                            
-                                        </Button>
+                        
                                         <ProgramQuality qual={qualityList} pid={programmeID}
                                             onPressItem={this.onFetchLink}
                                         //onPressItem={this.createDirectory}
@@ -340,10 +340,7 @@ export class Program extends React.Component {
 
                                 </View>
                                 <View>
-                                <Button 
-                 title="Learn More"
-                 color="#841584"
-                 onPress={ this.save_media}></Button>
+                                
                                     <Text
                                         style={{
                                             color: '#fff',

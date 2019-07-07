@@ -66,8 +66,8 @@ export class LocalMedia extends Component {
                 console.log("Integrity check passed ...");
                 console.log("Opening database ...");
                 SQLite.openDatabase(
-                "m",
-                0.2,
+                "media",
+                0.1,
                 "database_displayname",
                 "database_size"
                 ).then(DB => {
@@ -79,7 +79,7 @@ export class LocalMedia extends Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType, mediaUri)');
                         }).then(() => {
                             console.log("Table created successfully");
                         }).catch(error => {
@@ -104,15 +104,15 @@ export class LocalMedia extends Component {
           const localMedia = [];
           this.initDB().then((db) => {
             db.transaction((tx) => {
-              tx.executeSql('SELECT m.mediaId, m.mediaName, m.mediaDesc, m.mediaType FROM Media m', []).then(([tx,results]) => {
+              tx.executeSql('SELECT m.mediaId, m.mediaName, m.mediaDesc, m.mediaType, m.mediaUri FROM Media m', []).then(([tx,results]) => {
                 console.log("Query completed");
                 var len = results.rows.length;
                 for (let i = 0; i < len; i++) {
                   let row = results.rows.item(i);
                   console.log(`Prod ID: ${row.mediaId}, Prod Name: ${row.mediaName}`)
-                  const { mediaId, mediaName, mediaDesc,mediaType } = row;
+                  const { mediaId, mediaName, mediaDesc,mediaType, mediaUri} = row;
                   localMedia.push({
-                    mediaId, mediaName, mediaDesc, mediaType
+                    mediaId, mediaName, mediaDesc, mediaType, mediaUri
 
                   });
 
@@ -122,6 +122,26 @@ export class LocalMedia extends Component {
                 }
                 console.log(localMedia);
                 resolve(localMedia);
+              });
+            }).then((result) => {
+              this.closeDatabase(db);
+            }).catch((err) => {
+              console.log(err);
+            });
+          }).catch((err) => {
+            console.log(err);
+          });
+        });  
+      }
+
+
+      deleteProduct(id) {
+        return new Promise((resolve) => {
+          this.initDB().then((db) => {
+            db.transaction((tx) => {
+              tx.executeSql('DELETE FROM Product WHERE mediaId = ?', [id]).then(([tx, results]) => {
+                console.log(results);
+                resolve(results);
               });
             }).then((result) => {
               this.closeDatabase(db);
@@ -203,16 +223,18 @@ export class LocalMedia extends Component {
       }
     }
   
-    onDeleteURI = uri => {
+    onDeleteURI = (uri, id) => {
       this.setState({
         hideVideo: true
       });
   
-      RNFS.unlink(uri).then(() => {});
+      RNFS.unlink(uri).then(() => {
+        this.deleteProduct(id);
+      });
       Actions.media();
   
       console.log("Path to Delete" + uri);
-  
+      console.log("Produxt to Delete" + id);
       this.setState({
         showChild: false
       });
@@ -427,7 +449,11 @@ export class LocalMedia extends Component {
               </View>
               {this.state.showChild || this.state.data !== undefined ? (
                 <View>   
-                  <LocalMediaItems list={videos} />
+                  <LocalMediaItems 
+                    list={videos} 
+                    onPressItem={this.onPlayURI}
+                    _onPressDelete={this.onDeleteURI}
+                  />
                 </View>
   
                 

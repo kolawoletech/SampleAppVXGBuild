@@ -47,6 +47,8 @@ export default class LocalMediaItems extends React.Component {
   async componentDidUpdate(prevProps) {
     if (this.props.list != prevProps.list) {
       const promises = this.props.list.map(item => {
+
+
         return this._getVideoStats(item.mediaId);
       });
 
@@ -64,7 +66,7 @@ export default class LocalMediaItems extends React.Component {
 
   async _getVideoStats(mediaId) {
     var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-    var VIDEO_LOCATION = VIDEO_FOLDER + mediaId + `.mp4`;
+    var VIDEO_LOCATION = VIDEO_FOLDER + mediaId;
 
     return await RNFS.stat(VIDEO_LOCATION)
       .then(stats => {
@@ -133,7 +135,7 @@ export default class LocalMediaItems extends React.Component {
 
     return (
       <TouchableOpacity
-        onPress={() => onPressItem(data.item.mediaId)}
+        onPress={() => onPressItem(data.item.mediaUri)}
         style={styles.item}>
         <LinearGradient
           colors={["#0F516C", "#76B6C4"]}
@@ -245,7 +247,7 @@ export default class LocalMediaItems extends React.Component {
                   alignItems: "center"
                 }}>
                 <Icon
-                  onPress={() => _onPressDelete(data.item.mediaId)}
+                  onPress={() => _onPressDelete(data.item.mediaUri, data.item.mediaId )}
                   name="delete"
                   size={22}
                   color="#DCDCDC"
@@ -272,8 +274,29 @@ export default class LocalMediaItems extends React.Component {
 
   render() {
     const { list } = this.props;
-    if (this.props.list === null || this.props.list === "undefined" || this.state.statData.length == 0) {
-      return (<Text>Empty Playlist</Text>);
+    if (this.props.list === null || this.props.list === "undefined") {
+      return (
+        <View
+        style={{
+    
+          alignContent: 'center',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+      <Text
+      numberOfLines={1}
+                  ellipsizeMode="tail"
+                  style={{
+                    color: "red",
+                    margin: 6,
+                    fontSize: 16,
+              
+                    
+                  }}>
+        Empty Playlist
+      </Text>
+        </View>
+);
     } else {
       return (
         <ScrollView>

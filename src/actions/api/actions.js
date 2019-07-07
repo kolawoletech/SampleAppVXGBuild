@@ -442,7 +442,7 @@ export const fetchProgramURILinks = (
         });
 
         const destPath =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
 
         console.log("Here I am");
         let option = {
@@ -451,7 +451,7 @@ export const fetchProgramURILinks = (
         };
 
         const FILE_LOCATION =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
 
         RNFS.exists(FILE_LOCATION).then(exists => {
           console.log(exists);
@@ -489,7 +489,7 @@ export const fetchProgramURILinks = (
       continueDownload = url => {
         console.log(url);
         const destPath =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
 
         let option = {
           fromUrl: url,
@@ -586,7 +586,7 @@ export const fetchAudioURILinks = (
         });
 
         const destPath =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
 
         console.log("Here I am");
         let option = {
@@ -595,7 +595,7 @@ export const fetchAudioURILinks = (
         };
 
         const FILE_LOCATION =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name;
 
         RNFS.exists(FILE_LOCATION).then(exists => {
           console.log(exists);
