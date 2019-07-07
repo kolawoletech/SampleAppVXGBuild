@@ -13,7 +13,7 @@ import Image from 'react-native-scalable-image';
 
 import RNFS from "react-native-fs";
 
-//import FastImage from 'react-native-fast-image'
+import ProgressiveImage from './ProgressiveImage'
 
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
@@ -44,6 +44,10 @@ export class CatalogueItems extends React.Component {
     await this.checkForNewUpdates();
 
   }
+
+  handleLoadMore = () => {
+    console.log("ON END REACH")
+  };
 /* 
   shouldComponentUpdate(nextState) {
     return this.state.savedLocally != nextState.savedLocally;
@@ -357,13 +361,10 @@ export class CatalogueItems extends React.Component {
               }}
             /> */}       
          
-                <Image
-                  width={Dimensions.get('window').width/2.5} 
-                  source={{ 
-                    uri: cachedImageLocation,
-                    cache: 'only-if-cached',
-                   }}
-                />
+             <ProgressiveImage 
+               id={data.item.programme_id}
+              /> 
+         
              
             {/*             <FastImage
             style={{ width: 150, height: 150,  }}
@@ -397,16 +398,17 @@ export class CatalogueItems extends React.Component {
               color="white"
             />
             <Text
-              numberOfLines={2}
-              style={{
-                fontSize: 14,
-                height: "30%",
-                width: "100%",
-                fontWeight: "normal",
-                backgroundColor: "#76b6c4",
-                textAlign: "center",
-                color: "white"
-              }}>
+               numberOfLines={2}
+               style={{
+                 fontSize: 14,
+                 minHeight: 30,
+                 padding: 3,
+                 width: "100%",
+                 fontWeight: "normal",
+                 backgroundColor: "#76b6c4",
+                 textAlign: "center",
+                 color: "white"
+               }}>
               {data.item.name}
             </Text>
           </Card>
@@ -527,6 +529,9 @@ export class CatalogueItems extends React.Component {
               style={{
                 flexGrow: 0
               }}
+
+              onEndReachedThreshold={0.4}
+              onEndReached={this.handleLoadMore.bind(this)}
             />
           )}
           {this.state.images.length > 0 && (
@@ -538,6 +543,8 @@ export class CatalogueItems extends React.Component {
               style={{
                 flexGrow: 0
               }}
+              onEndReachedThreshold={0.4}
+              onEndReached={this.handleLoadMore.bind(this)}
             />
           )}
         </View>
@@ -558,6 +565,8 @@ export class CatalogueItems extends React.Component {
                 style={{
                   flexGrow: 0
                 }}
+                onEndReachedThreshold={0.4}
+              onEndReached={this.handleLoadMore.bind(this)}
               />
             </ScrollView>
           )}
@@ -571,6 +580,8 @@ export class CatalogueItems extends React.Component {
                 style={{
                   flexGrow: 0
                 }}
+                onEndReachedThreshold={0.4}
+              onEndReached={this.handleLoadMore.bind(this)}
               />
             </ScrollView>
           )}

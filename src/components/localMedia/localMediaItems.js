@@ -132,11 +132,42 @@ export default class LocalMediaItems extends React.Component {
                   uri:  cachedImageLocation 
                 }}
               />
-              <Text>{data.item.mediaName}</Text>
-              <Text>{data.item.mediaDesc}Mool</Text>
+              </View>
+              <View 
+                style={{
+                  width: "55%",
+                  flex: 1,
+                  backgroundColor: "rgba(0, 0, 0, 0)"
+                }}>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      color: "white",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      margin: 6,
+                    
+                    }}>{
+                      data.item.mediaName}
+                    </Text>
+                  <Text 
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      color: "white",
+                      fontSize: 16,
+                      fontWeight: "bold",
+                      margin: 6,
+                    
+                    }}>
+                  {data.item.mediaDesc}
+                  </Text>
+              </View>
+            
             </View>
 
-          </View>
+
         </LinearGradient>
       </TouchableOpacity>
     );
@@ -163,14 +194,14 @@ export default class LocalMediaItems extends React.Component {
     } else {
       return (
         <ScrollView>
-          {(this.state.metadata.length && this.state.thumbnails.length) > 0 && (
+          
             <FlatList
               data={list}
               horizontal={false}
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.mediaId.toString()}
             />
-          )}
+         
         </ScrollView>
       );
     }

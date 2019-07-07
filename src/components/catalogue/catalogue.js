@@ -18,34 +18,11 @@ import LinearGradient from "react-native-linear-gradient";
 import { AsyncStorage } from "react-native";
 
 import { Dimensions } from "react-native";
-import {  OfflineNotice } from "./offlineNotice";
-import { PureComponent } from 'react';
-
-import  MasonryList  from '@appandflow/masonry-list';
-import MasonryListItemInLandscape from "./masonryListItemInLandscape";
-import  MasonryListItem  from "./masonryListItem";
-
-import _ from "lodash";
 
 class Catalogue extends Component {
-
-  state = { 
-    isRefreshing: false,
-    list: [], 
-    offset: 0, 
-    limit: 100 
-  };
-
-  _refreshRequest = () => {
-    this.setState({ isRefreshing: true });
-    setTimeout(() => {
-      this.setState({ isRefreshing: false });
-    }, 1000);
-  };
   constructor(props) {
     super(props);
     this.onLayout = this.onLayout.bind(this);
-
 
     /**
      * Returns true if the screen is in portrait mode
@@ -56,8 +33,7 @@ class Catalogue extends Component {
     };
 
     this.state = {
-      orientation: isPortrait() ? "portrait" : "landscape",
-      isConnected: true
+      orientation: isPortrait() ? "portrait" : "landscape"
     };
 
     // Event Listener for orientation changes
@@ -66,43 +42,26 @@ class Catalogue extends Component {
         orientation: isPortrait() ? "portrait" : "landscape"
       });
 
-      //this.forceUpdate()
+      this.forceUpdate()
     });
   }
 
   async componentDidMount() {
-    console.warn('mount cell');
+    
     await this.setDefaultWiFiOption();
     await this.setDefaultCurrency()
     await this.setDefaultRate() 
     //await this.getCatalogueWithAID();
 
-    //NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
   }
 
-  componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
-
-   
-  }
-
-  handleConnectivityChange = isConnected => {
-    if (isConnected) {
-      this.setState({ isConnected });
-    } else {
-      this.setState({ isConnected });
-    }
-  };
   async componentWillMount() {
-    console.warn('unmount cell');
-
     //await this.checkForNewUpdates()
     await this.setDefaultBufferOption()
     await this.getCatalogueWithAID();
     await this.setDefaultIndicatorLimit()
   }
-
 
   onLayout(e) {
     this.setState({
@@ -141,6 +100,7 @@ class Catalogue extends Component {
       var array = result.split(',');
 
 
+      console.log("Structure of Items: " + typeof(result) + "The ARRAY: " + Array.isArray(array))
     } catch (error) {
       console.log("Structure of Items: " + error )
 
@@ -210,79 +170,57 @@ class Catalogue extends Component {
       const wifiOption = JSON.stringify(true);
 
       AsyncStorage.setItem("wifiBoolValue", wifiOption).then(value => {
-        console.logs(value);
+        console.log(value);
       });
     }
   }
 
-  handleLoadMore = () => {
-    console.log("ON REACH END")
-  }
-
-
+  FlatListItemSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 0.5,
+          width: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)"
+        }}
+      />
+    );
+  };
 
   render() {
     const { catalogue: data } = this.props;
 
-
     
 
-    if (_.isEmpty(this.props.catalogue) === true){
-
-      return (
-        <LoadingIndicator color="#ffffff" size="large"/>
-      )
-    
-    }
-    else   if (this.state.orientation == 'landscape'){
+   
+    if (this.state.orientation == 'landscape'){
       return (
    
         <LinearGradient
           colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
           style={{ height: "100%" }}>
-            <OfflineNotice /> 
-
           <View style={{ height: "100%" }}>
-            {/* //TODO Add Item Here */}
-            <MasonryList
-                onRefresh={this._refreshRequest}
-                refreshing={this.state.isRefreshing}
-                data={data} 
-                onEndReachedThreshold={0.4}
-                onEndReached={this.handleLoadMore.bind(this)}
-                renderItem={({ item }) => <MasonryListItemInLandscape   item={item} />}
-                getHeightForItem={({ item }) => 67 + 2}
-                numColumns={2}
-                keyExtractor={item => item.programme_id.toString()}
-            />
+            <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
           </View>
         </LinearGradient>
       );
-    }  else if  (this.state.orientation == 'portrait') {
+    } else {
 
       return(
         <LinearGradient
-            colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-            style={{ height: "100%" }}>
-          <OfflineNotice /> 
-            <View style={{ height: "100%" }}>
-                <MasonryList
-                    onRefresh={this._refreshRequest}
-                    refreshing={this.state.isRefreshing}
-                    data={data} 
-                    renderItem={({ item }) => <MasonryListItem item={item} />}
-                    getHeightForItem={({ item }) => 67 + 2}
-                    //getHeightForItem={({ item }) => item.height + 2}
-                    //onEndReached={""}
-                    numColumns={2}
-                    keyExtractor={item => item.programme_id.toString()}
-                />
-            </View>
-        </LinearGradient>
+        colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+        style={{ height: "100%" }}>
+        <View style={{ height: "100%" }}>
+        {/* //TODO Find out why importan */}
+        <Text  orientation={this.state.orientation} ></Text>
+        <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
+        </View>
+      </LinearGradient>
       )
 
-    } 
-  } 
+    }
+    
+  }
 }
 
 const mapStateToProps = ({ apiReducer: { catalogue } }) => ({

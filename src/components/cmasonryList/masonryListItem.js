@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -10,7 +10,7 @@ import {
   Dimensions
 } from "react-native";
 import Image from 'react-native-scalable-image';
-import { PureComponent } from 'react';
+//import ProgressiveImage from './p'
 
 import RNFS from "react-native-fs";
 
@@ -53,6 +53,13 @@ export default class MasonryListItem extends PureComponent {
                             source={{ uri: cachedImageLocation }}
                             resizeMode="stretch"
                         />
+                   
+       {/*             <ProgressiveImage
+                            thumbnailSource={{ uri: cachedImageLocation }}
+                            imageSource={{ uri: cachedImageLocation }}
+                            style={{ flex: 1, alignItems: 'stretch' }}
+                        /> */}
+
                         <Text
                             numberOfLines={2}
                             style={{

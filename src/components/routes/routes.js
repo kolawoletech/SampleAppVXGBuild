@@ -106,7 +106,7 @@ export default class Routes extends React.Component {
             {this.state.isConnected === false  && (
               <Stack key="root" direction="vertical">   
                 <Scene key="media" component={MediaContainer} title="Playlist"></Scene>
-  
+                <Scene key="localMedia" component={LocalMediaContainer} title="Local Media"></Scene>
                 <Scene key="offline"   hideNavBar={true} component={OfflineAlertContainer} initial={true} />
               </Stack>
             )}

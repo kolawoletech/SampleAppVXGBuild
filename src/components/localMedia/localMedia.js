@@ -109,7 +109,7 @@ export class LocalMedia extends Component {
                 var len = results.rows.length;
                 for (let i = 0; i < len; i++) {
                   let row = results.rows.item(i);
-                  console.log(`Prod ID: ${row.mediaId}, Prod Name: ${row.prodName}`)
+                  console.log(`Prod ID: ${row.mediaId}, Prod Name: ${row.mediaName}`)
                   const { mediaId, mediaName, mediaDesc,mediaType } = row;
                   localMedia.push({
                     mediaId, mediaName, mediaDesc, mediaType
@@ -352,6 +352,8 @@ export class LocalMedia extends Component {
     render() {
     
       let videos = this.state.mediaItems;
+
+      console.log("Here: " + JSON.stringify(videos))
   
       return (
         <View style={{ height: "100%" }}>
@@ -425,7 +427,7 @@ export class LocalMedia extends Component {
               </View>
               {this.state.showChild || this.state.data !== undefined ? (
                 <View> 
-                  <Text style={styles.text}>Nothing Here</Text>         
+                  <Text style={styles.text}>Nothing Here 1</Text>         
                   <LocalMediaItems list={videos} />
                 </View>
   

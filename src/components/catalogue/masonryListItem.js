@@ -6,7 +6,6 @@ import {
   StyleSheet,
   FlatList,
   Button,
-  ScrollView,
   Dimensions,
   Alert
 } from "react-native";
@@ -25,6 +24,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { Card, CardImage } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
 let { width, height } = Dimensions.get("window");
+import ProgressiveImage from './ProgressiveImage'
 
 import _ from "lodash";
 
@@ -137,7 +137,7 @@ class MasonryListItem extends PureComponent {
                 });
             } else {
               console.log("Create A Folder");
-             /*  const promises = this.props.catalogue.map(async item => {
+              const promises = this.props.catalogue.map(async item => {
                 //return this._getImage(item.programme_id);
                 console.log("Item IDS" + item.programme_id);
                 return this._getImageUpdate(item.programme_id);
@@ -146,7 +146,7 @@ class MasonryListItem extends PureComponent {
               const results = await Promise.all(promises);
               this.setState({
                 images: results
-              }); */
+              }); 
             }
           });
         } catch (error) {
@@ -364,7 +364,7 @@ class MasonryListItem extends PureComponent {
             key={item.programme_id}
             onPress={() => Actions.program({ programData: item })}>
             <Card>
-              <Image
+{/*               <Image
                 width={Dimensions.get("window").width / 2.3}
                 source={{ 
                   uri: cachedImageLocation ||  'https://via.placeholder.com/150',
@@ -378,7 +378,11 @@ class MasonryListItem extends PureComponent {
                   backgroundImage: 'https://via.placeholder.com/150'
                 }}
                 background={true}
-              />
+              /> */}
+            
+              <ProgressiveImage 
+               id={item.programme_id}
+              /> 
               <Icon
                 size={22}
                 color="white"

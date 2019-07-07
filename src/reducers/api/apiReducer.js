@@ -10,7 +10,7 @@ const initialState = {
   registered: null,
   channels: [],
   channel: {},
-  catalogue: {},
+  catalogue: [],
   link: null,
   guide: null,
   chats: {}

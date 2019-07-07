@@ -2004,7 +2004,7 @@ cosmiconfig@^5.0.5:
     js-yaml "^3.13.0"
     parse-json "^4.0.0"
 
-create-react-class@^15.6.3:
+create-react-class@^15.5.1, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -5505,6 +5505,13 @@ react-is@^16.3.1, react-is@^16.5.2, react-is@^16.6.0, react-is@^16.6.3, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
 
+react-lazy-progressive-image@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-lazy-progressive-image/-/react-lazy-progressive-image-1.4.0.tgz#2950f6ae301640f9953c313c00b2ab9ff79b405b"
+  integrity sha512-kcA61wkafPP4nOT0IKE90bYDATRh3+FoF3eZsl1TC9WWMPrBPIc6lAywHl8regeBLP/rP/Uora/XM3/c2WyRsw==
+  dependencies:
+    react-visibility-sensor "^3.14.0"
+
 react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
@@ -5693,6 +5700,11 @@ react-native-progress@^3.6.0:
   integrity sha512-zzTe595xaaskyfR5OzaGrU4O0R+YkgdEw+EspgGD7wh8Hu0fs6ue3xLW+HEbTjOCn62pCRivwi3NxbpWNBCC7Q==
   dependencies:
     prop-types "^15.7.2"
+
+react-native-progressive-image@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-progressive-image/-/react-native-progressive-image-1.0.4.tgz#6403d55969fc5c42662d8eeebb555b016c7adece"
+  integrity sha1-ZAPVWWn8XEJmLY7uu1VbAWx63s4=
 
 react-native-ratings@^6.3.0:
   version "6.3.1"
@@ -6056,6 +6068,14 @@ react-transform-hmr@^1.0.4:
   dependencies:
     global "^4.3.0"
     react-proxy "^1.1.7"
+
+react-visibility-sensor@^3.14.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/react-visibility-sensor/-/react-visibility-sensor-3.14.0.tgz#4518590defe507963a32bc9356c5007676060486"
+  integrity sha512-/D8zAjy326AH+psJ6/KuYcm58+RsmfGfM4qFGw0Sw1EncMsgCKJMaOw0LdBpePC/DnVMlZHLp/U9KMfDbGnhPw==
+  dependencies:
+    create-react-class "^15.5.1"
+    prop-types "^15.5.4"
 
 react@^16.6.3:
   version "16.8.6"
