@@ -499,8 +499,7 @@ export class MediaItems extends React.Component {
                   flexDirection: "row",
                   alignContent: "center",
                   alignItems: "center"
-                }}
-              >
+                }}>
                 <Icon
                   onPress={() => _onPressDelete(data.item.uri)}
                   name="delete"

@@ -426,8 +426,7 @@ export class LocalMedia extends Component {
                 )}
               </View>
               {this.state.showChild || this.state.data !== undefined ? (
-                <View> 
-                  <Text style={styles.text}>Nothing Here 1</Text>         
+                <View>   
                   <LocalMediaItems list={videos} />
                 </View>
   
