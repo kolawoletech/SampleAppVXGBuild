@@ -257,7 +257,7 @@ class MasonryListItem extends PureComponent {
                       });
                     })
                     .catch(error => {
-                      alert(JSON.stringify(error));
+                      //alert(JSON.stringify(error));
     
                       this.setState({
                         isImageSavedLocally: false
@@ -333,7 +333,7 @@ class MasonryListItem extends PureComponent {
                 });
               })
               .catch(error => {
-                alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
 
                 this.setState({
                   isImageSavedLocally: false

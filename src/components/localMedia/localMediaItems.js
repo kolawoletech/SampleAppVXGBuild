@@ -59,14 +59,12 @@ export default class LocalMediaItems extends React.Component {
       });
       this.forceUpdate();
 
-      console.log("StatData: " + JSON.stringify(this.state.statData));
-      console.log("StatData: " + JSON.stringify(results));
     }
   }
 
   async _getVideoStats(mediaId) {
     var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
-    var VIDEO_LOCATION = VIDEO_FOLDER + mediaId;
+    var VIDEO_LOCATION = VIDEO_FOLDER + mediaId + `.mp4`;
 
     return await RNFS.stat(VIDEO_LOCATION)
       .then(stats => {
@@ -94,8 +92,6 @@ export default class LocalMediaItems extends React.Component {
             let size = stats.size;
             let creationTime = stats.ctime;
             let path = stats.path;
-
-            console.log(id, size, creationTime, path);
 
             return { id, size, creationTime, path };
           })
@@ -135,7 +131,7 @@ export default class LocalMediaItems extends React.Component {
 
     return (
       <TouchableOpacity
-        onPress={() => onPressItem(data.item.mediaUri)}
+        onPress={() => onPressItem(data.item.mediaUri +'.mp4')}
         style={styles.item}>
         <LinearGradient
           colors={["#0F516C", "#76B6C4"]}

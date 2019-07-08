@@ -52,10 +52,10 @@ export default class Tabs extends React.Component {
             <Button color='black' title="Channels" onPress={() => { Actions.channels(); }}></Button>
           </TouchableOpacity>
           <TouchableOpacity >
-            <Icon name="playlist-play" size={22} color="black"
+            <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Playlist" onPress={() => { Actions.media(); }}></Button>
+            <Button color='black' title="Local Media" onPress={() => { Actions.localMedia(); }}></Button>
           </TouchableOpacity>
           <TouchableOpacity >
             <Icon name="settings" size={22} color="black"
@@ -63,18 +63,8 @@ export default class Tabs extends React.Component {
             />
             <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
           </TouchableOpacity>
-          <TouchableOpacity >
-            <Icon name="event" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Masonry" onPress={() => { Actions.masonry(); }}></Button>
-          </TouchableOpacity>
-          <TouchableOpacity >
-            <Icon name="event" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Local Media" onPress={() => { Actions.localMedia(); }}></Button>
-          </TouchableOpacity>
+ 
+
         </View>
 
       </ScrollView>

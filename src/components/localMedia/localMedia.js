@@ -79,7 +79,7 @@ export class LocalMedia extends Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType, mediaUri)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId UINQUE, mediaName, mediaDesc, mediaType, mediaUri)');
                         }).then(() => {
                             console.log("Table created successfully");
                         }).catch(error => {
@@ -113,7 +113,6 @@ export class LocalMedia extends Component {
                   const { mediaId, mediaName, mediaDesc,mediaType, mediaUri} = row;
                   localMedia.push({
                     mediaId, mediaName, mediaDesc, mediaType, mediaUri
-
                   });
 
                   this.setState({

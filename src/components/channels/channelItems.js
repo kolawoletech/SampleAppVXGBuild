@@ -8,6 +8,7 @@ import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 //import FastImage from 'react-native-fast-image'
 import RNFS from "react-native-fs";
 
+import ProgressiveImage from './ProgressiveImage'
 
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -78,10 +79,6 @@ export class ChannelItems extends React.Component {
               console.log("GOT RESULT OF CHANNEL IMAGES", results);
               var filename = results[i].name.split(".").slice(0, -1).join(".");
               arr.push(parseInt(filename));
-
-/*               this.setState({
-                channelImagesSavedOnline: arr
-              }); */
             }
 
 
@@ -186,7 +183,7 @@ export class ChannelItems extends React.Component {
               });
             })
             .catch(error => {
-              alert(JSON.stringify(error));
+              //alert(JSON.stringify(error));
 
               this.setState({
                 isImageSavedLocally: false
@@ -204,27 +201,7 @@ export class ChannelItems extends React.Component {
 
   async  componentDidUpdate(prevProps) {
     //TODO Add Condition to detect new Chanes
-  /*   console.log("CHECK IF IMAGES ARE LOCALLY:    p--------" + this.state.isImageSavedLocally)
-    if (this.state.isImageSavedLocally === "undefined" || this.state.isImageSavedLocally === true){
-      console.log("Images already saved locally")
 
-    } else {
-      if (this.props.list != prevProps.list) {
-
-
-
-        const promises = this.props.list.map(item => {
-          return this._getImage(item.id)
-        })
-  
-        const results = await Promise.all(promises)
-        this.setState({
-          images: results
-        })
-      } else {
-        console.log("Nothing New Here")
-      }
-    } */
 
     if (this.props.list != prevProps.list) {
       const promises = this.props.list.map(item => {
@@ -251,36 +228,13 @@ export class ChannelItems extends React.Component {
         <LinearGradient
           colors={['#0F516C', '#76B6C4']}
           style={{ padding: 7, alignItems: 'center', borderRadius: 3, margin: 8 }}
-          start={{x: 0, y: 0}} end={{x: 1, y: 0}}
-          >
+          start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>
-          {/* <CacheableImage style={styles.image} source={{uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://i.redd.it/rc29s4bz61uz.png' }} permanent={false} /> */}
-          {this.state.isImageSavedLocally === false && (
-            <Image
-              
-              resizeMode="stretch"
-              style={{ width: 150, height: 150, position: 'absolute' }}
-              source={{ uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://via.placeholder.com/150' }}
-            />
-            )}
-            {this.state.isImageSavedLocally === true || this.state.isImageSavedLocally !== "undefined"  && (
-            <Image
-              resizeMode="stretch"
-              style={{ width: 150, height: 150, position: 'absolute' }}
-              source={{ uri: cachedImageLocation  }}
-            />
-            )}
-          {/* 
-          <FastImage
-            style={{ width: 150, height: 150, position: 'absolute' }}
-            source={{
-                uri: this.state.images.find(a => data.item.id === a.id) ? this.state.images.find(a => data.item.id === a.id).img : 'https://i.redd.it/rc29s4bz61uz.png' ,
-                headers: { Authorization: 'someAuthToken' },
-                priority: FastImage.priority.normal,
-            }}
-            resizeMode={FastImage.resizeMode.stretch}
-          /> */}
+          <ProgressiveImage 
+              id={data.item.id}
+            /> 
+
           </View>
 
           <View style={{ paddingTop: 32, width: '60%', flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>

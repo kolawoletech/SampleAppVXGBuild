@@ -4,8 +4,8 @@ import { Actions } from 'react-native-router-flux';
 
 export default class OfflineAlert extends React.Component {
 
-    componentDidMount() {
-        this.showAlert()
+    async componentDidMount() {
+        await this.showAlert()
     }
 
 

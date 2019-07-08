@@ -459,17 +459,11 @@ export const fetchProgramURILinks = (
             console.log("File Already Exist");
             Alert.alert(
               "Program Already Exists In Playlist",
-              "Overwrite?",
+              "Delete First",
               [
+                
                 {
-                  text: "Yes",
-                  onPress: () => {
-                    this.continueDownload(url);
-                  },
-                  style: "ok"
-                },
-                {
-                  text: "No",
+                  text: "Dismiss",
                   onPress: () => console.log("Cancel Pressed"),
                   style: "cancel"
                 }
@@ -586,7 +580,7 @@ export const fetchAudioURILinks = (
         });
 
         const destPath =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name  + '.m4a';
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name  + ".mp4";
 
         console.log("Here I am");
         let option = {
@@ -595,7 +589,7 @@ export const fetchAudioURILinks = (
         };
 
         const FILE_LOCATION =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name  + '.m4a';
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name  + ".mp4";
 
         RNFS.exists(FILE_LOCATION).then(exists => {
           console.log(exists);
@@ -633,7 +627,7 @@ export const fetchAudioURILinks = (
       continueDownload = url => {
         console.log(url);
         const destPath =
-          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".m4a";
+          RNFS.DocumentDirectoryPath + "/NileMediaVideos/" + name + ".mp4";
 
         let option = {
           fromUrl: url,

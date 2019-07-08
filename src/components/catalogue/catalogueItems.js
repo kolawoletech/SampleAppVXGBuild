@@ -243,7 +243,7 @@ export class CatalogueItems extends React.Component {
                   });
                 })
                 .catch(error => {
-                  alert(JSON.stringify(error));
+                  //alert(JSON.stringify(error));
 
                   this.setState({
                     isImageSavedLocally: false
@@ -316,7 +316,7 @@ export class CatalogueItems extends React.Component {
                 });
               })
               .catch(error => {
-                alert(JSON.stringify(error));
+                //alert(JSON.stringify(error));
 
                 this.setState({
                   isImageSavedLocally: false

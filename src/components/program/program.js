@@ -29,6 +29,7 @@ export class Program extends React.Component {
         super(props);
         //this.addMedia = this.addMedia(this)
         //this.onLayout = this.onLayout.bind(this);
+        this.initDB();
 
     }
 
@@ -54,7 +55,9 @@ export class Program extends React.Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId, mediaName, mediaDesc, mediaType, mediaUri)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId UNIQUE , mediaName, mediaDesc, mediaType, mediaUri, UNIQUE (mediaId))');
+                            //tx.executeSql('CREATE UNIQUE INDEX IF NOT EXISTS Media (mediaId , mediaName, mediaDesc, mediaType, mediaUri, UNIQUE (mediaId))');
+
                         }).then(() => {
                             console.log("Table created successfully");
                         }).catch(error => {
@@ -122,7 +125,7 @@ export class Program extends React.Component {
             
 
         } else {
-            this.props.fetchLink(programmeID, profileID, AID, TOKENID )
+            this.props.fetchLink(programmeID, profileID, AID, TOKENID );
             var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
             var VIDEO_LOCATION = VIDEO_FOLDER + programmeID ;
             this.addMedia(this.props.programData, "video", VIDEO_LOCATION)

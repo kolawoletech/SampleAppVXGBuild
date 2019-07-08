@@ -5815,10 +5815,10 @@ react-native-video@^4.4.1:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
-react-native-vxg-mobile-sdk@0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-vxg-mobile-sdk/-/react-native-vxg-mobile-sdk-0.0.4.tgz#ff7957c807f2967079f1b46464434b9d0f5ab67b"
-  integrity sha512-eVHBr2Vpjj3g4Y4sVkxHiROeNyJXjnc/a7FUH9o6jpcX75Lbd8z+n+gD30ttrktPC5XMiNp98Mry7Mu3QO1VNA==
+react-native-vxg-mobile-sdk@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-vxg-mobile-sdk/-/react-native-vxg-mobile-sdk-0.0.5.tgz#02f52733ce8bb06422fdec68a87e9fdde1107fe5"
+  integrity sha512-w3zYAOnuB5QagbdUis102y/3Mm3xqed7shqwZANMdHqY3hsMBca0fEcd2Q28YZKiApMCeDAAtMkyBMqAVy5w/A==
   dependencies:
     prop-types "^15.6.2"
     react "^16.6.3"
