@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import {
   View,
   TouchableOpacity,
@@ -26,7 +26,7 @@ import { AsyncStorage } from "react-native";
 import { consolidateStreamedStyles } from "styled-components";
 let { width, height } = Dimensions.get("window");
 
-export class CatalogueItems extends React.Component {
+export class CatalogueItems extends PureComponent {
   constructor(props) {
     super(props);
 

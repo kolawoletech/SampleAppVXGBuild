@@ -72,7 +72,6 @@ export class ProgramQuality extends React.Component {
                                     <View style={{ flexDirection: 'row' }}>
                                         <Icon name="file-download" size={22} color="#fff" />
                                         <Text style={styles.buttonText} >LOW</Text>
-
                                     </View>
                                 </View>
                                 <View>
@@ -85,12 +84,9 @@ export class ProgramQuality extends React.Component {
                                             justifyContent: 'center',
                                             textAlign: 'center',
                                             fontSize: 10
-
                                         }}>{qualityList.video.bitrates_kbps}x{qualityList.video.height}
                                         </Text>
                                     )}
-
-
                                     {qualityList.video == null && (
                                         <Text
                                         style={{
@@ -100,11 +96,9 @@ export class ProgramQuality extends React.Component {
                                             justifyContent: 'center',
                                             textAlign: 'center',
                                             fontSize: 10
-
                                         }}>{qualityList.audio.bitrates_kbps} Kb/s
                                         </Text>
                                     )}
-                      
                                 </View>
                                 <View>
                                     <Text
@@ -115,13 +109,10 @@ export class ProgramQuality extends React.Component {
                                             justifyContent: 'center',
                                             textAlign: 'center',
                                             fontSize: 11
-
                                         }}>{sizeInMB} MB
                                     </Text>
                                 </View>
                             </View>}
-
-
                         {qualityList.profile_id === min + 1 && <View><View style={styles.item}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Icon name="file-download" size={22} color="#fff" />

@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import {
   View,
-  ScrollView,
-  StyleSheet,
+
   Text,
-  Button,
+
   TouchableOpacity,
   TouchableHighlight
 } from "react-native";
 import { connect } from "react-redux";
 import {
   PlayVideo,
-  Stop,
   FetchVideos,
   fetchMediaItemMetadata
 } from "../../actions/media/actions";
@@ -26,7 +24,7 @@ var RNFS = require("react-native-fs");
 import Tabs from "../tabs";
 import NetInfo from "@react-native-community/netinfo";
 import SQLite from "react-native-sqlite-storage";
-SQLite.DEBUG(true);
+//SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 
 import { styles } from "./styles";
@@ -74,16 +72,16 @@ export class LocalMedia extends Component {
                     db = DB;
                     console.log("Database OPEN");
                     db.executeSql('SELECT 1 FROM Media LIMIT 1').then(() => {
-                        console.log("Database is ready ... executing query ...");
+                      console.log("Database is ready ... executing query ...");
                     }).catch((error) =>{
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
                             tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId UINQUE, mediaName, mediaDesc, mediaType, mediaUri)');
                         }).then(() => {
-                            console.log("Table created successfully");
+                          console.log("Table created successfully");
                         }).catch(error => {
-                            console.log(error);
+                          console.log(error);
                         });
                     });
                     resolve(db);
@@ -115,12 +113,12 @@ export class LocalMedia extends Component {
                     mediaId, mediaName, mediaDesc, mediaType, mediaUri
                   });
 
-                  this.setState({
-                    mediaItems: localMedia
-                  })
+                 
                 }
-                console.log(localMedia);
                 resolve(localMedia);
+                this.setState({
+                  mediaItems: localMedia
+                })
               });
             }).then((result) => {
               this.closeDatabase(db);
@@ -230,7 +228,7 @@ export class LocalMedia extends Component {
       RNFS.unlink(uri).then(() => {
         this.deleteProduct(id);
       });
-      Actions.media();
+      Actions.localMedia();
   
       console.log("Path to Delete" + uri);
       console.log("Produxt to Delete" + id);
@@ -374,7 +372,7 @@ export class LocalMedia extends Component {
     
       let videos = this.state.mediaItems;
 
-      console.log("Here: " + JSON.stringify(videos))
+     
   
       return (
         <View style={{ height: "100%" }}>
@@ -439,14 +437,15 @@ export class LocalMedia extends Component {
                     <VideoPlayer
                       video={{ uri: this.state.uri }}
                       resizeMode="contain"
+                      //resizeMode={'contain'}
                       autoplay
-                      controls
+                      
                       ref={r => (this.player = r)}
                     />
                   </View>
                 )}
               </View>
-              {this.state.showChild || this.state.data !== undefined ? (
+              {this.state.showChild ? (
                 <View>   
                   <LocalMediaItems 
                     list={videos} 

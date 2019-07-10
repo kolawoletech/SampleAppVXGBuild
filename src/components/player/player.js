@@ -27,6 +27,7 @@ import * as Progress from "react-native-progress";
 const { width, height } = Dimensions.get("window");
 import { AsyncStorage } from "react-native";
 
+
 import CheckBox from "react-native-check-box";
 
 import Messages from "./../messages";
@@ -56,6 +57,8 @@ export class Player extends React.Component {
     this.hideCostWarningOnce = this.hideCostWarningOnce.bind(this)
     this.getMessagesWithAID = this.getMessagesWithAID.bind(this);
     this.timeout = this.timeout.bind(this);
+    this.changeKeepAwake = this.changeKeepAwake.bind(this);
+
 
     this.state = {
       newMessage: "",
@@ -181,13 +184,14 @@ export class Player extends React.Component {
     }
   }
 
-  changeKeepAwake(shouldBeAwake) {
+  changeKeepAwake = (shouldBeAwake)  => {
     if (shouldBeAwake) {
       KeepAwake.activate();
     } else {
       KeepAwake.deactivate();
     }
   }
+
   async loadBufferSize() {
     try {
       const bufferSize = await AsyncStorage.getItem("bufferValue");
@@ -534,8 +538,7 @@ export class Player extends React.Component {
       });
 
       setTimeout(() => {
-        this.getMessagesWithAID()
-        
+        this.getMessagesWithAID()   
       }, 1000);
       
     }
@@ -819,6 +822,7 @@ export class Player extends React.Component {
                   }}>
                   Close
                 </Text>
+                <KeepAwake />
               </View>
             </TouchableHighlight>
           ) : null}

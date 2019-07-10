@@ -69,7 +69,12 @@ export default class Routes extends React.Component {
   };
 
   render() {
+    if (!__DEV__) {
+      console.log = () => {};
+    }
+
     console.disableYellowBox = true;
+
     return (
       <Provider store={store}>
         <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
@@ -82,13 +87,13 @@ export default class Routes extends React.Component {
  
             {this.state.isConnected === true  && (
               <Stack key="root" direction="vertical">    
-                <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login"  initial={true}/>
+                <Stack key="login" hideNavBar={true} component={SessionContainer} title="Login" />
                 <Scene key="signup" component={SignupContainer} title="Signup" />
                 <Scene key="home" component={HomeContainer} title="Home" />
                 <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
                 <Scene key="channel" component={ChannelContainer} title="Channel" />
                 <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
-                <Scene key="catalogue" component={CatalogueContainer} title="Catalogue"/>
+                <Stack key="catalogue" component={CatalogueContainer} title="Catalogue"/>
                 <Scene key="program" component={ProgramContainer} title="Program" />
                 <Scene key="guide" component={GuideContainer} title="Guide" />
                 <Scene key="settings" component={SettingsContainer} title="Settings" />
@@ -98,8 +103,7 @@ export default class Routes extends React.Component {
                 <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
                 <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
                 <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
-
-                <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media" ></Scene>
+                <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"  initial={true} ></Scene>
               </Stack>
             )}
              

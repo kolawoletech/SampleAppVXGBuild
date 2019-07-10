@@ -94,18 +94,17 @@ export class MediaItems extends React.Component {
 
   closeDatabase = (db) => {
     if (db) {
-        console.log("Closing DB");
-        db.close()
-          .then(status => {
-            console.log("Database CLOSED");
-          })
-          .catch(error => {
-            this.errorCB(error);
-          });
-      } else {
-        console.log("Database was not OPENED");
-      }
-      
+      console.log("Closing DB");
+      db.close()
+        .then(status => {
+          console.log("Database CLOSED");
+        })
+        .catch(error => {
+          this.errorCB(error);
+        });
+    } else {
+      console.log("Database was not OPENED");
+    }   
   }
 
   productById = (id) => {

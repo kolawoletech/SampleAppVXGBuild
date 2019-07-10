@@ -11,7 +11,7 @@ import {
 import shorthash from 'shorthash'
 import { spreadElement } from "@babel/types";
 
-export default class ProgressiveImage extends Component {
+export default class ProgressiveImage extends PureComponent {
 
   state = {
     source : null
@@ -25,11 +25,8 @@ export default class ProgressiveImage extends Component {
     const {id} = this.props;
     //const {programme_id} = this.props;
     const pid = shorthash.unique(id)
-    console.log("Progressive Props : " + JSON.stringify(this.props))
     const cachedImageFolder = await  `${RNFS.CachesDirectoryPath}` + `/NileMediaCatalogueImages` + `/` +`${id}`+ `.`+`png`;
-    console.log("Progressive Props :" + cachedImageFolder)
     if (RNFS.exists(cachedImageFolder)){
-      console.log("It exists: ")
       this.setState({
         source : cachedImageFolder
         

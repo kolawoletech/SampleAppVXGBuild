@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, View, TouchableOpacity, Text, StyleSheet, FlatList, TouchableWithoutFeedback, Image, TouchableHighlight, Alert, ScrollView } from 'react-native';
+import { Modal, View, TouchableOpacity, Text, Image, Alert, ScrollView } from 'react-native';
 import { styles } from './styles';
 import Toast, { DURATION } from 'react-native-easy-toast';
 
@@ -12,23 +12,19 @@ import { Dimensions } from 'react-native'
 var { width, height } = Dimensions.get('window')
 
 import DeviceInfo from 'react-native-device-info';
-import { AsyncStorage } from "react-native";
 import RNFetchBlob from "rn-fetch-blob";
 
 import RNFS from 'react-native-fs'
 
-import { openDatabase } from 'react-native-sqlite-storage';
-import { Button } from 'react-native-elements';
 
 import SQLite from "react-native-sqlite-storage";
 SQLite.DEBUG(true);
 SQLite.enablePromise(true);
 
-export class Program extends React.Component {
+export class Program extends Component {
     constructor(props) {
         super(props);
-        //this.addMedia = this.addMedia(this)
-        //this.onLayout = this.onLayout.bind(this);
+
         this.initDB();
 
     }
@@ -78,7 +74,6 @@ export class Program extends React.Component {
 
 
     addMedia = (programData, mediaType, mediaUri) =>{
-        console.log("Part 4")
         return new Promise((resolve) => {
           this.initDB().then((db) => {
             db.transaction((tx) => {
@@ -107,33 +102,30 @@ export class Program extends React.Component {
               .catch(error => {
                 this.errorCB(error);
               });
-          } else {
+        } else {
             console.log("Database was not OPENED");
-          }
+        }
     }
 
  
 
     onFetchLink = (programmeID, profileID, AID, TOKENID) => {
-        console.log("Part 3 OnClicking Download: " + JSON.stringify(this.props))
         
-        if (this.props.programData.quality[0].video == null){
+        if (this.props.programData.quality[0].video == null) {
             this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
             var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
             var PODCAST_LOCATION = VIDEO_FOLDER + programmeID;
             this.addMedia(this.props.programData, "podcast", PODCAST_LOCATION )
-            
-
+            console.log("Current Time Is " + JSON.stringify(this.props.programData.quality[0].duration_seconds))
         } else {
             this.props.fetchLink(programmeID, profileID, AID, TOKENID );
             var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
             var VIDEO_LOCATION = VIDEO_FOLDER + programmeID ;
             this.addMedia(this.props.programData, "video", VIDEO_LOCATION)
-
+            
+            console.log("Current Time Is " + JSON.stringify(this.props.programData.quality[0].duration_seconds))
         }
         
-        //this.addToDatabase("sample","sample", "sample");
-        console.log("ONFETCH LINK: " + JSON.stringify(this.props))
     }
 
 

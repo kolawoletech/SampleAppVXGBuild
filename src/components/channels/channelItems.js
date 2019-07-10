@@ -279,7 +279,7 @@ export class ChannelItems extends React.Component {
         <View >
           {this.state.images.length > 0 &&
             <FlatList
-              data={list.reverse()}
+              data={list.sort((a, b) => a.description.localeCompare(b.description)).reverse()}
               numColumns={1}
               renderItem={item => this.renderItem(item)}
               keyExtractor={item => item.id.toString()}

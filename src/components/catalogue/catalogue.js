@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import {
   View,
   Button,
@@ -19,7 +19,7 @@ import { AsyncStorage } from "react-native";
 
 import { Dimensions } from "react-native";
 
-class Catalogue extends Component {
+class Catalogue extends PureComponent {
   constructor(props) {
     super(props);
     this.onLayout = this.onLayout.bind(this);
@@ -206,17 +206,32 @@ class Catalogue extends Component {
       );
     } else {
 
-      return(
-        <LinearGradient
-        colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
-        style={{ height: "100%" }}>
-        <View style={{ height: "100%" }}>
-        {/* //TODO Find out why importan */}
-        <Text  orientation={this.state.orientation} ></Text>
-        <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
-        </View>
-      </LinearGradient>
-      )
+      if (this.props.catalogue == null  || this.props.catalogue == [] || this.props.catalogue.length == 0){
+        return (
+          <LinearGradient
+          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          style={{ height: "100%" }}>
+            <View style={{ height: "100%" }}>
+              <LoadingIndicator color="#ffffff" size="large"/>
+          </View>
+          </LinearGradient>
+        )
+
+      } else {
+        return(
+          <LinearGradient
+          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          style={{ height: "100%" }}>
+            <View style={{ height: "100%" }}>
+              {/* //TODO Find out why importan */}
+              <Text  orientation={this.state.orientation} ></Text>
+              <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
+            </View>
+        </LinearGradient>
+        )
+      }
+
+
 
     }
     
