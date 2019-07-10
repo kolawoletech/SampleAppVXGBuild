@@ -27,23 +27,16 @@ export class ProgramQuality extends React.Component {
 
     async componentDidMount(){
         await AsyncStorage.getItem("aid").then((result) => {
-            console.log(result)
             this.setState({
                 aid: result
             })
         });
 
         await AsyncStorage.getItem("sessionTokenID").then((token) => {
-            console.log(token)
             this.setState({
                 token: token
             })
         });
-
-        
-
-        console.log("Loadedf Chiledldj: =>" + this.state.aid, this.state.token)
-
 
     }
 
@@ -244,7 +237,6 @@ export class ProgramQuality extends React.Component {
         );
     }
     render() {
-        console.log("Part 2 Onloading Quality Tabs " + JSON.stringify(this.props))
         if (this.props == "undefined") {
             return (
                 <TouchableOpacity>

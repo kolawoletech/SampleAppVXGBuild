@@ -47,12 +47,12 @@ const TabIcon = ({ selected, title }) => {
     <Text style={{ color: selected ? '#76B6C4' : '#0F516C', fontSize: 20 }}>{title}</Text>
   );
 }
-export default class Routes extends React.Component {
+export default class Routes extends React.PureComponent {
   state = {
     isConnected: true
   };
 
-  componentDidMount() {
+  componentWillMount() {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
   }
 
@@ -73,8 +73,50 @@ export default class Routes extends React.Component {
       console.log = () => {};
     }
 
-    console.disableYellowBox = true;
 
+    console.log(this.state)
+    console.disableYellowBox = true;
+   if (this.state.isConnected === true){
+
+    return(
+      <Provider store={store}>
+      <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
+      <Drawer
+          title="Menu"
+          type="overlay"
+          key="root"
+          drawerPosition='100'
+          contentComponent={TabsContainer}>
+
+      
+            <Stack key="root" direction="vertical">    
+              <Stack key="login" hideNavBar={true} component={SessionContainer} title="Login"  initial={true}/>
+              <Scene key="signup" component={SignupContainer} title="Signup" />
+              <Scene key="home" component={HomeContainer} title="Home" />
+              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
+              <Scene key="channel" component={ChannelContainer} title="Channel" />
+              <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
+              <Stack key="catalogue" component={CatalogueContainer} title="Catalogue"/>
+              <Scene key="program" component={ProgramContainer} title="Program" />
+              <Scene key="guide" component={GuideContainer} title="Guide" />
+              <Scene key="settings" component={SettingsContainer} title="Settings" />
+              <Scene key="messages" component={MessagesContainer} title="Messages" />
+              <Scene key="landing" component={LandingContainer} title="Landing" />
+              <Scene key="chats" component={ChatsContainer} title="Chats" />
+              <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
+              <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
+              <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
+              <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
+            </Stack>
+
+           
+ 
+          </Drawer>
+
+      </RouterRedux>
+    </Provider>
+    )
+   } else if (this.state.isConnected === false) {
     return (
       <Provider store={store}>
         <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
@@ -85,44 +127,21 @@ export default class Routes extends React.Component {
             drawerPosition='100'
             contentComponent={TabsContainer}>
  
-            {this.state.isConnected === true  && (
-              <Stack key="root" direction="vertical">    
-                <Stack key="login" hideNavBar={true} component={SessionContainer} title="Login" />
-                <Scene key="signup" component={SignupContainer} title="Signup" />
-                <Scene key="home" component={HomeContainer} title="Home" />
-                <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
-                <Scene key="channel" component={ChannelContainer} title="Channel" />
-                <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
-                <Stack key="catalogue" component={CatalogueContainer} title="Catalogue"/>
-                <Scene key="program" component={ProgramContainer} title="Program" />
-                <Scene key="guide" component={GuideContainer} title="Guide" />
-                <Scene key="settings" component={SettingsContainer} title="Settings" />
-                <Scene key="messages" component={MessagesContainer} title="Messages" />
-                <Scene key="landing" component={LandingContainer} title="Landing" />
-                <Scene key="chats" component={ChatsContainer} title="Chats" />
-                <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
-                <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
-                <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
-                <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"  initial={true} ></Scene>
-              </Stack>
-            )}
+
              
-            {this.state.isConnected === false  && (
+          
               <Stack key="root" direction="vertical">   
                 <Scene key="media" component={MediaContainer} title="Playlist"></Scene>
                 <Scene key="localMedia" component={LocalMediaContainer} title="Local Media"></Scene>
                 <Scene key="offline"   hideNavBar={true} component={OfflineAlertContainer} initial={true} />
               </Stack>
-            )}
+         
             </Drawer>
-{/*             <Stack key="root2" direction="vertical">    
-             
-              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
-              <Scene key="catalogue" component={CatalogueContainer} title="Catalogue"/>
-              <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
-            </Stack> */}
+
         </RouterRedux>
       </Provider>
     );
+   }
+
   }
 }

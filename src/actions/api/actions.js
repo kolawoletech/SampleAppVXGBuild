@@ -597,22 +597,15 @@ export const fetchAudioURILinks = (
             console.log("File Already Exist");
             Alert.alert(
               "Podcast Already Exists In Playlist",
-              "Overwrite?",
+              "Delete First",
               [
                 {
-                  text: "Yes",
-                  onPress: () => {
-                    this.continueDownload(url);
-                  },
-                  style: "ok"
-                },
-                {
-                  text: "No",
+                  text: "Dismiss",
                   onPress: () => console.log("Cancel Pressed"),
                   style: "cancel"
                 }
               ],
-              { cancelable: false }
+              { cancelable: true }
             );
           } else {
             RNFS.downloadFile(option).promise.then(res => {

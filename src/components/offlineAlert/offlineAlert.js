@@ -4,10 +4,11 @@ import { Actions } from 'react-native-router-flux';
 
 export default class OfflineAlert extends React.Component {
 
-    async componentDidMount() {
-        await this.showAlert()
-    }
 
+    constructor(){
+        super()
+        this.showAlert()
+    }
 
     showAlert(){
         
@@ -15,7 +16,7 @@ export default class OfflineAlert extends React.Component {
             "No Internet Connection",
             "",
             [
-                {text: 'Cancel', onPress: () => console.log('Yes Pressed'), style: 'cancel'},
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
                 {text: 'Offline Mode', onPress: () => { Actions.localMedia() } },
             ],
             { cancelable: false }

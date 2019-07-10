@@ -38,14 +38,7 @@ class Channels extends Component {
     };
 
 
-    // Event Listener for orientation changes
-    Dimensions.addEventListener("change", () => {
-      this.setState({
-        orientation: isPortrait() ? "portrait" : "landscape"
-      });
 
-      this.forceUpdate()
-    });
 
   }
 

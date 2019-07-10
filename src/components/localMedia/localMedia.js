@@ -64,7 +64,7 @@ export class LocalMedia extends Component {
                 console.log("Integrity check passed ...");
                 console.log("Opening database ...");
                 SQLite.openDatabase(
-                "media",
+                "mediaDb",
                 0.1,
                 "database_displayname",
                 "database_size"
@@ -77,7 +77,7 @@ export class LocalMedia extends Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId UINQUE, mediaName, mediaDesc, mediaType, mediaUri)');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId INT UINQUE, mediaName, mediaDesc, mediaType, mediaUri, mediaDuration)');
                         }).then(() => {
                           console.log("Table created successfully");
                         }).catch(error => {
@@ -102,19 +102,17 @@ export class LocalMedia extends Component {
           const localMedia = [];
           this.initDB().then((db) => {
             db.transaction((tx) => {
-              tx.executeSql('SELECT m.mediaId, m.mediaName, m.mediaDesc, m.mediaType, m.mediaUri FROM Media m', []).then(([tx,results]) => {
+              tx.executeSql('SELECT m.mediaId, m.mediaName, m.mediaDesc, m.mediaType, m.mediaUri, m.mediaDuration FROM Media m', []).then(([tx,results]) => {
                 console.log("Query completed");
                 var len = results.rows.length;
                 for (let i = 0; i < len; i++) {
                   let row = results.rows.item(i);
                   console.log(`Prod ID: ${row.mediaId}, Prod Name: ${row.mediaName}`)
-                  const { mediaId, mediaName, mediaDesc,mediaType, mediaUri} = row;
+                  const { mediaId, mediaName, mediaDesc,mediaType, mediaUri, mediaDuration} = row;
                   localMedia.push({
-                    mediaId, mediaName, mediaDesc, mediaType, mediaUri
+                    mediaId, mediaName, mediaDesc, mediaType, mediaUri, mediaDuration
                   });
-
-                 
-                }
+                } 
                 resolve(localMedia);
                 this.setState({
                   mediaItems: localMedia
@@ -165,6 +163,10 @@ export class LocalMedia extends Component {
             console.log("Database was not OPENED");
           }
     }
+
+    errorCB(err) {
+      console.log("SQL Error: " + err);
+    }
   
     onPlayURI = uri => {
   
@@ -174,8 +176,6 @@ export class LocalMedia extends Component {
       });
   
       if (this.state.hideVideo == true) {
-     
-  
         this.props.play(uri);
         this.loadWithRetry(this.player, this.state.uri);
         console.log(uri);
@@ -225,13 +225,14 @@ export class LocalMedia extends Component {
         hideVideo: true
       });
   
-      RNFS.unlink(uri).then(() => {
+      RNFS.unlink(uri+`.mp4`).then((err) => {
+        console.log("Unlinking" + err)
         this.deleteProduct(id);
       });
       Actions.localMedia();
   
       console.log("Path to Delete" + uri);
-      console.log("Produxt to Delete" + id);
+      console.log("Product to Delete" + id);
       this.setState({
         showChild: false
       });

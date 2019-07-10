@@ -3,17 +3,12 @@ import DialogInput from "react-native-dialog-input";
 import NetInfo from "@react-native-community/netinfo";
 import KeepAwake from 'react-native-keep-awake';
 
-
 import {
   View,
-  Alert,
-  TouchableOpacity,
   Text,
   StyleSheet,
-  FlatList,
   ScrollView,
   TextInput,
-  Button,
   TouchableHighlight,
   Dimensions
 } from "react-native";
@@ -38,7 +33,7 @@ import {
   switchQuality
 } from "../../actions/api/actions";
 
-export class Player extends React.Component {
+export class Player extends React.PureComponent {
   _url = null;
   _player = null;
 
@@ -87,17 +82,22 @@ export class Player extends React.Component {
       hideCostWarning: true
     };
 
-    const isPortrait = () => {
+    isPortrait = () => {
       const dim = Dimensions.get("screen");
       return dim.height >= dim.width;
     };
 
     Dimensions.addEventListener("change", () => {
+
+      console.log(isPortrait())
       this.setState({
-        orientation: isPortrait() ? "portrait" : "landscape"
+        //orientation: isPortrait() ? "portrait" : "landscape"
       });
 
-      this._player.close()
+      if (this._player !== null){
+        this._player.close()
+
+      }
     });
   }
 
@@ -804,12 +804,6 @@ export class Player extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-{/*           {this.state.orientation === "portrait" ||
-        this.state.orientation === "" ? ( <View>{this.renderVideo()}</View>
-          ) : null}
-          {this.state.orientation !== "portrait" ||
-        this.state.orientation !== ""? ( <View>{this.renderVideo()}</View>
-          ) : null} */}
           <View>{this.renderVideo()}</View>
           {this.state.orientation === "portrait" ? (
             <TouchableHighlight onPress={this._onBack}>

@@ -38,7 +38,7 @@ export class Program extends Component {
                 console.log("Integrity check passed ...");
                 console.log("Opening database ...");
                 SQLite.openDatabase(
-                "media",
+                "mediaDb",
                 0.1,
                 "database_displayname",
                 "database_size"
@@ -51,7 +51,7 @@ export class Program extends Component {
                         console.log("Received error: ", error);
                         console.log("Database not yet ready ... populating data");
                         db.transaction((tx) => {
-                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId UNIQUE , mediaName, mediaDesc, mediaType, mediaUri, UNIQUE (mediaId))');
+                            tx.executeSql('CREATE TABLE IF NOT EXISTS Media (mediaId INT UNIQUE , mediaName, mediaDesc, mediaType, mediaUri, mediaDuration, UNIQUE (mediaId))');
                             //tx.executeSql('CREATE UNIQUE INDEX IF NOT EXISTS Media (mediaId , mediaName, mediaDesc, mediaType, mediaUri, UNIQUE (mediaId))');
 
                         }).then(() => {
@@ -72,12 +72,15 @@ export class Program extends Component {
         });
     };
 
+    errorCB= (err) => {
+        console.log("SQL Error: " + err);
+    }
 
-    addMedia = (programData, mediaType, mediaUri) =>{
+    addMedia = (programData, mediaType, mediaUri, mediaDuration) =>{
         return new Promise((resolve) => {
           this.initDB().then((db) => {
             db.transaction((tx) => {
-              tx.executeSql('INSERT INTO Media VALUES (?, ?, ?, ?, ?)', [programData.programme_id, programData.name, programData.description, mediaType, mediaUri ]).then(([tx, results]) => {
+              tx.executeSql('INSERT INTO Media VALUES (?, ?, ?, ?, ?, ?)', [programData.programme_id, programData.name, programData.description, mediaType, mediaUri, mediaDuration ]).then(([tx, results]) => {
                 resolve(results);
               });
             }).then((result) => {
@@ -115,15 +118,12 @@ export class Program extends Component {
             this.props.fetchAudio(programmeID, profileID, AID, TOKENID );
             var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
             var PODCAST_LOCATION = VIDEO_FOLDER + programmeID;
-            this.addMedia(this.props.programData, "podcast", PODCAST_LOCATION )
-            console.log("Current Time Is " + JSON.stringify(this.props.programData.quality[0].duration_seconds))
+            this.addMedia(this.props.programData, "podcast", PODCAST_LOCATION , this.props.programData.quality[0].duration_seconds )
         } else {
             this.props.fetchLink(programmeID, profileID, AID, TOKENID );
             var VIDEO_FOLDER = RNFetchBlob.fs.dirs.DocumentDir + "/NileMediaVideos/";
             var VIDEO_LOCATION = VIDEO_FOLDER + programmeID ;
-            this.addMedia(this.props.programData, "video", VIDEO_LOCATION)
-            
-            console.log("Current Time Is " + JSON.stringify(this.props.programData.quality[0].duration_seconds))
+            this.addMedia(this.props.programData, "video", VIDEO_LOCATION, this.props.programData.quality[0].duration_seconds) 
         }
         
     }
