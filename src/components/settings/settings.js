@@ -8,6 +8,7 @@ import {
   RefreshControl,
   TouchableOpacity,
   TouchableHighlight,
+  Dimensions,
   Switch
 } from "react-native";
 import DialogInput from "react-native-dialog-input";
@@ -22,6 +23,10 @@ import {
   logoutUser,
   getWiFiSettingsOption
 } from "../../actions/session/actions";
+
+import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview';
+const SCREEN_WIDTH = Dimensions.get('window').width;
+
 import { SettingsScreen } from "react-native-settings-screen";
 import { AsyncStorage } from "react-native";
 import { Actions } from "react-native-router-flux";

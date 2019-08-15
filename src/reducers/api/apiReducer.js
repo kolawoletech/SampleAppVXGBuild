@@ -9,6 +9,7 @@ const initialState = {
   logged: null,
   registered: null,
   channels: [],
+  categories: [],
   channel: {},
   catalogue: [],
   link: null,
@@ -83,6 +84,17 @@ const apiReducer = (state = initialState, action) => {
           error: null,
           loaded: true,
           catalogue: action.catalogue
+        };
+
+        case types.CATEGORIES_LOADED:
+        return {
+          ...state,
+          connecting: false,
+          loading: false,
+          token: action.token,
+          error: null,
+          loaded: true,
+          categories: action.categories
         };
         case types.FETCHED_CHANNEL:
         return {
@@ -171,20 +183,6 @@ const apiReducer = (state = initialState, action) => {
           logged: null,
           registered: true
         };
-      /* case types.SESSION_ERROR:
-        return {
-          ...state,
-          restoring: false,
-          loading: false,
-          user: null,
-          error: action.error,
-          logged: null,
-          registered: null
-        };
-      case types.SESSION_LOGOUT:
-        return initialState; */
-
-        
       default:
         return state;
     }

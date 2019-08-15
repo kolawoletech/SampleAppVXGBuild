@@ -17,6 +17,8 @@ import PlayerContainer from '../player';
 
 import CMasonryListContainer from '../cmasonryList';
 
+import CategoriesContainer from '../categories';
+
 //import AdvancedMediaPlayerContainer from '../advancedMediaPlayer';
 
 //import VideoPlayerContainer from '../advancedMediaPlayer';
@@ -107,6 +109,8 @@ export default class Routes extends React.PureComponent {
               <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
               <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
               <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
+              <Scene key="categories" component={CategoriesContainer} title="Categories"  />
+
             </Stack>
 
            
