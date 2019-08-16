@@ -199,6 +199,45 @@ export const fetchCategories = () => dispatch => {
   // .catch(err => console.log("An error occured", err))
 };
 
+export const fetchCategoryItems = (cat) => dispatch => {
+  //TODO 
+  dispatch(categoryItemsLoading());
+
+  const options = {
+    method: "POST",
+    body: "aid=c90bf2be-459b-46bd-9ac5-0693f07d54ac",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    }
+  };
+
+  const url = "https://nile.rtst.co.za/api/artist/6/tokens";
+  fetch(url, options)
+    .then(token_data => token_data.json())
+    .then(token_data => {
+      dispatch(apiUserRegistered(token_data["data"]));
+
+      const catgories_options = {
+        method: "GET",
+
+        headers: new Headers({
+          Authorization: "Bearer " + token_data["data"],
+          "Content-Type": "application/x-www-form-urlencoded"
+        })
+      };
+      const categories_url = "https://nile.rtst.co.za/api/artist/6/categories/";
+
+      fetch(categories_url, catgories_options)
+        .then(categories => categories.json())
+        .then(categories => {
+          let cats =categories["data"];
+          console.log("Getting Categories" + cats)
+          dispatch(categoryItemsLoaded(cats));
+        });
+    });
+  // .catch(err => console.log("An error occured", err))
+};
+
 export const sendMessage = (id, opts, aid) => dispatch => {
   console.log("This is  a numnber d" + id)
   dispatch(apiUserRegistering());
@@ -985,4 +1024,13 @@ const categoriesLoading = () => ({
 const categoriesLoaded = categories => ({
   type: types.CATEGORIES_LOADED,
   categories
+});
+
+const categoryItemsLoading = () => ({
+  type: types.CATEGORY_ITEMS_LOADING
+});
+
+const categoryItemsLoaded = categoryItems => ({
+  type: types.CATEGORY_ITEMS_LOADED,
+  categoryItems
 });

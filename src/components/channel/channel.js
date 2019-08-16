@@ -92,7 +92,7 @@ export class Channel extends React.Component {
 
       return (
         <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%", padding: 7 }}
         >
           <ScrollView>
@@ -269,7 +269,8 @@ export class Channel extends React.Component {
               <Text
                 style={{
                   textAlign: "center",
-                  color: "#fff"
+                  color: "#fff",
+                  fontSize: 11
                 }}
               >
                 {list.description}

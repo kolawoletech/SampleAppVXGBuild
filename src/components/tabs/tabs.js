@@ -17,10 +17,10 @@ export default class Tabs extends React.Component {
 
   render() {
     return (
-      <ScrollView style={{ backgroundColor: '#FFFFFF' }}>
+      <ScrollView style={{ backgroundColor: '#fff' }}>
         <View>
           <LinearGradient
-            colors={['#76B6C4', '#4E8FA2', '#0F516C']}> 
+            colors={['#212121', '#212121', '#212121']}> 
           <Text
             style={{
               paddingTop: 10,

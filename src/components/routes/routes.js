@@ -85,18 +85,19 @@ export default class Routes extends React.PureComponent {
       <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
       <Drawer
           title="Menu"
-          type="overlay"
+          type="tab"
           key="root"
           drawerPosition='100'
-          contentComponent={TabsContainer}>
+          contentComponent={TabsContainer}
+          >
 
       
             <Stack key="root" direction="vertical">    
               <Stack key="login" hideNavBar={true} component={SessionContainer} title="Login"  initial={true}/>
               <Scene key="signup" component={SignupContainer} title="Signup" />
               <Scene key="home" component={HomeContainer} title="Home" />
-              <Scene key="channels"   component={ChannelsContainer} title="Channels"  />
-              <Scene key="channel" component={ChannelContainer} title="Channel" />
+              <Scene key="channels"  tabs={true}  component={ChannelsContainer} title="Channels"  />
+              <Scene key="channel"  tabs={true} component={ChannelContainer} title="Channel" />
               <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
               <Stack key="catalogue" component={CatalogueContainer} title="Catalogue"/>
               <Scene key="program" component={ProgramContainer} title="Program" />
@@ -108,7 +109,7 @@ export default class Routes extends React.PureComponent {
               <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
               <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
               <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
-              <Scene key="localMedia"   hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
+              <Scene key="localMedia"   tabs={true} hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
               <Scene key="categories" component={CategoriesContainer} title="Categories"  />
 
             </Stack>

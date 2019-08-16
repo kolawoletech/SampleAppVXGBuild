@@ -46,7 +46,6 @@ class Channels extends Component {
   async componentDidMount() {
     this.checkUserSignedIn();
 
-    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
 
   }
 
@@ -56,7 +55,6 @@ class Channels extends Component {
   }
 
   componentWillUnmount() {
-    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
   }
   
 
@@ -133,7 +131,7 @@ class Channels extends Component {
     if ( this.props.channels.data === 0 ||this.props.channels == null ){
       return (
         <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%" }}>
             
           <LoadingIndicator />
@@ -142,7 +140,7 @@ class Channels extends Component {
     } else {
       return (
         <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%" }}>
           <OfflineNotice />
 

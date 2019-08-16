@@ -231,7 +231,7 @@ export class Program extends Component {
             let img =  RNFS.CachesDirectoryPath +"/NileMediaCatalogueImages/" + list.programme_id + ".png";   // console.log(cachedImageFolder)
             return (
                 <View>
-                    <LinearGradient colors={['#76B6C4', '#4E8FA2', '#0F516C']}
+                    <LinearGradient colors={['#212121', '#212121', '#212121']}
                         style={{ height: '100%' }}>
                         <Toast ref="toast" position='bottom'/> 
                         <View>
@@ -328,7 +328,9 @@ export class Program extends Component {
                                     <Text style={{
                                         textAlign: 'center',
                                         color: '#fff',
-                                        padding: 7
+                                        padding: 7,
+                                        fontSize: 11
+
                                     }}>
                                         {list.description}
                                     </Text>

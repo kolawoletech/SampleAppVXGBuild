@@ -226,8 +226,8 @@ export class ChannelItems extends React.Component {
       <TouchableOpacity key={data.item.id} onPress={() => Actions.channel({ channelData: data.item })}>
 
         <LinearGradient
-          colors={['#0F516C', '#76B6C4']}
-          style={{ padding: 7, alignItems: 'center', borderRadius: 3, margin: 8 }}
+          colors={['#000000', '#323232']}
+          style={{ padding: 7, alignItems: 'center', borderRadius: 7, margin: 8 }}
           start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
         <View style={{ width: '100%', height: 150, flexDirection: 'row' }}>
           <View style={{ width: '40%' }}>

@@ -55,7 +55,7 @@ export default class ProgressiveImage extends Component {
           source = {{
             uri: cachedImageFolder
           }}
-          resizeMode="stretch"
+          resizeMode="contain"
           style={{
             width: 150,    
             height: 145,    

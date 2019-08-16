@@ -197,7 +197,7 @@ class Catalogue extends PureComponent {
       return (
    
         <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#000", "#000", "#000"]}
           style={{ height: "100%" }}>
           <View style={{ height: "100%" }}>
             <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
@@ -209,7 +209,7 @@ class Catalogue extends PureComponent {
       if (this.props.catalogue == null  || this.props.catalogue == [] || this.props.catalogue.length == 0){
         return (
           <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%" }}>
             <View style={{ height: "100%" }}>
               <LoadingIndicator color="#ffffff" size="large"/>
@@ -220,7 +220,7 @@ class Catalogue extends PureComponent {
       } else {
         return(
           <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%" }}>
             <View style={{ height: "100%" }}>
               {/* //TODO Find out why importan */}

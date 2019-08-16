@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   navBar: {
-    backgroundColor: '#0f516c'
+    backgroundColor: '#212121'
   },
   barButtonTextStyle: {
     fontSize: 18

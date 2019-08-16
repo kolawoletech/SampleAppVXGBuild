@@ -16,7 +16,7 @@ import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import { AsyncStorage } from "react-native";
 
-import { fetchCategories } from "../../actions/api/actions";
+import { fetchCategories, fetchCategoryItems } from "../../actions/api/actions";
 import { CategoryItems } from './categoryItems'
 
 class Categories extends Component {
@@ -110,12 +110,14 @@ class Categories extends Component {
     }
   }
   
-  const mapStateToProps = ({ apiReducer: { categories } }) => ({
-    categories: categories
+  const mapStateToProps = ({ apiReducer: { categories , categoryItems} }) => ({
+    categories: categories,
+    categoryItems: categoryItems
   });
   
   const mapDispatchToProps = {
-    loadCategories: fetchCategories  
+    loadCategories: fetchCategories,
+    loadCategryItem: fetchCategoryItems
   };
   
   export default connect(
