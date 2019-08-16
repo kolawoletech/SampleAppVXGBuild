@@ -17,6 +17,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 import { AsyncStorage } from "react-native";
 
 import { fetchCategories } from "../../actions/api/actions";
+import { CategoryItems } from './categoryItems'
 
 class Categories extends Component {
     constructor(props) {
@@ -91,27 +92,17 @@ class Categories extends Component {
 
   
     render() {
+      const { categories: data } = this.props;
+
 
       console.log("Current Categories Props" + JSON.stringify(this.props))
 
 
        
         return (
-            <View style={styles.container}>
+          <View style={styles.container}>
            
-
-{this.state.categories !== null && (
-                                <Text
-                                    style={{
-                                        color: '#ffdf',
-                                        flexWrap: 'wrap',
-                                        alignContent: 'center',
-                                        justifyContent: 'center',
-                                        textAlign: 'center',
-                                        fontSize: 10
-                                    }}>
-                                </Text>
-                            )}
+            <CategoryItems list={data} />
     
           </View>
         );
