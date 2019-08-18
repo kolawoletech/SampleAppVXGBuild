@@ -36,9 +36,7 @@ export class Channel extends React.Component {
   }
   async componentDidMount() {
     const channel = this.props.channelData;
-    //this.props.channelObject(channel.id);
     await this.getChannelWithAID();
-    //await this.getChannelImageWithAID();
     this.autoQualityClick = this.autoQualityClick.bind(this);
     this.onFetchRSTPLink = this.onFetchRSTPLink.bind(this)
   }
@@ -226,6 +224,7 @@ export class Channel extends React.Component {
                 <ChannelQuality
                   qual={qualityList}
                   cid={channelID}
+                  //TODO Get Props
                   onPressItem={this.onFetchRSTPLink}
                 />
               </View>

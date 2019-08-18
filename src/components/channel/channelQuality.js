@@ -24,6 +24,7 @@ export class ChannelQuality extends React.Component {
   }
 
   async componentDidMount() {
+    
     await AsyncStorage.getItem("aid").then(result => {
       console.log(result);
       this.setState({

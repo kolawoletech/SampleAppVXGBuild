@@ -9,7 +9,7 @@ import CounterContainer from '../counter';
 import SessionContainer from '../auth/LoginForm';
 import SignupContainer from '../auth/SignupForm';
 import TodolistContainer from '../todolist';
-
+import CategoryListContainer from '../categoryList';
 import OfflineAlertContainer from '../offlineAlert'
 import ChannelsContainer from '../channels';
 import ChannelContainer from '../channel';
@@ -108,6 +108,8 @@ export default class Routes extends React.PureComponent {
               <Scene key="chats" component={ChatsContainer} title="Chats" />
               <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
               <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
+              <Scene key="categorylist" component={CategoryListContainer} title="CategoryList"  />
+
               <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
               <Scene key="localMedia"   tabs={true} hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
               <Scene key="categories" component={CategoriesContainer} title="Categories"  />

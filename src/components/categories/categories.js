@@ -93,6 +93,8 @@ class Categories extends Component {
   
     render() {
       const { categories: data } = this.props;
+      const { categoryItems: subData } = this.props;
+      const { onfetchCategoryItems} = this.props.loadCategoryItem;
 
 
       console.log("Current Categories Props" + JSON.stringify(this.props))
@@ -102,7 +104,7 @@ class Categories extends Component {
         return (
           <View style={styles.container}>
            
-            <CategoryItems list={data} />
+            <CategoryItems list={data} sub={subData} onFetchItems={this.props.loadCategoryItem} />
     
           </View>
         );
@@ -117,7 +119,7 @@ class Categories extends Component {
   
   const mapDispatchToProps = {
     loadCategories: fetchCategories,
-    loadCategryItem: fetchCategoryItems
+    loadCategoryItem: fetchCategoryItems
   };
   
   export default connect(

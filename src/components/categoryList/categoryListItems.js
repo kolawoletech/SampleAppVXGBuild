@@ -98,10 +98,9 @@ export class CategoryListItems extends PureComponent {
   
     render() {
         console.log("What is Detailed"+ JSON.stringify(this.props)) 
-        const { sublist : data} = this.props;
+        const { items : data} = this.props;
         return (
         <View >
-                <Text>FACE DOWN</Text>
                 <FlatList
                     horizontal={true}
 

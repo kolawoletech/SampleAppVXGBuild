@@ -225,13 +225,15 @@ export const fetchCategoryItems = (cat) => dispatch => {
           "Content-Type": "application/x-www-form-urlencoded"
         })
       };
-      const categories_url = "https://nile.rtst.co.za/api/artist/6/categories/";
 
-      fetch(categories_url, catgories_options)
+      console.log("Start Geting Category Items")
+      const categories_url = "https://nile.rtst.co.za/api/artist/6/categories/";
+      const categories_search_url ="https://nile.rtst.co.za/api/artist/6/programs?"+ "category="+cat;
+
+      fetch(categories_search_url , catgories_options)
         .then(categories => categories.json())
         .then(categories => {
           let cats =categories["data"];
-          console.log("Getting Categories" + cats)
           dispatch(categoryItemsLoaded(cats));
         });
     });

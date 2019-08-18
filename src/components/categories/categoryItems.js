@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import LinearGradient from 'react-native-linear-gradient';
-
+import CategoryList from '../../components/categoryList'
 export class CategoryItems extends PureComponent {
     constructor(props) {
       super(props);
@@ -25,12 +25,15 @@ export class CategoryItems extends PureComponent {
     getCategories(cat){
       console.log(cat)
 
+      this.props.onFetchItems(cat);
+
       return(
         <View>
           <Text
             style={{
               color: "#ffffff"
             }}>{cat}</Text>
+
         </View>
       )
     }
@@ -54,6 +57,8 @@ export class CategoryItems extends PureComponent {
           </View>
           <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>
             {this.getCategories(data.item)}
+            <CategoryList /> 
+
             </View>
           </LinearGradient>
         </TouchableOpacity>
@@ -82,6 +87,7 @@ export class CategoryItems extends PureComponent {
         );
       } else  {
         const { list } = this.props;
+        console.log("SO HEAVY" + JSON.stringify(this.props))
         return (
         <View >
         {this.props.list.length > 0 &&
