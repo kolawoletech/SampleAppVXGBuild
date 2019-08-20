@@ -23,19 +23,10 @@ export class CategoryItems extends PureComponent {
     }
 
     getCategories(cat){
-      console.log(cat)
 
       this.props.onFetchItems(cat);
 
-      return(
-        <View>
-          <Text
-            style={{
-              color: "#ffffff"
-            }}>{cat}</Text>
-
-        </View>
-      )
+     
     }
 
     renderItem2 = (data) => {
@@ -56,9 +47,13 @@ export class CategoryItems extends PureComponent {
            
           </View>
           <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>
-            {this.getCategories(data.item)}
-            <CategoryList /> 
 
+
+            </View>
+            <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>
+              {this.getCategories(data.item)}
+
+              <CategoryList cat={data.item} /> 
             </View>
           </LinearGradient>
         </TouchableOpacity>

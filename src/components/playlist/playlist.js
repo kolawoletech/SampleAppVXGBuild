@@ -71,31 +71,11 @@ class Playlist extends Component {
 
     }
 
-    componentDidUpdate() {
-
-    }
-
-
-
-
-
     render() {
-
-       
-
         return (
             <ScrollView>
             <View  style={styles.container}>
-            <View>
-{/*                 <Video
-                    source={{
-                        uri:
-                            ''
-                    }}
-                    resizeMode="cover"
-                    style={{ height: 300 }}                   
-                /> */}
-            </View>
+         
             <View>
     
                 {this.renderPlaylist()}

@@ -11,6 +11,7 @@ const initialState = {
   channels: [],
   categories: [],
   channel: {},
+  currentCategory: "",
   catalogue: [],
   categoryItems:[],
   link: null,
@@ -105,7 +106,20 @@ const apiReducer = (state = initialState, action) => {
           token: action.token,
           error: null,
           loaded: true,
-          categoryItems: action.categoryItems
+          categoryItems: action.categoryItems,
+          currentCategory: action.currentCategory
+
+        };
+
+        case types.CURRENT_CATEGORY_TYPE:
+        return {
+          ...state,
+          connecting: false,
+          loading: false,
+          token: action.token,
+          error: null,
+          loaded: true,
+          currentCategory: action.currentCategory
         };
 
         case types.CATEGORIES_LOADED:

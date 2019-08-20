@@ -228,16 +228,18 @@ export const fetchCategoryItems = (cat) => dispatch => {
 
       console.log("Start Geting Category Items")
       const categories_url = "https://nile.rtst.co.za/api/artist/6/categories/";
-      const categories_search_url ="https://nile.rtst.co.za/api/artist/6/programs?"+ "category="+cat;
+      const categories_search_url ="https://nile.rtst.co.za/api/artist/6/programs?";
 
       fetch(categories_search_url , catgories_options)
         .then(categories => categories.json())
         .then(categories => {
           let cats =categories["data"];
-          dispatch(categoryItemsLoaded(cats));
+
+          dispatch(categoryItemsLoaded(cats, cat));
+          dispatch(currentCategoryType(cat))
+
         });
     });
-  // .catch(err => console.log("An error occured", err))
 };
 
 export const sendMessage = (id, opts, aid) => dispatch => {
@@ -1032,7 +1034,14 @@ const categoryItemsLoading = () => ({
   type: types.CATEGORY_ITEMS_LOADING
 });
 
-const categoryItemsLoaded = categoryItems => ({
+const categoryItemsLoaded = (categoryItems, currentCategory) => ({
   type: types.CATEGORY_ITEMS_LOADED,
-  categoryItems
+  categoryItems,
+  currentCategory
 });
+
+const currentCategoryType = ( currentCategory ) => ({
+  type: types.CURRENT_CATEGORY_TYPE,
+  currentCategory
+});
+

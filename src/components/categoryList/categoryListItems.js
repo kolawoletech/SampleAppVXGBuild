@@ -24,33 +24,43 @@ import { AsyncStorage } from "react-native";
 export class CategoryListItems extends PureComponent {
     constructor(props) {
       super(props);
+      this.state={
+        items: []
+      }
   
 
     }
   
-    async componentDidMount() {
+    componentDidMount() {
+     
+      console.log("Did Mount" + JSON.stringify(this.props))
+    }
+
+    async componentDidUpdate(prevProps) {
+
+    if (this.props.items != prevProps.items) {
+      const promises = this.props.items.map(item => {
+        return item;
+      });
+
+      const results = await Promise.all(promises)
+  
+      this.setState({
+        items: results
+      });
+
+      console.log("STATE OF COMPONENT: " + JSON.stringify(results))
+    }
+    }
+
+    componentWillMount() {
    
-  
+      console.log("Actually" + JSON.stringify(this.props))
     }
 
-    getCategories(cat){
-      console.log(cat)
-      const {onLoadItem } = this.props;
-      console.log("Say what:  " + onLoadItem)
-      
-
-      return(
-        <View>
-          <Text
-            style={{
-              color: "#ffffff"
-            }}>{cat}</Text>
-        </View>
-      )
-    }
 
     renderItem = data => {
-
+      console.log("FOR CATEGORY" + JSON.stringify(this.props.categoryType))
 
 
         var cachedImageLocation =
@@ -60,11 +70,15 @@ export class CategoryListItems extends PureComponent {
           ".png";
     
         return (
+        
           <View style={{ height: "50%"}}>
+             {data.item.categories.includes(this.props.currentCategory)  ? 
             <TouchableOpacity
               style={styles.item}
               key={data.item.programme_id}
               onPress={() => Actions.program({ programData: data.item })}>
+
+
               <Card>
 
                 <Icon
@@ -87,34 +101,54 @@ export class CategoryListItems extends PureComponent {
                      textAlign: "center",
                      color: "white"
                    }}>
-                  {data.item.name}
+                  {data.item.categories}
                 </Text>
+           
+
+
+              
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      minHeight: 30,
+                      padding: 3,
+                      width: "100%",
+                      fontWeight: "normal",
+                      backgroundColor: "#76b6c4",
+                      textAlign: "center",
+                      color: "white"
+                    }}>
+                    {data.item.name}
+                  </Text>
+                
+
               </Card>
             </TouchableOpacity>
+              : <Text>...</Text>}
           </View>
         );
       };
 
   
     render() {
-        console.log("What is Detailed"+ JSON.stringify(this.props)) 
+      console.log("KATE" + JSON.stringify(this.props));
         const { items : data} = this.props;
+
         return (
         <View >
-                <FlatList
-                    horizontal={true}
+          <FlatList
+            horizontal={true}
 
-                    listKey={item => item.programme_id.toString()}
-                    data={data}
-                    renderItem={item => this.renderItem(item)}
-                    keyExtractor={item => item.programme_id.toString()}
-                    //numColumns={2}
-                    style={{
-                    flexGrow: 0,
-                    height: '100%'
-                    }}
-                />
-            
+            listKey={item => item.programme_id.toString()}
+            data={data}
+            renderItem={item => this.renderItem(item)}
+            keyExtractor={item => item.programme_id.toString()}
+            //numColumns={2}
+            style={{
+            flexGrow: 0,
+            height: '100%'
+            }}
+          />  
         </View>
         );
       

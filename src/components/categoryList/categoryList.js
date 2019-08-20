@@ -38,6 +38,7 @@ class CategoryList extends Component {
     render() {
 
       const { categoryItems: dat } = this.props;
+      const { currentCategory: catType } = this.props;
 
 
 
@@ -48,7 +49,7 @@ class CategoryList extends Component {
         return (
           <View style={styles.container}>
            
-            <CategoryListItems items = {dat}  />
+            <CategoryListItems items = {dat} categoryType={catType} />
     
           </View>
         );
@@ -56,8 +57,9 @@ class CategoryList extends Component {
     }
   }
   
-  const mapStateToProps = ({ apiReducer: { categories , categoryItems} }) => ({
-    categoryItems: categoryItems
+  const mapStateToProps = ({ apiReducer: { categories , categoryItems, currentCategory} }) => ({
+    categoryItems: categoryItems,
+    currentCategory: currentCategory
   });
   
   const mapDispatchToProps = {
