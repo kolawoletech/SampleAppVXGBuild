@@ -43,7 +43,7 @@ export default class Tabs extends React.Component {
             <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}
             />
-            <Button color='black' title="Catalogue" onPress={() => { Actions.catalogue(); }}></Button>
+            <Button color='black' title="Catalogue" onPress={() => { Actions.categories(); }}></Button>
           </TouchableOpacity>
           <TouchableOpacity>
             <Icon name="live-tv" size={22} color="black"
@@ -63,12 +63,8 @@ export default class Tabs extends React.Component {
             />
             <Button color='black' title="Settings" onPress={() => { Actions.settings(); }}></Button>
           </TouchableOpacity>
-          <TouchableOpacity >
-            <Icon name="settings" size={22} color="black"
-              style={{ position: 'absolute', top: 10, left: 50 }}
-            />
-            <Button color='black' title="Categories" onPress={() => { Actions.categories(); }}></Button>
-          </TouchableOpacity>
+ 
+
          
         </View>
 

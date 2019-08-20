@@ -34,7 +34,7 @@ export class MessageItems extends React.Component {
     return (
       <View
         style={{
-          backgroundColor: "#007f85",
+          backgroundColor: "#323232",
           marginTop: 2,
           marginBottom: 2
         }}>
@@ -44,7 +44,7 @@ export class MessageItems extends React.Component {
               flexDirection: "row",
               padding: 7,
               borderRadius: 3,
-              backgroundColor: "#007f85"
+              backgroundColor: "#212121"
             }}>
             <View
               style={{

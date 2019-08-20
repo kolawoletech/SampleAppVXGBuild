@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     marginBottom: 50
   },
   marginBox: {
-    margin: 10
+    margin: 4
   },
   title: {
     fontSize: 24,

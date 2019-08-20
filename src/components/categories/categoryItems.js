@@ -45,7 +45,7 @@ export class CategoryItems extends PureComponent {
           
           <LinearGradient
             colors={['#000000', '#323232']}
-            style={{ padding: 7, alignItems: 'center', borderRadius: 7, margin: 8 }}
+            style={{ padding: 3, alignItems: 'center', borderRadius: 3 }}
             start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
               <ScrollView  ref={(ref) => { this.scrollView = ref; }} >
           <View style={{ width: '100%' }}>

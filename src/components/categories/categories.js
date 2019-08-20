@@ -1,11 +1,7 @@
 import React, { Component, PureComponent } from "react";
 import {
   View,
-  Button,
-  Image,
-  Text,
-  FlatList,
-  TouchableOpacity,
+  AsyncStorage,
   Dimensions,
   StyleSheet
 } from "react-native";
@@ -18,7 +14,6 @@ import {
   LayoutProvider
 } from "recyclerlistview";
 const SCREEN_WIDTH = Dimensions.get("window").width;
-import { AsyncStorage } from "react-native";
 
 import {
   fetchCategories,
@@ -30,6 +25,27 @@ import { CategoryItems } from "./categoryItems";
 class Categories extends Component {
   constructor(props) {
     super(props);
+    this.onLayout = this.onLayout.bind(this);
+
+
+    const isPortrait = () => {
+      const dim = Dimensions.get("screen");
+      return dim.height >= dim.width;
+    };
+
+    this.state = {
+      orientation: isPortrait() ? "portrait" : "landscape"
+    };
+
+    // Event Listener for orientation changes
+    Dimensions.addEventListener("change", () => {
+      this.setState({
+        orientation: isPortrait() ? "portrait" : "landscape"
+      });
+
+      this.forceUpdate()
+    });
+
     this.state = {
       categories: ""
     };
@@ -42,9 +58,119 @@ class Categories extends Component {
   }
 
   async componentDidMount() {
+    await this.setDefaultWiFiOption();
+    await this.setDefaultCurrency()
+    await this.setDefaultRate() 
+
     await this.props.loadCategories();
     await this.props.loadCategoryItem();
   }
+
+  async componentWillMount() {
+
+    await this.setDefaultBufferOption()
+    await this.getCatalogueWithAID();
+    await this.setDefaultIndicatorLimit()
+
+    await this.props.loadCategories();
+    await this.props.loadCategoryItem();
+  }
+
+  onLayout(e) {
+    this.setState({
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
+    });
+  }
+
+
+
+  async getCatalogueWithAID() {
+    let AID = await AsyncStorage.getItem("aid");
+    let TOKENID = await AsyncStorage.getItem("sessionTokenID");
+    this.props.loadCatalogue(AID, TOKENID);
+  }
+
+  async setDefaultCurrency() {
+    try {
+      let value = await AsyncStorage.getItem("currencySymbol");
+      if (value != null) {
+        console.log("Currency Already Set as " + value);
+      } else {
+        const userId = "R";
+        AsyncStorage.setItem("currencySymbol", userId).then(token => {
+          console.log(token);
+        });
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  }
+
+
+
+  async setDefaultRate() {
+    try {
+      let value = await AsyncStorage.getItem("costPerMB");
+      if (value != null) {
+      } else {
+        const defaultCostPerMB = "0";
+        AsyncStorage.setItem("costPerMB", defaultCostPerMB).then(token => {
+          console.log(token);
+        });
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  }
+
+  async setDefaultBufferOption() {
+    let context = this;
+
+    let value = await AsyncStorage.getItem("bufferValue");
+
+    if (value !== null) {
+
+    } else {
+      const bufferOption = "2000";
+
+      AsyncStorage.setItem("bufferValue", bufferOption).then(value => {
+        console.log(value);
+      });
+    }
+  }
+
+
+  async setDefaultIndicatorLimit() {
+    let value = await AsyncStorage.getItem("indicatorLimit");
+
+    if (value !== null) {
+      // do nothing
+    } else {
+      const indicatorLimit = "2000";
+
+      AsyncStorage.setItem("indicatorLimit", indicatorLimit).then(value => {
+        console.log(value);
+      });
+    }
+  }
+  
+  async setDefaultWiFiOption() {
+    let context = this;
+
+    let value = await AsyncStorage.getItem("wifiBoolValue");
+
+    if (value !== null) {
+      // do nothing
+    } else {
+      const wifiOption = JSON.stringify(true);
+
+      AsyncStorage.setItem("wifiBoolValue", wifiOption).then(value => {
+        console.log(value);
+      });
+    }
+  }
+
 
 
 

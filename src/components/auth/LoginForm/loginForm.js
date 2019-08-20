@@ -60,7 +60,7 @@ class LoginFormComponent extends Component {
   }
 
   goToCatalogue() {
-    Actions.catalogue();
+    Actions.categories();
   }
   async checkUserAID() {
     try {

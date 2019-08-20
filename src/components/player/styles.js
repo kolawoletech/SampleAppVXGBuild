@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     flex: 1,
 
     alignItems: "stretch",
-    backgroundColor: "#76B6C4"
+    backgroundColor: "#323232"
   },
   image: {
     width: 100,
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    backgroundColor: "#0f516c",
+    backgroundColor: "#212121",
     padding: 15,
     margin: 10,
     marginBottom: 5

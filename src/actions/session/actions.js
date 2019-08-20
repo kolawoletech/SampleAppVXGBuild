@@ -44,7 +44,7 @@ export const loginAnonymously = () => dispatch => {
       dispatch(sessionError(error.message));
     }); */
 
-    Actions.catalogue();
+    Actions.categories();
 };
 
 export const signupUser = (email, password) => dispatch => {

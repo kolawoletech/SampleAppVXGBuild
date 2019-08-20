@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     flex: 1,
 
     alignItems: 'stretch',
-    backgroundColor: '#76B6C4'
+    backgroundColor: '#323232'
   },
   image: {
 
@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     flex: .1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#76B6C4',
+    backgroundColor: '#212121',
     borderColor: 'red',
     padding: 2,
     margin:5,

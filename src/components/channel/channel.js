@@ -154,7 +154,7 @@ export class Channel extends React.Component {
                   <Icon
                     name="playlist-play"
                     size={22}
-                    color="#76B6C4"
+                    color="#212121"
                     //onPress={Actions.guide({ channelID: list.id })}
 
                     style={{
