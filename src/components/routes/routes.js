@@ -1,6 +1,6 @@
 import React, { Component, Alert } from 'react';
 import { styles } from './styles';
-import { Scene, Router, Stack, Drawer } from 'react-native-router-flux';
+import { Scene, Router, Stack, Drawer , DefaultRenderer} from 'react-native-router-flux';
 import { connect, Provider } from 'react-redux';
 import { Text } from 'react-native'
 import HomeContainer from '../home';
@@ -55,6 +55,7 @@ export default class Routes extends React.PureComponent {
   };
 
   componentWillMount() {
+
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
   }
 
@@ -71,6 +72,8 @@ export default class Routes extends React.PureComponent {
   };
 
   render() {
+
+    const state = this.props.navigationState
     if (!__DEV__) {
       console.log = () => {};
     }
@@ -84,37 +87,69 @@ export default class Routes extends React.PureComponent {
       <Provider store={store}>
       <RouterRedux hideNavBar={true} navigationBarStyle={styles.navBar} tintColor="#ffffff" titleStyle={styles.barButtonTextStyle}>
       <Drawer
+          ref="navigation"
+          acceptPan
+          onOpen={() => NavigationActions.refresh({key: state.key, open: true})}
+          onClose={() => NavigationActions.refresh({key: state.key, open: false})}
           title="Menu"
-          type="tab"
+    
+          type='static'
+          open={true}
           key="root"
           drawerPosition='100'
           contentComponent={TabsContainer}
+          tapToClose={true}
+          openDrawerOffset={100}          
+          panCloseMask={0.2}
+          negotiatePan={true}
+          tweenHandler={(ratio) => ({
+              main: { opacity:Math.max(0.54,1-ratio) }
+          })}
           >
 
-      
-            <Stack key="root" direction="vertical">    
-              <Stack key="login" hideNavBar={true} component={SessionContainer} title="Login"  initial={true}/>
-              <Scene key="signup" component={SignupContainer} title="Signup" />
-              <Scene key="home" component={HomeContainer} title="Home" />
-              <Scene key="channels"  tabs={true}  component={ChannelsContainer} title="Channels"  />
-              <Scene key="channel"  tabs={true} component={ChannelContainer} title="Channel" />
-              <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
-              <Stack key="catalogue" component={CatalogueContainer} title="Catalogue"/>
-              <Scene key="program" component={ProgramContainer} title="Program" />
-              <Scene key="guide" component={GuideContainer} title="Guide" />
-              <Scene key="settings" component={SettingsContainer} title="Settings" />
-              <Scene key="messages" component={MessagesContainer} title="Messages" />
-              <Scene key="landing" component={LandingContainer} title="Landing" />
-              <Scene key="chats" component={ChatsContainer} title="Chats" />
-              <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
-              <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
-              <Scene key="categorylist" component={CategoryListContainer} title="CategoryList"  />
+              <Stack key="root"   >
+                <Scene key="login" hideNavBar={true} component={SessionContainer} title="Login"   initial={true}/>
 
-              <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
-              <Scene key="localMedia"   tabs={true} hideNavBar={true} component={LocalMediaContainer}  title="LocaL Media"></Scene>
-              <Scene key="categories" component={CategoriesContainer} title="Categories"  />
+             
+                <Scene key="catalogue" icon={TabIcon}  component={CatalogueContainer} title="Catalogue" />
 
-            </Stack>
+                <Scene key="categories"  tabs={true} icon={TabIcon} component={CategoriesContainer} title="Categories"/>
+                <Scene key="categorylist" component={CategoryListContainer} title="CategoryList"  />
+
+                <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" />
+                <Scene key="program" component={ProgramContainer} title="Program" />
+
+          
+          
+                <Scene key="signup" component={SignupContainer} title="Signup" />
+   
+
+                <Scene key="channels" tabs={true} icon={TabIcon}  component={ChannelsContainer} title="Channels" />
+                <Scene key="channel" component={ChannelContainer} title="Channel" />
+                <Scene key="messages" component={MessagesContainer} title="Messages" />
+
+                <Scene key="categorylist" component={CategoryListContainer} title="CategoryList"  />
+                <Scene key="masonry" component={CMasonryListContainer} title="MasonryList"  />
+                <Scene key="player"  hideNavBar={true} component={PlayerContainer} title="Player" />
+                <Scene key="guide" component={GuideContainer} title="Guide" />
+                <Scene key="chats" component={ChatsContainer} title="Chats" />
+
+            
+                <Scene key="home" component={HomeContainer} title="Home" />
+
+                
+                <Scene key="settings" component={SettingsContainer} title="Settings" />
+                <Scene key="landing" component={LandingContainer} title="Landing" />
+                <Scene key="media"   hideNavBar={true} component={MediaContainer} title="Media" />
+          
+
+                <Scene key="localMedia" tabs={true} icon={TabIcon}  hideNavBar={true} component={LocalMediaContainer}  title="Playlist" />
+
+              </Stack>
+          
+
+         
+        
 
            
  
