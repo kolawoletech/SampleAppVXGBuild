@@ -230,7 +230,7 @@ export const fetchCategoryItems = (cat) => dispatch => {
 
       console.log("Start Geting Category Items")
       const categories_url = "https://nile.rtst.co.za/api/artist/6/categories/";
-      const categories_search_url ="https://nile.rtst.co.za/api/artist/6/programs?";
+      const categories_search_url ="https://nile.rtst.co.za/api/artist/6/programs";
 
       fetch(categories_search_url , catgories_options)
         .then(categories => categories.json())

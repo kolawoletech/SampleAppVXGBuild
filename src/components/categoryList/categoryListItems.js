@@ -49,18 +49,15 @@ export class CategoryListItems extends PureComponent {
         items: results
       });
 
-      console.log("STATE OF COMPONENT: " + JSON.stringify(results))
     }
     }
 
     componentWillMount() {
    
-      console.log("Actually" + JSON.stringify(this.props))
     }
 
 
     renderItem = data => {
-      console.log("FOR CATEGORY IN DD" + JSON.stringify(this.props.cat))
         var categoryType = this.props.categoryType;
 
         var cachedImageLocation =
@@ -91,25 +88,7 @@ export class CategoryListItems extends PureComponent {
                   name="cloud-download"
                   size={22}
                   color="white"
-                />
-                <Text
-                   numberOfLines={2}
-                   style={{
-                     fontSize: 14,
-                     minHeight: 30,
-                     padding: 3,
-                     width: "100%",
-                     fontWeight: "normal",
-                     backgroundColor: "#76b6c4",
-                     textAlign: "center",
-                     color: "white"
-                   }}>
-                  {data.item.categories}
-                </Text>
-           
-
-
-              
+                />            
                   <Text
                     style={{
                       fontSize: 14,
@@ -134,14 +113,14 @@ export class CategoryListItems extends PureComponent {
 
   
     render() {
-      console.log("KATE" + JSON.stringify(this.props));
         const { items : data} = this.props;
 
         return (
         <View >
           <FlatList
+            inverted
             horizontal={true}
-
+            removeClippedSubviews={true}
             listKey={item => item.programme_id.toString()}
             data={data}
             renderItem={item => this.renderItem(item)}
