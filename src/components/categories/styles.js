@@ -26,7 +26,8 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    margin: 4,
+    margin: 8,
+    width:'50%'
   },
   itemLandscape: {
     margin: 12,

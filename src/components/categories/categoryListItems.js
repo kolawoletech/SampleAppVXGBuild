@@ -22,7 +22,7 @@ import LinearGradient from "react-native-linear-gradient";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Card, CardImage } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import catalogue from "../catalogue/catalogue";
 class CategoryListItems extends PureComponent {
   constructor(props) {
@@ -47,9 +47,7 @@ class CategoryListItems extends PureComponent {
   }
 
   componentWillMount() {
-    setTimeout(() => {
-      this.scrollView.scrollToEnd();
-    });
+   
   }
 
   async checkForNewUpdates() {
@@ -327,17 +325,17 @@ class CategoryListItems extends PureComponent {
     return (
       <View style={{ height: "10%" }}>
         { (categoryType.split(' ').join('').trim().includes(check.split(' ').join('').trim()) )  || check.indexOf("LIFESTYLE AND CULTURE") > -1|| check.indexOf("EDUCATION" )  > -1?  (
-          <TouchableOpacity
+          <TouchableWithoutFeedback
             style={styles.item}
             key={data.item.programme_id}
             onPress={() => Actions.program({ programData: data.item })}
           >
             <Card>
-            <ProgressiveImage 
-              id={data.item.programme_id}
-            /> 
+              <ProgressiveImage 
+                id={data.item.programme_id}
+              /> 
               <Icon
-                size={22}
+                size={29}
                 color="white"
                 style={{ position: "absolute", left: 10 }}
                 name="cloud-download"
@@ -348,9 +346,8 @@ class CategoryListItems extends PureComponent {
                 numberOfLines={2}
                 style={{
                   fontSize: 14,
-                  minHeight: 30,
                   padding: 3,
-                  width: "100%",
+                  width: 163,
                   fontWeight: "normal",
                   backgroundColor: "#76b6c4",
                   textAlign: "center",
@@ -360,7 +357,7 @@ class CategoryListItems extends PureComponent {
                 {data.item.name}
               </Text>
             </Card>
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         ) : null }
       </View>
     );
@@ -368,7 +365,6 @@ class CategoryListItems extends PureComponent {
 
   render() {
     const { categoryItems: data } = this.props;
-    console.log("In a minute: " + JSON.stringify(this.props));
 
     return (
       <View>

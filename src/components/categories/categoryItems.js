@@ -3,6 +3,7 @@ import {
   View,
   TouchableOpacity,
   TouchableHighlight,
+  TouchableWithoutFeedback,
   Text,
   FlatList,
   Dimensions
@@ -30,9 +31,9 @@ export class CategoryItems extends PureComponent {
       this.props.onFetchCurrentCategory(cat);
 
       return (
-        <View>
+       
           <CategoryListItems data={jap} cat={cat} /> 
-        </View>
+   
       )
     }
 
@@ -40,7 +41,7 @@ export class CategoryItems extends PureComponent {
     renderItem2 = (data) => {
       return (
 
-        <TouchableOpacity key={data.item} >
+        <TouchableWithoutFeedback key={data.item} >
           
           <LinearGradient
             colors={['#000000', '#323232']}
@@ -56,13 +57,13 @@ export class CategoryItems extends PureComponent {
            
           </View>
          
-            <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)' }}>
+            <View >
               {this.getCategories(data.item)}
             </View>
             </ScrollView>
           </LinearGradient>
          
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
   
       );
   
