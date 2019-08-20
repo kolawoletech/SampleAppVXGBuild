@@ -60,8 +60,8 @@ export class CategoryListItems extends PureComponent {
 
 
     renderItem = data => {
-      console.log("FOR CATEGORY" + JSON.stringify(this.props.categoryType))
-
+      console.log("FOR CATEGORY IN DD" + JSON.stringify(this.props.cat))
+        var categoryType = this.props.categoryType;
 
         var cachedImageLocation =
           RNFS.CachesDirectoryPath +
@@ -75,7 +75,7 @@ export class CategoryListItems extends PureComponent {
         return (
         
           <View style={{ height: "50%"}}>
-             {check.indexOf("MOVIES") !== -1   ? 
+             {check.indexOf(categoryType) !== -1   ? 
             <TouchableOpacity
               style={styles.item}
               key={data.item.programme_id}

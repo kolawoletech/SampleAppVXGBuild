@@ -38,12 +38,12 @@ class Categories extends Component {
     async componentDidMount() {
    
     
+      await this.props.loadCategories()
+      await this.props.loadCategoryItem()
     }
   
     async componentWillMount() {
 
-      await this.props.loadCategories()
-      await this.props.loadCategoryItem()
 
   
     }

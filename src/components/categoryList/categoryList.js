@@ -19,7 +19,7 @@ import {CategoryListItems }from './categoryListItems';
 
 import {  fetchCategoryItems } from "../../actions/api/actions";
 
-class CategoryList extends Component {
+class CategoryList extends PureComponent {
     constructor(props) {
       super(props);  
     }
@@ -30,6 +30,7 @@ class CategoryList extends Component {
     
   
     async componentDidMount() {
+      await this.loadCategoryItems()
     }
   
     async componentWillMount() {  

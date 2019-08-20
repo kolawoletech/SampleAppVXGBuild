@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import LinearGradient from 'react-native-linear-gradient';
-import CategoryList from '../../components/categoryList'
-export class CategoryItems extends PureComponent {
+import { CategoryListItems } from './categoryListItems'
+//import CategoryList from '../../components/categoryList'
+export class CategoryItems extends Component {
     constructor(props) {
       super(props);
   
@@ -23,14 +24,26 @@ export class CategoryItems extends PureComponent {
     }
 
     getCategories(cat){
+      const { sub: mdata } = this.props;
+      
 
       this.props.onFetchCurrentCategory(cat);
+
+      return (
+        <CategoryListItems data={mdata} cat={cat} /> 
+
+      )
 
      
     }
 
+
     renderItem2 = (data) => {
+      var catName = data.item
+
+
       return (
+
   
         <TouchableOpacity key={data.item} >
   
@@ -53,7 +66,6 @@ export class CategoryItems extends PureComponent {
             <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)', alignItems: 'flex-start' }}>
               {this.getCategories(data.item)}
 
-              <CategoryList cat={data.item} /> 
             </View>
           </LinearGradient>
         </TouchableOpacity>
@@ -61,19 +73,11 @@ export class CategoryItems extends PureComponent {
       );
   
     }
-  
-    renderItem = data => {
 
   
-      return (
-        <View style={{ width: "50%"}}>
-          <Text>{data}S</Text>
-        </View>
-      );
-    };
-  
     render() {
-  
+      console.log("Getting Swamp" + JSON.stringify(this.props))
+
       if (this.props.list.length== 0 ) {
         return (
           <TouchableOpacity>

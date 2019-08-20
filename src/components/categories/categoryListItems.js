@@ -51,6 +51,10 @@ export class CategoryListItems extends PureComponent {
 
     renderItem = data => {
 
+      var check = this.props.cat;
+
+
+      console.log("FOR CATEGORY IN DD: " + JSON.stringify(this.props.sub))
 
 
         var cachedImageLocation =
@@ -61,6 +65,7 @@ export class CategoryListItems extends PureComponent {
     
         return (
           <View style={{ height: "50%"}}>
+             {check.indexOf(data.item.categories) !== -1   ? 
             <TouchableOpacity
               style={styles.item}
               key={data.item.programme_id}
@@ -91,30 +96,30 @@ export class CategoryListItems extends PureComponent {
                 </Text>
               </Card>
             </TouchableOpacity>
+             : null}
           </View>
         );
       };
 
   
     render() {
-        console.log("What is Detailed"+ JSON.stringify(this.props)) 
-        const { sublist : data} = this.props;
+        const { categoryItems : data} = this.props
         return (
         <View >
-                <Text>FACE DOWN</Text>
-                <FlatList
-                    horizontal={true}
+          <Text></Text>
+          <FlatList
+              horizontal={true}
 
-                    listKey={item => item.programme_id.toString()}
-                    data={data}
-                    renderItem={item => this.renderItem(item)}
-                    keyExtractor={item => item.programme_id.toString()}
-                    //numColumns={2}
-                    style={{
-                    flexGrow: 0,
-                    height: '100%'
-                    }}
-                />
+              listKey={item => item.programme_id.toString()}
+              data={data}
+              renderItem={item => this.renderItem(item)}
+              keyExtractor={item => item.programme_id.toString()}
+              //numColumns={2}
+              style={{
+              flexGrow: 0,
+              height: '100%'
+              }}
+          />
             
         </View>
         );
