@@ -16,7 +16,7 @@ import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview
 const SCREEN_WIDTH = Dimensions.get('window').width;
 import { AsyncStorage } from "react-native";
 
-import { fetchCategories, fetchCategoryItems } from "../../actions/api/actions";
+import { fetchCategories, fetchCategoryItems, sendCategoryMetadata  } from "../../actions/api/actions";
 import { CategoryItems } from './categoryItems'
 
 class Categories extends Component {
@@ -25,35 +25,6 @@ class Categories extends Component {
       this.state = {
         categories: ""
       };
-
-      const fakeData = [];
-      for(i = 0; i < 100; i+= 1) {
-        fakeData.push({
-          type: 'NORMAL',
-          item: {
-            id: i,
-            image: faker.image.avatar(),
-            name: faker.name.firstName(),
-            description: faker.random.words(5),
-          },
-        });
-      }
-     
-  
-      this.layoutProvider = new LayoutProvider((i) => {
-        return this.state.list.getDataForIndex(i).type;
-      }, (type, dim) => {
-        switch (type) {
-          case 'NORMAL': 
-            dim.width = SCREEN_WIDTH;
-            dim.height = 278;
-            break;
-          default: 
-            dim.width = 0;
-            dim.height = 0;
-            break;
-        };
-      })
      
     }
 
@@ -65,13 +36,14 @@ class Categories extends Component {
     
   
     async componentDidMount() {
-
+   
     
     }
   
     async componentWillMount() {
 
       await this.props.loadCategories()
+      await this.props.loadCategoryItem()
 
   
     }
@@ -104,7 +76,7 @@ class Categories extends Component {
         return (
           <View style={styles.container}>
            
-            <CategoryItems list={data} sub={subData} onFetchItems={this.props.loadCategoryItem} />
+            <CategoryItems list={data} sub={subData} onFetchItems={this.props.loadCategoryItem} onFetchCurrentCategory={this.props.getCurrentCategory}/>
     
           </View>
         );
@@ -112,14 +84,16 @@ class Categories extends Component {
     }
   }
   
-  const mapStateToProps = ({ apiReducer: { categories , categoryItems} }) => ({
+  const mapStateToProps = ({ apiReducer: { categories , categoryItems, currentCategory} }) => ({
     categories: categories,
-    categoryItems: categoryItems
+    categoryItems: categoryItems,
+    currentCategory: currentCategory
   });
   
   const mapDispatchToProps = {
     loadCategories: fetchCategories,
-    loadCategoryItem: fetchCategoryItems
+    loadCategoryItem: fetchCategoryItems,
+    getCurrentCategory:  sendCategoryMetadata 
   };
   
   export default connect(

@@ -24,7 +24,7 @@ export class CategoryItems extends PureComponent {
 
     getCategories(cat){
 
-      this.props.onFetchItems(cat);
+      this.props.onFetchCurrentCategory(cat);
 
      
     }

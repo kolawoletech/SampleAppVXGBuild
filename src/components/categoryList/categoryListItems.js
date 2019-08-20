@@ -68,11 +68,14 @@ export class CategoryListItems extends PureComponent {
           "/NileMediaCatalogueImages/" +
           data.item.programme_id +
           ".png";
+
+          var check = data.item.categories;
+          //console.log("PLease Check:  " + check)
     
         return (
         
           <View style={{ height: "50%"}}>
-             {data.item.categories.includes(this.props.currentCategory)  ? 
+             {check.indexOf("MOVIES") !== -1   ? 
             <TouchableOpacity
               style={styles.item}
               key={data.item.programme_id}
@@ -124,7 +127,7 @@ export class CategoryListItems extends PureComponent {
 
               </Card>
             </TouchableOpacity>
-              : <Text>...</Text>}
+              : null}
           </View>
         );
       };

@@ -199,6 +199,8 @@ export const fetchCategories = () => dispatch => {
   // .catch(err => console.log("An error occured", err))
 };
 
+
+
 export const fetchCategoryItems = (cat) => dispatch => {
   //TODO 
   dispatch(categoryItemsLoading());
@@ -236,10 +238,19 @@ export const fetchCategoryItems = (cat) => dispatch => {
           let cats =categories["data"];
 
           dispatch(categoryItemsLoaded(cats, cat));
-          dispatch(currentCategoryType(cat))
+         // dispatch(currentCategoryType(cat))
 
         });
     });
+};
+
+export const sendCategoryMetadata = (cat) => dispatch => {
+  //TODO 
+  //dispatch(categoryItemsLoading());
+
+
+  dispatch(currentCategoryType(cat))
+
 };
 
 export const sendMessage = (id, opts, aid) => dispatch => {
