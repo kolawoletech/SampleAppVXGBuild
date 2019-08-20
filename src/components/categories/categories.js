@@ -90,7 +90,7 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#000",
     minHeight: 1,
     minWidth: 1
   },

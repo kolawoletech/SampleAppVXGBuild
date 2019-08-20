@@ -98,19 +98,11 @@ export class CatalogueItems extends PureComponent {
             })
             .then(async () => {
               if (this.arraysEqual(this.state.savedLocally, array)) {
-                console.log("checkForNewUpdates: Same Items");
               } else {
-                console.log(
-                  "checkForNewUpdates: New Updates Found, Delete Folder "
-                );
+         
                 let path = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
                 RNFS.unlink(path).then(async () => {
-                  console.log(
-                    "checkForNewUpdates: Create Folder and Get Images"
-                  );
-
                   const promises = this.props.list.map(item => {
-                    //return this._getImage(item.programme_id);
                     return this._getImageUpdate(item.programme_id);
                   });
 
@@ -127,7 +119,6 @@ export class CatalogueItems extends PureComponent {
         } else {
           console.log("Create A Folder");
           const promises = this.props.list.map(async item => {
-            //return this._getImage(item.programme_id);
             return this._getImageUpdate(item.programme_id);
           });
 
@@ -138,7 +129,6 @@ export class CatalogueItems extends PureComponent {
         }
       });
     } catch (error) {
-      console.log("Structure of Items: " + error);
     }
   }
 
@@ -160,10 +150,6 @@ export class CatalogueItems extends PureComponent {
     if (a == null || b == null) return false;
     if (a.length != b.length) return false;
 
-    // If you don't care about the order of the elements inside
-    // the array, you should sort both arrays here.
-    // Please note that calling sort on an array will modify that array.
-    // you might want to clone your array first.
 
     for (var i = 0; i < a.length; ++i) {
       if (a[i] !== b[i]) return false;
@@ -172,13 +158,7 @@ export class CatalogueItems extends PureComponent {
   };
 
   async _getImage(id) {
-    /*     if (this.state.savedLocally === this.state.savedOnline){
 
-      console.log("Same Items")
-    } else {
-      console.log("New Updates")
-
-    } */
     let savedLocally = this.state.savedLocally;
     let savedOnline = this.state.savedOnline;
 
@@ -316,7 +296,6 @@ export class CatalogueItems extends PureComponent {
                 });
               })
               .catch(error => {
-                //alert(JSON.stringify(error));
 
                 this.setState({
                   isImageSavedLocally: false

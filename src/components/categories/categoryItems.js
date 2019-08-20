@@ -58,7 +58,6 @@ export class CategoryItems extends PureComponent {
          
             <View style={{width: '100%',flexDirection: 'row' , flex: 1, backgroundColor: 'rgba(0, 0, 0, 0)' }}>
               {this.getCategories(data.item)}
-
             </View>
             </ScrollView>
           </LinearGradient>

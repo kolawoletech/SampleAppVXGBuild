@@ -1,16 +1,10 @@
 import React, { Component, PureComponent } from "react";
 import {
   View,
-  Button,
-  Image,
   Text,
-  FlatList,
-  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
-import Icon from "react-native-vector-icons/Ionicons";
-import { styles } from "./styles";
-import { Actions } from "react-native-router-flux";
+
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import { fetchCatalogue } from "../../actions/api/actions";
 import { CatalogueItems } from "./catalogueItems";
@@ -51,13 +45,10 @@ class Catalogue extends PureComponent {
     await this.setDefaultWiFiOption();
     await this.setDefaultCurrency()
     await this.setDefaultRate() 
-    //await this.getCatalogueWithAID();
-
-
   }
 
   async componentWillMount() {
-    //await this.checkForNewUpdates()
+
     await this.setDefaultBufferOption()
     await this.getCatalogueWithAID();
     await this.setDefaultIndicatorLimit()
@@ -100,9 +91,8 @@ class Catalogue extends PureComponent {
       var array = result.split(',');
 
 
-      console.log("Structure of Items: " + typeof(result) + "The ARRAY: " + Array.isArray(array))
     } catch (error) {
-      console.log("Structure of Items: " + error )
+      console.log(error )
 
     }
   }
@@ -111,7 +101,6 @@ class Catalogue extends PureComponent {
     try {
       let value = await AsyncStorage.getItem("costPerMB");
       if (value != null) {
-        console.log("costPerMB Already Set as " + value);
       } else {
         const defaultCostPerMB = "0";
         AsyncStorage.setItem("costPerMB", defaultCostPerMB).then(token => {
@@ -129,8 +118,7 @@ class Catalogue extends PureComponent {
     let value = await AsyncStorage.getItem("bufferValue");
 
     if (value !== null) {
-      // do nothing
-      console.log("Option Already Set: " + value);
+
     } else {
       const bufferOption = "2000";
 
@@ -142,13 +130,10 @@ class Catalogue extends PureComponent {
 
 
   async setDefaultIndicatorLimit() {
-    let context = this;
-
     let value = await AsyncStorage.getItem("indicatorLimit");
 
     if (value !== null) {
       // do nothing
-      console.log("Option Already Set: " + value);
     } else {
       const indicatorLimit = "2000";
 
@@ -165,7 +150,6 @@ class Catalogue extends PureComponent {
 
     if (value !== null) {
       // do nothing
-      console.log("Option Already Set: " + JSON.parse(value));
     } else {
       const wifiOption = JSON.stringify(true);
 
@@ -223,16 +207,12 @@ class Catalogue extends PureComponent {
           colors={["#212121", "#212121", "#212121"]}
           style={{ height: "100%" }}>
             <View style={{ height: "100%" }}>
-              {/* //TODO Find out why importan */}
               <Text  orientation={this.state.orientation} ></Text>
               <CatalogueItems orientation={this.state.orientation} list={data} onPressItem={this.onRemoveChannel} />
             </View>
         </LinearGradient>
         )
       }
-
-
-
     }
     
   }
