@@ -14,19 +14,19 @@ export const styles = StyleSheet.create({
     backgroundColor: '#000'
   },
   image: {
-
     height: 100,
     marginBottom: 50
   },
   marginBox: {
-    margin: 4
+    margin: 2
   },
   title: {
     fontSize: 24,
     margin: 20
   },
   item: {
-    margin: 8,
+    marginTop: 2,
+    marginBottom:1,
     width:'50%'
   },
   itemLandscape: {

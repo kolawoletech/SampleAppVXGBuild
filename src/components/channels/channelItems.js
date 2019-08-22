@@ -45,9 +45,14 @@ export class ChannelItems extends React.Component {
   };
 
   async componentWillMount() {
-    await this.checkForNewUpdates();
-    console.log("ChannelItems:" + JSON.stringify(this.props))
   }
+
+
+  async componentDidMount() {
+    await this.checkForNewUpdates();
+  }
+
+
 
   async checkForNewUpdates(){
     try {

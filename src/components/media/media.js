@@ -338,7 +338,7 @@ export class Media extends Component {
     return (
       <View style={{ height: "100%" }}>
         <LinearGradient
-          colors={["#76B6C4", "#4E8FA2", "#0F516C"]}
+          colors={['#000000', '#323232']}
           style={{ height: "100%", paddingTop: 35 }}>
           
           <Drawer

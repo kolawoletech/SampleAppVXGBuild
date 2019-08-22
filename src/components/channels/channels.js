@@ -45,8 +45,6 @@ class Channels extends Component {
 
   async componentDidMount() {
     this.checkUserSignedIn();
-
-
   }
 
 

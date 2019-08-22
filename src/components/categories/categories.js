@@ -88,7 +88,6 @@ class Categories extends Component {
   async getCatalogueWithAID() {
     let AID = await AsyncStorage.getItem("aid");
     let TOKENID = await AsyncStorage.getItem("sessionTokenID");
-    this.props.loadCatalogue(AID, TOKENID);
   }
 
   async setDefaultCurrency() {
@@ -179,7 +178,6 @@ class Categories extends Component {
     const { categoryItems: subData } = this.props;
     const { onfetchCategoryItems } = this.props.loadCategoryItem;
 
-    console.log("Current Categories Props" + JSON.stringify(this.props));
 
     return (
       <View style={styles.container}>
@@ -217,8 +215,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    minHeight: 1,
-    minWidth: 1
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginTop: 2,
+    marginBottom: 5
   },
   body: {
     marginLeft: 10,
@@ -238,7 +238,9 @@ const styles = StyleSheet.create({
     opacity: 0.5
   },
   listItem: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     flexDirection: "row",
-    margin: 10
+    
   }
 });

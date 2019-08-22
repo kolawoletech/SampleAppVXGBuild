@@ -3,13 +3,11 @@ import {
   View,
   TouchableOpacity,
   Text,
-  StyleSheet,
+
   FlatList,
-  Button,
-  ScrollView,
+
   Dimensions
 } from "react-native";
-import Image from 'react-native-scalable-image';
 
 import RNFS from "react-native-fs";
 
@@ -18,12 +16,10 @@ import ProgressiveImage from './ProgressiveImage'
 import { styles } from "./styles";
 import { Actions } from "react-native-router-flux";
 import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
-import LinearGradient from "react-native-linear-gradient";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
-import { Card, CardImage } from "react-native-material-cards";
+import { Card } from "react-native-material-cards";
 import { AsyncStorage } from "react-native";
-import { consolidateStreamedStyles } from "styled-components";
 let { width, height } = Dimensions.get("window");
 
 export class CatalogueItems extends PureComponent {
@@ -88,7 +84,6 @@ export class CatalogueItems extends PureComponent {
                   .join(".");
                 arr.push(parseInt(filename));
               }
-              // stat the first file
 
               this.setState({
                 savedLocally: arr

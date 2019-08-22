@@ -29,11 +29,7 @@ export default class ProgressiveImage extends PureComponent {
     if (RNFS.exists(cachedImageFolder)){
       this.setState({
         source : cachedImageFolder
-        
       })
-
-      console.log("Current State" + JSON.stringify(this.state.source))
-
       return;
     } else {
       console.log("Does Not Exists: ")

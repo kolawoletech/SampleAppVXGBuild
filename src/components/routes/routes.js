@@ -34,7 +34,6 @@ import configureStore from '../../store';
 import ChatsContainer from '../chats'
 
 import CachedCatalogueContainer from '../cachedCatalogue'
-import LocalMediaContainer from '../localMedia'
 
 import NetInfo from "@react-native-community/netinfo";
 
@@ -130,7 +129,6 @@ main: { opacity:Math.max(0.54,1-ratio) }
 <Scene key="categorylist" component={CategoryListContainer} title="CategoryList" />
 
 <Scene key="cachedCatalogue" component={CachedCatalogueContainer} title="New Catalogue" ></Scene>
-<Scene key="localMedia" tabs={true} hideNavBar={true} component={LocalMediaContainer} title="LocaL Media"></Scene>
 <Scene key="categories" component={CategoriesContainer} title="Categories" />
 
 </Stack>

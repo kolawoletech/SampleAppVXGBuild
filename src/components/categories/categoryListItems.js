@@ -1,9 +1,6 @@
 import React, { Component, PureComponent } from "react";
 import {
   View,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableHighlight,
   Text,
   FlatList,
   Dimensions
@@ -37,6 +34,9 @@ class CategoryListItems extends PureComponent {
       savedOnline: [],
       isImageSavedLocally: ""
     };
+    //this.checkForNewUpdates();
+
+
   }
 
   async componentDidMount() {
@@ -46,14 +46,13 @@ class CategoryListItems extends PureComponent {
 
   }
 
-  componentWillMount() {
-   
+  async componentWillMount() {
   }
 
   async checkForNewUpdates() {
     try {
-      let catalogueItems = this.props.data;
-      let result = catalogueItems
+      let sub = this.props.categoryItems;
+      let result = sub
         .map(({ programme_id }) => programme_id)
         .join(",");
 
@@ -62,14 +61,13 @@ class CategoryListItems extends PureComponent {
       this.setState({
         savedOnline: array
       });
-
+/* 
       console.log(
         "checkForNewUpdates Saved Online State" +
           this.state.savedOnline +
           "checkForNewUpdates Saved Online Actual array: " +
           array
-      );
-      //onsole.log("checkForNewUpdates Structure of Items: " + "The ARRAY: " + array);
+      ); */
 
       const cachedImageFolder = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
       RNFS.exists(cachedImageFolder).then(async exists => {
@@ -78,7 +76,6 @@ class CategoryListItems extends PureComponent {
             .then(async (result) => {
               var arr = [];
               for (i = 0; i <= result.length; i++) {
-                console.log("GOT RESULT", result);
                 var filename = result[i].name
                   .split(".")
                   .slice(0, -1)
@@ -99,7 +96,7 @@ class CategoryListItems extends PureComponent {
          
                 let path = RNFS.CachesDirectoryPath + `/NileMediaCatalogueImages` + "/";
                 RNFS.unlink(path).then(async () => {
-                  const promises = this.props.data.map(item => {
+                  const promises = this.props.sub.map(item => {
                     return this._getImageUpdate(item.programme_id);
                   });
 
@@ -115,7 +112,7 @@ class CategoryListItems extends PureComponent {
             });
         } else {
           console.log("Create A Folder");
-          const promises = this.props.data.map(async item => {
+          const promises = this.props.categoryItems.map(async item => {
             return this._getImageUpdate(item.programme_id);
           });
 
@@ -310,7 +307,6 @@ class CategoryListItems extends PureComponent {
   renderItem = data => {
     var check = this.props.cat.toString();
     var categoryType = data.item.categories.toString();
-    console.log("Current: " + check + "Category: " + categoryType.split(' ').join('').trim());
 
     this.setState({
       currently: check
@@ -323,32 +319,30 @@ class CategoryListItems extends PureComponent {
       ".png";
 
     return (
-      <View style={{ height: "10%" }}>
+      <View>
         { (categoryType.split(' ').join('').trim().includes(check.split(' ').join('').trim()) )  || check.indexOf("LIFESTYLE AND CULTURE") > -1|| check.indexOf("EDUCATION" )  > -1?  (
           <TouchableWithoutFeedback
             style={styles.item}
             key={data.item.programme_id}
-            onPress={() => Actions.program({ programData: data.item })}
-          >
+            onPress={() => Actions.program({ programData: data.item })}>
             <Card>
               <ProgressiveImage 
                 id={data.item.programme_id}
               /> 
               <Icon
-                size={29}
                 color="white"
                 style={{ position: "absolute", left: 10 }}
                 name="cloud-download"
-                size={22}
+                size={29}
                 color="white"
               />
               <Text
-                numberOfLines={2}
+                numberOfLines={1}
                 style={{
-                  fontSize: 14,
+                  fontSize: 19,
                   padding: 3,
-                  width: 163,
-                  fontWeight: "normal",
+                  fontWeight: 'bold',
+                  width:   Dimensions.get('window').width/2.3,
                   backgroundColor: "#76b6c4",
                   textAlign: "center",
                   color: "white"
@@ -372,14 +366,12 @@ class CategoryListItems extends PureComponent {
         <ScrollView
           ref={ref => {
             this.scrollView = ref;
-          }}
-        >
+          }}>
           <FlatList
             horizontal={true}
             data={data}
             renderItem={item => this.renderItem(item)}
             keyExtractor={item => item.programme_id.toString()}
-            //numColumns={2}
           />
         </ScrollView>
       </View>

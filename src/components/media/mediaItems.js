@@ -348,7 +348,7 @@ export class MediaItems extends React.Component {
         style={styles.item}
         >
         <LinearGradient
-          colors={["#0F516C", "#76B6C4"]}
+          colors={['#000000', '#323232']}
           style={{
             padding: 7,
             alignItems: "center",
@@ -365,11 +365,11 @@ export class MediaItems extends React.Component {
             }}>
             <View
               style={{
-                width: "45%"
+                width: "35%"
               }}>
               <Image
                 resizeMode="contain"
-                style={{ width: "100%", height: 135, position: "absolute" }}
+                style={{ width: "100%", alignItems: 'flex-start', height: 135, position: "absolute" }}
                 source={{
                   uri: this.state.thumbnails.find(a => data.item._id === a.id)
                     ? this.state.thumbnails.find(a => data.item._id === a.id)
@@ -380,7 +380,7 @@ export class MediaItems extends React.Component {
             </View>
             <View
               style={{
-                width: "55%",
+                width: "65%",
                 flex: 1,
                 backgroundColor: "rgba(0, 0, 0, 0)"
               }}>

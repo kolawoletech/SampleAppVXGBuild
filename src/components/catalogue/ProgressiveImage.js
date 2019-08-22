@@ -9,7 +9,6 @@ import {
   Text
 } from "react-native";
 import shorthash from 'shorthash'
-import { spreadElement } from "@babel/types";
 
 export default class ProgressiveImage extends PureComponent {
 
@@ -29,7 +28,7 @@ export default class ProgressiveImage extends PureComponent {
     if (RNFS.exists(cachedImageFolder)){
       this.setState({
         source : cachedImageFolder
-        
+
       })
 
       console.log("Current State" + JSON.stringify(this.state.source))
