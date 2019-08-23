@@ -9,9 +9,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   container: {
-    flex: 1,
-    alignItems: 'stretch',
-    backgroundColor: '#000'
+    backgroundColor: 'rgba(21, 21, 21, 0.5)',
+    justifyContent: 'space-around',
+
   },
   image: {
     height: 100,

@@ -1,9 +1,11 @@
 import React, { Component, PureComponent } from "react";
+
 import {
   View,
   AsyncStorage,
   Dimensions,
-  StyleSheet
+  StyleSheet,
+  Text
 } from "react-native";
 import { connect } from "react-redux";
 import _ from "lodash";
@@ -21,7 +23,10 @@ import {
   sendCategoryMetadata
 } from "../../actions/api/actions";
 import { CategoryItems } from "./categoryItems";
-
+import { Button } from "react-native-elements";
+import { Actions } from "react-native-router-flux";
+import { ScrollView } from "react-native-gesture-handler";
+import { Menu } from './menu'
 class Categories extends Component {
   constructor(props) {
     super(props);
@@ -154,6 +159,9 @@ class Categories extends Component {
     }
   }
   
+  onPressLearnMore = () => {
+    Actions.tabs()
+  }
   async setDefaultWiFiOption() {
     let context = this;
 
@@ -180,14 +188,24 @@ class Categories extends Component {
 
 
     return (
+  
       <View style={styles.container}>
+        
+        <ScrollView>
         <CategoryItems
           list={data}
           sub={subData}
           onFetchItems={this.props.loadCategoryItem}
           onFetchCurrentCategory={this.props.getCurrentCategory}
         />
+        </ScrollView>
+       
+        <Menu />
       </View>
+  
+         
+  
+    
     );
   }
 }
@@ -215,8 +233,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    justifyContent: 'space-evenly',
+
     marginTop: 2,
     marginBottom: 5
   },

@@ -38,7 +38,7 @@ export default class Tabs extends React.Component {
           </View>
         </LinearGradient>
         </View>
-        <View style={styles.tabContainer}>    
+        <View style={styles.channelContainer}>    
           <TouchableOpacity >
             <Icon name="event" size={22} color="black"
               style={{ position: 'absolute', top: 10, left: 50 }}

@@ -16,12 +16,13 @@ import { LoadingIndicator } from "../loadingIndicator/loadingIndicator";
 import { fetchChannelImage, newRegisterUser } from "../../actions/api/actions";
 import { ChannelItems } from "./channelItems";
 import { CacheImage } from "./cacheImage";
-import LinearGradient from "react-native-linear-gradient";
+import { Menu } from './menu'
 
 import { AsyncStorage } from "react-native";
 import {  OfflineNotice } from "./offlineNotice";
 
 import _ from "lodash";
+import { ScrollView } from "react-native-gesture-handler";
 
 class Channels extends Component {
   constructor(props) {
@@ -128,24 +129,22 @@ class Channels extends Component {
 
     if ( this.props.channels.data === 0 ||this.props.channels == null ){
       return (
-        <LinearGradient
-          colors={["#212121", "#212121", "#212121"]}
-          style={{ height: "100%" }}>
-            
           <LoadingIndicator />
-        </LinearGradient>
       );
     } else {
       return (
-        <LinearGradient
-          colors={["#212121", "#212121", "#212121"]}
-          style={{ height: "100%" }}>
+        <View style={styles.container}>
+          <ScrollView>
+         
           <OfflineNotice />
 
           <Text  orientation={this.state.orientation}></Text>
 
           <ChannelItems orientation={this.state.orientation}  list={data} onPressItem={this.onRemoveChannel} />
-        </LinearGradient>
+          </ScrollView>
+          <Menu />
+        </View>
+        
       );
     }
  
