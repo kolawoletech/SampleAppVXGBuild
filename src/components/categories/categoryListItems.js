@@ -320,7 +320,7 @@ class CategoryListItems extends PureComponent {
 
     return (
       <View>
-        { (categoryType.split(' ').join('').trim().includes(check.split(' ').join('').trim()) )  || check.indexOf("LIFESTYLE AND CULTURE") > -1|| check.indexOf("EDUCATION" )  > -1?  (
+        { (categoryType.split(' ').join('').trim().includes(check.split(' ').join('').trim()) )  ?  (
           <TouchableWithoutFeedback
             style={styles.item}
             key={data.item.programme_id}
