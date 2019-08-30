@@ -50,7 +50,7 @@ export class MessageItems extends React.Component {
               style={{
                 flexDirection: "row",
                 width: "100%",
-                color: "white"
+                color: "#FFF"
               }}>
               <Text>{data.item.from}. </Text>
               <Text

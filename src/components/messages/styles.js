@@ -12,16 +12,15 @@ export const styles = StyleSheet.create({
  
     borderRadius: 9 ,
     margin: 5,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     paddingBottom: 7,
     paddingTop: 7,
     margin:4
   },
   container: {
     flex: 1,
-
     alignItems: 'stretch',
-    backgroundColor: '#323232'
+    backgroundColor: '#fff'
   },
   image: {
 

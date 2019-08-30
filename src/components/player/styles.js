@@ -27,20 +27,20 @@ export const styles = StyleSheet.create({
     margin: 20
   },
   item: {
-    backgroundColor: "#212121",
+    backgroundColor: "#fff",
     padding: 15,
     margin: 10,
     marginBottom: 5
   },
   text: {
-    color: "#ffffff",
+    color: "#fff",
     fontSize: 16,
     textAlign: "center"
   },
   progressBar: {
     width: "100%",
     transform: [{ scaleX: 2.0 }, { scaleY: 8.0 }],
-    color: "#000"
+    color: "#fff"
   },
   buttonText: {
     color: "#fff",
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: "row",
     borderBottomWidth: 1,
-    borderColor: "#000",
+    borderColor: "#fff",
     paddingBottom: 10
   },
   inputStyle: {

@@ -87,20 +87,17 @@ export class Player extends React.PureComponent {
       return dim.height >= dim.width;
     };
 
-    Dimensions.addEventListener("change", () => {
-
-      console.log(isPortrait())
-      this.setState({
-        //orientation: isPortrait() ? "portrait" : "landscape"
-      });
-
-      if (this._player !== null){
-        this._player.close()
-
-      }
-    });
   }
 
+  onLayout(e) {
+    var { width, height } = Dimensions.get("window");
+    console.log("<sampleJS> onLayout w:" + width + " h:" + height);
+    if (width > height) {
+      this.setState({ w: width, h: height });
+    } else {
+      this.setState({ w: width, h: height });
+    }
+  }
 
 
   costCounter(seconds) {
@@ -257,8 +254,6 @@ export class Player extends React.PureComponent {
     await this.getOrientation();
     this.getCurrencySymbol();
     const channel = this.props.channel;
-    console.log( "I need to Know" + JSON.stringify(this.props))
-
 
     Dimensions.addEventListener("change", () => {
       this.getOrientation();
@@ -427,9 +422,7 @@ export class Player extends React.PureComponent {
 
   async componentWillMount() {
    
-      await this.getMessagesWithAID();
-
-    
+    await this.getMessagesWithAID();
     await this.checkWarningPerferences();
   }
 
@@ -574,33 +567,26 @@ export class Player extends React.PureComponent {
     const iconPosition = width * (2 * 0.08 + width * 0.5);
 
     return (
-      <View>
-        {this.state.orientation === "landscape" ? (
+      <View
+        onLayout={this.onLayout.bind(this)}>
+       
 
             <VXGMobileSDK
-            style={styles.player}
-            ref={this._assignPlayer}
-            config={{
-              connectionUrl: rstp_link,
-              autoplay: true
-            }}
+              style={
+                this.state.orientation === "portrait"
+                  ? orientation.player
+                  : styles.player
+                }
+              ref={this._assignPlayer}
+              config={{
+                connectionUrl: rstp_link,
+                autoplay: true
+              }}
           />
 
 
-        ) : null}
-        {this.state.orientation === "portrait" ||
-        this.state.orientation === "" ? (
+         
 
-          <VXGMobileSDK
-            style={orientation.player}
-            ref={this._assignPlayer}
-            config={{
-              connectionUrl: rstp_link,
-              autoplay: true
-            }}
-          />
-
-        ) : null}
         {this.state.orientation === "portrait" ? (
           <View style={styles.progressBarContainer}>
             <TouchableHighlight onPress={this.decreaseQuality}>
@@ -821,7 +807,10 @@ export class Player extends React.PureComponent {
             </TouchableHighlight>
           ) : null}
           {this.state.orientation === "portrait" ? (
-            <ScrollView>
+            <ScrollView style={{
+              color: '#fff'
+            
+            }}>
               <View>
                 <View style={styles.messagesContainer}>
                   {this.state.hideCostWarning==true && this.state.step === 1 &&
@@ -979,7 +968,8 @@ const orientation = StyleSheet.create({
   container: {
     padding: 30,
     marginTop: 65,
-    alignItems: "stretch"
+    alignItems: "stretch",
+    color: '#fff'
   },
   player: {
     paddingTop: 20,
