@@ -94,8 +94,12 @@ export class Player extends React.PureComponent {
     console.log("<sampleJS> onLayout w:" + width + " h:" + height);
     if (width > height) {
       this.setState({ w: width, h: height });
+      KeepAwake.activate();
+
     } else {
       this.setState({ w: width, h: height });
+      KeepAwake.activate();
+
     }
   }
 
@@ -583,6 +587,8 @@ export class Player extends React.PureComponent {
                 autoplay: true
               }}
           />
+                          <KeepAwake />
+
 
 
          
